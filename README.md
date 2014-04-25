@@ -1,4 +1,4 @@
 Adaptilo
 ========
 
-Adaptilo, just another experiment.
+Adaptilo, from Esperanto 'controller', 'adapter'.
