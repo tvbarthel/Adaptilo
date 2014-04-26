@@ -12,6 +12,7 @@ import java.net.URI;
 import java.util.Map;
 
 import fr.tvbarthel.apps.adaptilo.models.Message;
+import fr.tvbarthel.apps.adaptilo.models.NetworkMessage;
 
 /**
  * Simple {@link org.java_websocket.client.WebSocketClient} used communicate with the server
@@ -29,7 +30,15 @@ public class AdaptiloClient extends WebSocketClient {
      */
     private Callbacks mCallbacks;
 
+    /**
+     * JSON parser
+     */
     private Gson mGsonParser;
+
+    /**
+     * identify client on the server
+     */
+    private int mConnectionId;
 
     public AdaptiloClient(URI serverURI, Callbacks callbacks) {
         super(serverURI);
@@ -55,8 +64,8 @@ public class AdaptiloClient extends WebSocketClient {
      * @param message
      */
     public void send(Message message) {
-        final String stringMessage = mGsonParser.toJson(message);
-        this.send(message);
+        final NetworkMessage networkMessage = new NetworkMessage(mConnectionId, message);
+        this.send(mGsonParser.toJson(networkMessage));
     }
 
     @Override
@@ -69,7 +78,15 @@ public class AdaptiloClient extends WebSocketClient {
     public void onMessage(String message) {
         Log.d(TAG, "onMessage : " + message);
         final Message jsonMessage = mGsonParser.fromJson(message, Message.class);
-        mCallbacks.onMessage(jsonMessage);
+        switch (jsonMessage.getType()) {
+            case CONNECTION_COMPLETED:
+                //TODO retrieve connection id
+                mConnectionId = 123456789;
+                break;
+            default:
+                mCallbacks.onMessage(jsonMessage);
+                break;
+        }
     }
 
     @Override
