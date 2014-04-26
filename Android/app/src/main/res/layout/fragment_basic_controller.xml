@@ -105,7 +105,7 @@
                 android:layout_toLeftOf="@id/basic_controller_left_pane_center"
                 android:background="@drawable/button_circle"
                 android:fontFamily="sans-serif-light"
-                android:text="A"
+                android:text="@string/basic_controller_btn_a"
                 android:textColor="@color/secondary" />
 
             <Button
@@ -116,7 +116,7 @@
                 android:layout_toRightOf="@id/basic_controller_left_pane_center"
                 android:background="@drawable/button_circle"
                 android:fontFamily="sans-serif-light"
-                android:text="B"
+                android:text="@string/basic_controller_btn_b"
                 android:textColor="@color/secondary" />
         </RelativeLayout>
 

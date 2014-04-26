@@ -5,4 +5,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <!-- Basic Controller Fragment -->
+    <string name="basic_controller_btn_a">A</string>
+    <string name="basic_controller_btn_b">B</string>
+
 </resources>
