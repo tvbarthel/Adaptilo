@@ -3,7 +3,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="oval">
-            <solid android:color="@color/btn_secondary" />
+            <solid android:color="@color/btn_circle_secondary" />
             <size
                 android:width="60dp"
                 android:height="60dp" />
@@ -16,7 +16,7 @@
         android:right="@dimen/btn_padding_pressed"
         android:top="@dimen/btn_padding_pressed">
         <shape android:shape="oval">
-            <solid android:color="@color/btn_primary" />
+            <solid android:color="@color/btn_circle_primary" />
             <size
                 android:width="60dp"
                 android:height="60dp" />

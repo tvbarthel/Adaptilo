@@ -7,4 +7,6 @@
     <!-- Button -->
     <color name="btn_primary">#ff3b677c</color>
     <color name="btn_secondary">#FF457D97</color>
+    <color name="btn_circle_primary">#ff808080</color>
+    <color name="btn_circle_secondary">#ffc4c4c4</color>
 </resources>
