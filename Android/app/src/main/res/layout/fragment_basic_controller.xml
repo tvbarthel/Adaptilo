@@ -3,15 +3,65 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="horizontal"
+    android:background="@color/secondary">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:fontFamily="sans-serif-light"
-        android:text="Basic Controller"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.5">
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:text="Basic Controller"
+            android:textColor="@color/primary"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.5" >
+
+        <View
+            android:id="@+id/center"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_centerInParent="true"/>
+
+        <Button
+            android:id="@+id/a"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/button_circle"
+            android:fontFamily="sans-serif-light"
+            android:layout_below="@id/center"
+            android:layout_toLeftOf="@id/center"
+            android:text="A"
+            android:textColor="@color/secondary" />
+
+        <Button
+            android:id="@+id/b"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/button_circle"
+            android:fontFamily="sans-serif-light"
+            android:layout_above="@id/center"
+            android:layout_toRightOf="@id/center"
+            android:text="B"
+            android:textColor="@color/secondary" />
+    </RelativeLayout>
+
+
+
+
 </LinearLayout>
