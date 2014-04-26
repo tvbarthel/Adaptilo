@@ -9,8 +9,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import fr.tvbarthel.apps.adaptilo.fragments.BasicControllerFragment;
+import fr.tvbarthel.apps.adaptilo.fragments.ControllerFragment;
+import fr.tvbarthel.apps.adaptilo.models.Message;
 
-public class MainActivity extends FragmentActivity {
+
+public class MainActivity extends FragmentActivity implements ControllerFragment.Callback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +22,7 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, new BasicControllerFragment())
                     .commit();
         }
     }
@@ -41,6 +45,11 @@ public class MainActivity extends FragmentActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void sendMessage(Message messageToSend) {
+        // TODO handle the message
     }
 
     /**
