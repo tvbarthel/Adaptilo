@@ -39,7 +39,7 @@
                 android:layout_width="@dimen/btn_arrow_center_square_size"
                 android:layout_height="@dimen/btn_arrow_center_square_size"
                 android:layout_centerInParent="true"
-                android:background="@color/primary_dark" />
+                android:background="@color/btn_primary" />
 
             <Button
                 android:id="@+id/basic_controller_btn_arrow_up"
@@ -75,15 +75,12 @@
 
         </RelativeLayout>
 
-        <LinearLayout
+        <View
             android:id="@+id/basic_controller_center_pane"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_weight="1" />
 
-
-        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/basic_controller_left_pane"

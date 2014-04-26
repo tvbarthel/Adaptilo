@@ -2,6 +2,9 @@
 <resources>
 
     <color name="primary">#FF457D97</color>
-    <color name="primary_dark">#ff3b677c</color>
     <color name="secondary">#FFF2F2F2</color>
+
+    <!-- Button -->
+    <color name="btn_primary">#ff3b677c</color>
+    <color name="btn_secondary">#FF457D97</color>
 </resources>
