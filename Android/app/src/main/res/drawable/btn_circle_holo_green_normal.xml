@@ -3,7 +3,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="oval">
-            <solid android:color="@color/btn_circle_secondary" />
+            <solid android:color="@color/gray_light" />
             <size
                 android:width="60dp"
                 android:height="60dp" />
@@ -11,12 +11,12 @@
     </item>
 
     <item
-        android:bottom="@dimen/btn_circle_padding_pressed"
-        android:left="@dimen/btn_circle_padding_pressed"
-        android:right="@dimen/btn_circle_padding_pressed"
-        android:top="@dimen/btn_circle_padding_pressed">
+        android:bottom="@dimen/btn_circle_padding_normal"
+        android:left="@dimen/btn_circle_padding_normal"
+        android:right="@dimen/btn_circle_padding_normal"
+        android:top="@dimen/btn_circle_padding_normal">
         <shape android:shape="oval">
-            <solid android:color="@color/btn_circle_primary" />
+            <solid android:color="@color/holo_green_light" />
             <size
                 android:width="60dp"
                 android:height="60dp" />

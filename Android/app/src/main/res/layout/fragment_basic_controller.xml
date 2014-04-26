@@ -71,7 +71,7 @@
                 android:layout_width="@dimen/btn_arrow_center_square_size"
                 android:layout_height="@dimen/btn_arrow_center_square_size"
                 android:layout_centerInParent="true"
-                android:background="@color/btn_primary" />
+                android:background="@color/btn_arrow_primary" />
 
             <Button
                 android:id="@+id/basic_controller_btn_arrow_up"
@@ -132,7 +132,7 @@
                 android:layout_height="@dimen/btn_circle_size"
                 android:layout_below="@id/basic_controller_left_pane_center"
                 android:layout_toLeftOf="@id/basic_controller_left_pane_center"
-                android:background="@drawable/btn_circle"
+                android:background="@drawable/btn_circle_holo_blue"
                 android:fontFamily="sans-serif-light"
                 android:text="@string/basic_controller_btn_a"
                 android:textColor="@color/secondary"
@@ -145,7 +145,7 @@
                 android:layout_height="@dimen/btn_circle_size"
                 android:layout_above="@id/basic_controller_left_pane_center"
                 android:layout_toRightOf="@id/basic_controller_left_pane_center"
-                android:background="@drawable/btn_circle"
+                android:background="@drawable/btn_circle_holo_green"
                 android:fontFamily="sans-serif-light"
                 android:text="@string/basic_controller_btn_b"
                 android:textColor="@color/secondary"

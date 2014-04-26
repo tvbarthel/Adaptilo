@@ -4,7 +4,16 @@
     <color name="primary">#FF457D97</color>
     <color name="secondary">#FFF2F2F2</color>
 
+    <color name="gray_dark">#ff808080</color>
+    <color name="gray_light">#ffc4c4c4</color>
+
     <!-- Button -->
     <color name="btn_primary">#ff3b677c</color>
     <color name="btn_secondary">#FF457D97</color>
+    <color name="btn_circle_primary">@color/gray_dark</color>
+    <color name="btn_circle_secondary">@color/gray_light</color>
+    <color name="btn_rect_primary">@color/holo_red_light</color>
+    <color name="btn_rect_secondary">@color/gray_light</color>
+    <color name="btn_arrow_primary">@color/gray_dark</color>
+    <color name="btn_arrow_secondary">@color/gray_light</color>
 </resources>
