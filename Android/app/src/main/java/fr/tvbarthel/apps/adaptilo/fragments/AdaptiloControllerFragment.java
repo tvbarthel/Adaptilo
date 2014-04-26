@@ -7,11 +7,11 @@ import fr.tvbarthel.apps.adaptilo.models.Message;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} that represents a controller.
- *
+ * <p/>
  * The controller can send messages to a callback and can receive messages.
  */
-abstract public class ControllerFragment extends Fragment {
-    private Callback mCallback;
+abstract public class AdaptiloControllerFragment extends Fragment {
+    protected Callback mCallback;
 
     @Override
     public void onAttach(Activity activity) {
@@ -20,7 +20,7 @@ abstract public class ControllerFragment extends Fragment {
             mCallback = (Callback) activity;
         } else {
             throw new ClassCastException(activity.toString()
-                    + " must implemenet ControllerFragment.Callback");
+                    + " must implement ControllerFragment.Callback");
         }
     }
 

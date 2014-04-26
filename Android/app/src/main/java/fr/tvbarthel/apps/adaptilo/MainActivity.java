@@ -3,12 +3,12 @@ package fr.tvbarthel.apps.adaptilo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
+import fr.tvbarthel.apps.adaptilo.fragments.AdaptiloControllerFragment;
 import fr.tvbarthel.apps.adaptilo.fragments.BasicControllerFragment;
-import fr.tvbarthel.apps.adaptilo.fragments.ControllerFragment;
 import fr.tvbarthel.apps.adaptilo.models.Message;
 
 
-public class MainActivity extends FragmentActivity implements ControllerFragment.Callback {
+public class MainActivity extends FragmentActivity implements AdaptiloControllerFragment.Callback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

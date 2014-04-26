@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import fr.tvbarthel.apps.adaptilo.R;
 import fr.tvbarthel.apps.adaptilo.models.Message;
 
-public class BasicControllerFragment extends ControllerFragment {
+public class BasicControllerFragment extends AdaptiloControllerFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
