@@ -9,42 +9,42 @@
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1.5" >
+        android:layout_weight="1.5">
 
         <View
             android:id="@+id/center1"
+            android:layout_width="@dimen/btn_arrow_center_square_size"
+            android:layout_height="@dimen/btn_arrow_center_square_size"
             android:layout_centerInParent="true"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:background="@color/primary_dark"/>
+            android:background="@color/primary_dark" />
 
         <Button
-            android:layout_width="50dp"
-            android:layout_height="60dp"
+            android:layout_width="@dimen/btn_arrow_thickness"
+            android:layout_height="@dimen/btn_arrow_length"
             android:layout_above="@+id/center1"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/button_arrow_up"/>
+            android:background="@drawable/button_arrow_up" />
 
         <Button
-            android:layout_width="50dp"
-            android:layout_height="60dp"
+            android:layout_width="@dimen/btn_arrow_thickness"
+            android:layout_height="@dimen/btn_arrow_length"
             android:layout_below="@+id/center1"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/button_arrow_down"/>
+            android:background="@drawable/button_arrow_down" />
 
         <Button
-            android:layout_width="60dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/btn_arrow_length"
+            android:layout_height="@dimen/btn_arrow_thickness"
+            android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/center1"
-            android:layout_centerVertical="true"
-            android:background="@drawable/button_arrow_left"/>
+            android:background="@drawable/button_arrow_left" />
 
         <Button
-            android:layout_width="60dp"
-            android:layout_height="50dp"
-            android:layout_toRightOf="@+id/center1"
+            android:layout_width="@dimen/btn_arrow_length"
+            android:layout_height="@dimen/btn_arrow_thickness"
             android:layout_centerVertical="true"
-            android:background="@drawable/button_arrow_right"/>
+            android:layout_toRightOf="@+id/center1"
+            android:background="@drawable/button_arrow_right" />
 
     </RelativeLayout>
 
@@ -76,8 +76,8 @@
 
         <Button
             android:id="@+id/a"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="@dimen/btn_circle_size"
+            android:layout_height="@dimen/btn_circle_size"
             android:layout_below="@id/center"
             android:layout_toLeftOf="@id/center"
             android:background="@drawable/button_circle"
@@ -87,8 +87,8 @@
 
         <Button
             android:id="@+id/b"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="@dimen/btn_circle_size"
+            android:layout_height="@dimen/btn_circle_size"
             android:layout_above="@id/center"
             android:layout_toRightOf="@id/center"
             android:background="@drawable/button_circle"
