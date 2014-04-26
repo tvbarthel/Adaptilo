@@ -11,4 +11,6 @@
     <color name="btn_circle_secondary">#ffc4c4c4</color>
     <color name="btn_rect_primary">#ff808080</color>
     <color name="btn_rect_secondary">#ffc4c4c4</color>
+    <color name="btn_arrow_primary">#ff808080</color>
+    <color name="btn_arrow_secondary">#ffc4c4c4</color>
 </resources>

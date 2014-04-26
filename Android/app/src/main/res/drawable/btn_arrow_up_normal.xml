@@ -4,7 +4,7 @@
 
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="@color/btn_secondary" />
+            <solid android:color="@color/btn_arrow_secondary" />
             <size
                 android:width="40dp"
                 android:height="70dp" />
@@ -17,7 +17,7 @@
         android:right="@dimen/btn_padding_normal"
         android:top="@dimen/btn_padding_normal">
         <shape android:shape="rectangle">
-            <solid android:color="@color/btn_primary" />
+            <solid android:color="@color/btn_arrow_primary" />
             <size
                 android:width="40dp"
                 android:height="70dp" />
