@@ -9,7 +9,7 @@ import android.widget.Button;
 import fr.tvbarthel.apps.adaptilo.R;
 
 /**
- * A simple {@link android.widget.Button} that change it's text size on pressed.
+ * A simple {@link android.widget.Button} that changes it's text size on pressed.
  */
 public class TextPressedButton extends Button {
 
