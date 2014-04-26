@@ -6,14 +6,16 @@
     <!-- Button -->
     <dimen name="btn_padding_normal">4dp</dimen>
     <dimen name="btn_padding_pressed">8dp</dimen>
-    <dimen name="btn_arrow_thickness">50dp</dimen>
-    <dimen name="btn_arrow_length">60dp</dimen>
-    <dimen name="btn_arrow_center_square_size">42dp</dimen>
     <dimen name="btn_rect_width">80dp</dimen>
     <dimen name="btn_rect_height">34dp</dimen>
     <dimen name="btn_rect_text_size">14sp</dimen>
     <dimen name="btn_rect_text_size_pressed">10sp</dimen>
     <dimen name="btn_rect_margin">32dp</dimen>
+
+    <!-- Arrow Button -->
+    <dimen name="btn_arrow_thickness">55dp</dimen>
+    <dimen name="btn_arrow_length">60dp</dimen>
+    <dimen name="btn_arrow_center_square_size">47dp</dimen>
 
     <!-- Circle Button -->
     <dimen name="btn_circle_size">75dp</dimen>
