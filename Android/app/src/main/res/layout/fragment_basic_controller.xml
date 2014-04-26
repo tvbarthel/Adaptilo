@@ -24,6 +24,37 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/basic_controller_btn_start"
+            android:layout_width="@dimen/btn_rect_width"
+            android:layout_height="@dimen/btn_rect_height"
+            android:layout_marginRight="@dimen/btn_rect_margin"
+            android:background="@drawable/button_rect"
+            android:fontFamily="sans-serif-light"
+            android:padding="@dimen/btn_padding_pressed"
+            android:text="@string/basic_controller_btn_start"
+            android:textColor="@color/secondary"
+            android:textSize="@dimen/btn_rect_text_size" />
+
+        <Button
+            android:id="@+id/basic_controller_btn_select"
+            android:layout_width="@dimen/btn_rect_width"
+            android:layout_height="@dimen/btn_rect_height"
+            android:layout_marginRight="@dimen/btn_rect_margin"
+            android:background="@drawable/button_rect"
+            android:fontFamily="sans-serif-light"
+            android:padding="@dimen/btn_padding_pressed"
+            android:text="@string/basic_controller_btn_select"
+            android:textColor="@color/secondary"
+            android:textSize="@dimen/btn_rect_text_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:baselineAligned="false"
         android:orientation="horizontal">

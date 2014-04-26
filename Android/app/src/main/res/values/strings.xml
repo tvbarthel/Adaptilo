@@ -8,5 +8,7 @@
     <!-- Basic Controller Fragment -->
     <string name="basic_controller_btn_a">A</string>
     <string name="basic_controller_btn_b">B</string>
+    <string name="basic_controller_btn_start">start</string>
+    <string name="basic_controller_btn_select">select</string>
 
 </resources>
