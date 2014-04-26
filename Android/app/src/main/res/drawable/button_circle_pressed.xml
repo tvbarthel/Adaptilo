@@ -11,10 +11,10 @@
     </item>
 
     <item
-        android:bottom="7dp"
-        android:left="7dp"
-        android:right="7dp"
-        android:top="7dp">
+        android:bottom="@dimen/btn_padding_pressed"
+        android:left="@dimen/btn_padding_pressed"
+        android:right="@dimen/btn_padding_pressed"
+        android:top="@dimen/btn_padding_pressed">
         <shape android:shape="oval">
             <solid android:color="@color/primary_dark" />
             <size

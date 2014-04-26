@@ -1,27 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item>
         <shape android:shape="rectangle">
             <solid android:color="@color/primary" />
             <size
-                android:width="40dp"
-                android:height="70dp" />
+                android:width="70dp"
+                android:height="40dp" />
         </shape>
     </item>
 
 
     <item
-        android:left="@dimen/btn_padding_normal"
-        android:right="@dimen/btn_padding_normal"
-        android:top="@dimen/btn_padding_normal">
+        android:bottom="@dimen/btn_padding_pressed"
+        android:right="@dimen/btn_padding_pressed"
+        android:top="@dimen/btn_padding_pressed">
         <shape android:shape="rectangle">
             <solid android:color="@color/primary_dark" />
             <size
-                android:width="40dp"
-                android:height="70dp" />
+                android:width="70dp"
+                android:height="40dp" />
         </shape>
     </item>
-
 </layer-list>
