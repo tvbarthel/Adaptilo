@@ -1,7 +1,5 @@
 package fr.tvbarthel.apps.adaptilo.engine;
 
-import android.app.Activity;
-
 import java.net.URI;
 
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
@@ -36,18 +34,11 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
     /**
      * Create a new AdaptiloEngine to process userInput.
      *
-     * @param activity     holding activity, must implement
-     *                     {@link fr.tvbarthel.apps.adaptilo.engine.AdaptiloEngine.Callbacks}
+     * @param callbacks    the {@link fr.tvbarthel.apps.adaptilo.engine.AdaptiloEngine.Callbacks} to be used.
      * @param engineConfig should come from a QrCode
      */
-    AdaptiloEngine(Activity activity, EngineConfig engineConfig) {
-
-        if (!(activity instanceof Callbacks)) {
-            throw new IllegalStateException("Activity which hold engine must implements its Callbacks");
-        }
-
-        mCallbacks = (Callbacks) activity;
-
+    AdaptiloEngine(Callbacks callbacks, EngineConfig engineConfig) {
+        mCallbacks = callbacks;
         mEngineConfig = engineConfig;
         mAdaptiloClient = new AdaptiloClient(URI.create(mEngineConfig.getServerUri()), this);
         mReadyToCommunicate = false;
