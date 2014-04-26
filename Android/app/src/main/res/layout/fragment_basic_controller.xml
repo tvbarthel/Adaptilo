@@ -4,54 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/secondary"
-    android:orientation="horizontal">
-
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1.5">
-
-        <View
-            android:id="@+id/center1"
-            android:layout_width="@dimen/btn_arrow_center_square_size"
-            android:layout_height="@dimen/btn_arrow_center_square_size"
-            android:layout_centerInParent="true"
-            android:background="@color/primary_dark" />
-
-        <Button
-            android:layout_width="@dimen/btn_arrow_thickness"
-            android:layout_height="@dimen/btn_arrow_length"
-            android:layout_above="@+id/center1"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/button_arrow_up" />
-
-        <Button
-            android:layout_width="@dimen/btn_arrow_thickness"
-            android:layout_height="@dimen/btn_arrow_length"
-            android:layout_below="@+id/center1"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/button_arrow_down" />
-
-        <Button
-            android:layout_width="@dimen/btn_arrow_length"
-            android:layout_height="@dimen/btn_arrow_thickness"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/center1"
-            android:background="@drawable/button_arrow_left" />
-
-        <Button
-            android:layout_width="@dimen/btn_arrow_length"
-            android:layout_height="@dimen/btn_arrow_thickness"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/center1"
-            android:background="@drawable/button_arrow_right" />
-
-    </RelativeLayout>
+    android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
 
         <TextView
             android:id="@+id/textView"
@@ -63,39 +21,96 @@
             android:textColor="@color/primary" />
     </LinearLayout>
 
-    <RelativeLayout
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1.5">
+        android:baselineAligned="false"
+        android:orientation="horizontal">
 
-        <View
-            android:id="@+id/center"
+        <RelativeLayout
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_centerInParent="true" />
+            android:layout_height="match_parent"
+            android:layout_weight="1.5">
 
-        <Button
-            android:id="@+id/a"
-            android:layout_width="@dimen/btn_circle_size"
-            android:layout_height="@dimen/btn_circle_size"
-            android:layout_below="@id/center"
-            android:layout_toLeftOf="@id/center"
-            android:background="@drawable/button_circle"
-            android:fontFamily="sans-serif-light"
-            android:text="A"
-            android:textColor="@color/secondary" />
+            <View
+                android:id="@+id/center1"
+                android:layout_width="@dimen/btn_arrow_center_square_size"
+                android:layout_height="@dimen/btn_arrow_center_square_size"
+                android:layout_centerInParent="true"
+                android:background="@color/primary_dark" />
 
-        <Button
-            android:id="@+id/b"
-            android:layout_width="@dimen/btn_circle_size"
-            android:layout_height="@dimen/btn_circle_size"
-            android:layout_above="@id/center"
-            android:layout_toRightOf="@id/center"
-            android:background="@drawable/button_circle"
-            android:fontFamily="sans-serif-light"
-            android:text="B"
-            android:textColor="@color/secondary" />
-    </RelativeLayout>
+            <Button
+                android:layout_width="@dimen/btn_arrow_thickness"
+                android:layout_height="@dimen/btn_arrow_length"
+                android:layout_above="@+id/center1"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/button_arrow_up" />
 
+            <Button
+                android:layout_width="@dimen/btn_arrow_thickness"
+                android:layout_height="@dimen/btn_arrow_length"
+                android:layout_below="@+id/center1"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/button_arrow_down" />
+
+            <Button
+                android:layout_width="@dimen/btn_arrow_length"
+                android:layout_height="@dimen/btn_arrow_thickness"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/center1"
+                android:background="@drawable/button_arrow_left" />
+
+            <Button
+                android:layout_width="@dimen/btn_arrow_length"
+                android:layout_height="@dimen/btn_arrow_thickness"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/center1"
+                android:background="@drawable/button_arrow_right" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.5">
+
+            <View
+                android:id="@+id/center"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_centerInParent="true" />
+
+            <Button
+                android:id="@+id/a"
+                android:layout_width="@dimen/btn_circle_size"
+                android:layout_height="@dimen/btn_circle_size"
+                android:layout_below="@id/center"
+                android:layout_toLeftOf="@id/center"
+                android:background="@drawable/button_circle"
+                android:fontFamily="sans-serif-light"
+                android:text="A"
+                android:textColor="@color/secondary" />
+
+            <Button
+                android:id="@+id/b"
+                android:layout_width="@dimen/btn_circle_size"
+                android:layout_height="@dimen/btn_circle_size"
+                android:layout_above="@id/center"
+                android:layout_toRightOf="@id/center"
+                android:background="@drawable/button_circle"
+                android:fontFamily="sans-serif-light"
+                android:text="B"
+                android:textColor="@color/secondary" />
+        </RelativeLayout>
+
+    </LinearLayout>
 
 </LinearLayout>
