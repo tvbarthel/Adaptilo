@@ -13,7 +13,13 @@ import fr.tvbarthel.apps.adaptilo.R;
  */
 public class TextPressedButton extends Button {
 
+    /**
+     * The text size in px when the button is not pressed.
+     */
     protected float mTextSizeInPx;
+    /**
+     * The text size in px when the button is pressed.
+     */
     protected float mTextSizePressedInPx;
 
     public TextPressedButton(Context context) {
@@ -42,7 +48,7 @@ public class TextPressedButton extends Button {
     @Override
     public void setPressed(boolean pressed) {
         super.setPressed(pressed);
-        if(pressed) {
+        if (pressed) {
             setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSizePressedInPx);
         } else {
             setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSizeInPx);
