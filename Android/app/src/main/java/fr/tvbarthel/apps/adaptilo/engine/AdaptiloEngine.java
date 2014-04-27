@@ -1,5 +1,12 @@
 package fr.tvbarthel.apps.adaptilo.engine;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.util.Log;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
 import java.net.URI;
 
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
@@ -10,6 +17,11 @@ import fr.tvbarthel.apps.adaptilo.network.AdaptiloClient;
  * Adaptilo engine used to handle interaction between the controller and the server
  */
 public class AdaptiloEngine implements AdaptiloClient.Callbacks {
+
+    /**
+     * LogCat
+     */
+    private static final String TAG = AdaptiloEngine.class.getName();
 
     /**
      * Engine config from QrCode to reach the right server in the right room with the wished role
@@ -34,13 +46,10 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
     /**
      * Create a new AdaptiloEngine to process userInput.
      *
-     * @param callbacks    the {@link fr.tvbarthel.apps.adaptilo.engine.AdaptiloEngine.Callbacks} to be used.
-     * @param engineConfig should come from a QrCode
+     * @param callbacks the {@link fr.tvbarthel.apps.adaptilo.engine.AdaptiloEngine.Callbacks} to be used.
      */
-    AdaptiloEngine(Callbacks callbacks, EngineConfig engineConfig) {
+    public AdaptiloEngine(Callbacks callbacks) {
         mCallbacks = callbacks;
-        mEngineConfig = engineConfig;
-        mAdaptiloClient = new AdaptiloClient(URI.create(mEngineConfig.getServerUri()), this);
         mReadyToCommunicate = false;
     }
 
@@ -55,7 +64,9 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
      * processing that occurs at these transitions to a minimum
      */
     public void start() {
-        mAdaptiloClient.connect();
+        if (mEngineConfig != null && mAdaptiloClient != null) {
+            mAdaptiloClient.connect();
+        }
     }
 
     /**
@@ -81,6 +92,43 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
         if (mReadyToCommunicate) {
             mAdaptiloClient.send(message);
         }
+    }
+
+    /**
+     * Load an engine config. Should be retrieved from a QrCode.
+     *
+     * @param config
+     */
+    public void setEngineConfig(EngineConfig config) {
+        mEngineConfig = config;
+        mAdaptiloClient = new AdaptiloClient(URI.create(mEngineConfig.getServerUri()), this);
+    }
+
+    /**
+     * start QrCode scanner to load a game config
+     */
+    public void loadGame(Activity activity) {
+        IntentIntegrator.initiateScan(activity);
+    }
+
+    /**
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     * @return
+     */
+    public EngineConfig parseLoadGameResult(int requestCode, int resultCode, Intent data) {
+        EngineConfig config = null;
+
+        IntentResult scanResult =
+                IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (scanResult != null && resultCode == Activity.RESULT_OK) {
+            //TODO check if QrCode content is an engine config
+            Log.d(TAG, "game config retrieved : " + scanResult.getContents());
+            config = new EngineConfig();
+        }
+
+        return config;
     }
 
     @Override

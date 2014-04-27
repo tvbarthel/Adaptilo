@@ -11,28 +11,41 @@ import fr.tvbarthel.apps.adaptilo.models.Message;
  * The controller can send messages to a callback and can receive messages.
  */
 abstract public class AdaptiloControllerFragment extends Fragment {
-    protected Callback mCallback;
+    protected Callbacks mCallbacks;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        if (activity instanceof Callback) {
-            mCallback = (Callback) activity;
+        if (activity instanceof Callbacks) {
+            mCallbacks = (Callbacks) activity;
         } else {
             throw new ClassCastException(activity.toString()
-                    + " must implement ControllerFragment.Callback");
+                    + " must implement ControllerFragment.Callbacks");
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mCallback = null;
+        mCallbacks = null;
     }
 
     abstract public void onMessage(Message messageToHandle);
 
-    public static interface Callback {
-        void sendMessage(Message messageToSend);
+    /**
+     * Callbacks interfaces for basic controller action
+     */
+    public static interface Callbacks {
+        /**
+         * allow controller to send user Input
+         *
+         * @param messageToSend
+         */
+        public void onSendMessageRequest(Message messageToSend);
+
+        /**
+         * user input to load a game into the controller
+         */
+        public void onLoadGameRequest();
     }
 }
