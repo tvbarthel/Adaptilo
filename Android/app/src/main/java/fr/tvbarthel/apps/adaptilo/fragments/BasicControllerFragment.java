@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import fr.tvbarthel.apps.adaptilo.R;
 import fr.tvbarthel.apps.adaptilo.models.Message;
@@ -20,6 +21,7 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
         ((Button) fragmentView.findViewById(R.id.basic_controller_btn_select)).setTypeface(minecraftiaTypeFace);
         ((Button) fragmentView.findViewById(R.id.basic_controller_btn_a)).setTypeface(minecraftiaTypeFace);
         ((Button) fragmentView.findViewById(R.id.basic_controller_btn_b)).setTypeface(minecraftiaTypeFace);
+        ((TextView) fragmentView.findViewById(R.id.basic_controller_game_slot_text)).setTypeface(minecraftiaTypeFace);
         return fragmentView;
     }
 

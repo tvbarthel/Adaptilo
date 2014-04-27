@@ -4,28 +4,33 @@
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/secondary"
+    android:background="@drawable/basic_controller_background"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/basic_controller_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center">
+    <FrameLayout
+        android:id="@+id/basic_controller_game_slot"
+        android:layout_width="@dimen/basic_controller_game_slot_width"
+        android:layout_height="@dimen/basic_controller_game_slot_height"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/basic_controller_game_slot"
+        android:clickable="true"
+        android:padding="@dimen/default_padding">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/basic_controller_game_slot_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-light"
-            android:text="Basic Controller"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/primary" />
-    </LinearLayout>
+            android:layout_gravity="center"
+            android:text="@string/basic_controller_game_slot_no_game"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/gray_light" />
+    </FrameLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -35,7 +40,6 @@
             android:layout_height="@dimen/btn_rect_height"
             android:layout_marginRight="@dimen/btn_rect_margin"
             android:background="@drawable/btn_rect"
-            android:fontFamily="sans-serif-light"
             android:text="@string/basic_controller_btn_start"
             android:textColor="@color/secondary"
             android:textSize="@dimen/btn_rect_text_size"
@@ -47,7 +51,6 @@
             android:layout_height="@dimen/btn_rect_height"
             android:layout_marginLeft="@dimen/btn_rect_margin"
             android:background="@drawable/btn_rect"
-            android:fontFamily="sans-serif-light"
             android:text="@string/basic_controller_btn_select"
             android:textColor="@color/secondary"
             android:textSize="@dimen/btn_rect_text_size"
@@ -113,7 +116,6 @@
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
-
         <RelativeLayout
             android:id="@+id/basic_controller_left_pane"
             android:layout_width="0dp"
@@ -133,7 +135,6 @@
                 android:layout_below="@id/basic_controller_left_pane_center"
                 android:layout_toLeftOf="@id/basic_controller_left_pane_center"
                 android:background="@drawable/btn_circle_holo_blue"
-                android:fontFamily="sans-serif-light"
                 android:text="@string/basic_controller_btn_a"
                 android:textColor="@color/secondary"
                 android:textSize="@dimen/btn_circle_text_size"
@@ -146,7 +147,6 @@
                 android:layout_above="@id/basic_controller_left_pane_center"
                 android:layout_toRightOf="@id/basic_controller_left_pane_center"
                 android:background="@drawable/btn_circle_holo_green"
-                android:fontFamily="sans-serif-light"
                 android:text="@string/basic_controller_btn_b"
                 android:textColor="@color/secondary"
                 android:textSize="@dimen/btn_circle_text_size"
