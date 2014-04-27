@@ -8,7 +8,7 @@ import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
 /**
  * helper which verify if scanned info is well formed
  */
-public class QrCodeHelper {
+public final class QrCodeHelper {
 
     /**
      * Logcat
@@ -36,7 +36,7 @@ public class QrCodeHelper {
      * @param content info from QrCode
      * @return null if content not well formed
      */
-    public EngineConfig verify(String content) {
+    public static EngineConfig verify(String content) {
         EngineConfig config = new EngineConfig();
 
         Uri scannedUri = Uri.parse(content);
@@ -83,5 +83,12 @@ public class QrCodeHelper {
         config.setGameRoom(room);
         config.setServerPort(port);
         return config;
+    }
+
+    /**
+     * helper not instantiable
+     */
+    private QrCodeHelper() {
+
     }
 }

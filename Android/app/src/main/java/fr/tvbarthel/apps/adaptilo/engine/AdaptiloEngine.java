@@ -125,8 +125,7 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
         IntentResult scanResult =
                 IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (scanResult != null && resultCode == Activity.RESULT_OK) {
-            QrCodeHelper verifier = new QrCodeHelper();
-            config = verifier.verify(scanResult.getContents());
+            config = QrCodeHelper.verify(scanResult.getContents());
             if (config != null) {
                 Log.d(TAG, "game config retrieved : " + config.toString());
             } else {
