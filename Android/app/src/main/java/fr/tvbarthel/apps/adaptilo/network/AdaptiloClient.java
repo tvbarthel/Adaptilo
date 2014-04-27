@@ -3,6 +3,7 @@ package fr.tvbarthel.apps.adaptilo.network;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
@@ -11,6 +12,7 @@ import org.java_websocket.handshake.ServerHandshake;
 import java.net.URI;
 import java.util.Map;
 
+import fr.tvbarthel.apps.adaptilo.helpers.MessageDeserializerHelper;
 import fr.tvbarthel.apps.adaptilo.models.Message;
 import fr.tvbarthel.apps.adaptilo.models.NetworkMessage;
 
@@ -43,19 +45,19 @@ public class AdaptiloClient extends WebSocketClient {
     public AdaptiloClient(URI serverURI, Callbacks callbacks) {
         super(serverURI);
         mCallbacks = callbacks;
-        mGsonParser = new Gson();
+        mGsonParser = initGsonParser();
     }
 
     public AdaptiloClient(URI serverUri, Draft draft, Callbacks callbacks) {
         super(serverUri, draft);
         mCallbacks = callbacks;
-        mGsonParser = new Gson();
+        mGsonParser = initGsonParser();
     }
 
     public AdaptiloClient(URI serverUri, Draft draft, Map<String, String> headers, int connecttimeout, Callbacks callbacks) {
         super(serverUri, draft, headers, connecttimeout);
         mCallbacks = callbacks;
-        mGsonParser = new Gson();
+        mGsonParser = initGsonParser();
     }
 
     /**
@@ -68,6 +70,18 @@ public class AdaptiloClient extends WebSocketClient {
         this.send(mGsonParser.toJson(networkMessage));
     }
 
+    /**
+     * initialize gson parser with right adapter for custom object
+     *
+     * @return gson parser
+     */
+    private Gson initGsonParser() {
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(Message.class, new MessageDeserializerHelper());
+
+        return builder.create();
+    }
+
     @Override
     public void onOpen(ServerHandshake handshakedata) {
         Log.d(TAG, "onOpen");
@@ -77,14 +91,13 @@ public class AdaptiloClient extends WebSocketClient {
     @Override
     public void onMessage(String message) {
         Log.d(TAG, "onMessage : " + message);
-        final Message jsonMessage = mGsonParser.fromJson(message, Message.class);
-        switch (jsonMessage.getType()) {
+        final Message messageReceived = mGsonParser.fromJson(message, Message.class);
+        switch (messageReceived.getType()) {
             case CONNECTION_COMPLETED:
-                //TODO retrieve connection id
-                mConnectionId = 123456789;
+                mConnectionId = (Integer) messageReceived.getContent();
                 break;
             default:
-                mCallbacks.onMessage(jsonMessage);
+                mCallbacks.onMessage(messageReceived);
                 break;
         }
     }
