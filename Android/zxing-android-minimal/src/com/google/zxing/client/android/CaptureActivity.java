@@ -33,6 +33,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -105,6 +106,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     private InactivityTimer inactivityTimer;
     private BeepManager beepManager;
     private AmbientLightManager ambientLightManager;
+    private Typeface mMinecraftiaTypeface;
 
     ViewfinderView getViewfinderView() {
         return viewfinderView;
@@ -133,6 +135,8 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
         PreferenceManager.setDefaultValues(this, R.xml.zxing_preferences, false);
 
+        mMinecraftiaTypeface = Typeface.createFromAsset(getAssets(), "fonts/Minecraftia.ttf");
+
         showHelpOnFirstLaunch();
     }
 
@@ -151,6 +155,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
         resultView = findViewById(R.id.result_view);
         statusView = (TextView) findViewById(R.id.status_view);
+        statusView.setTypeface(mMinecraftiaTypeface);
 
         handler = null;
         lastResult = null;
