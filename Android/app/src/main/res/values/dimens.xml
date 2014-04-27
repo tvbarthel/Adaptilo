@@ -19,7 +19,7 @@
 
     <!-- Circle Button -->
     <dimen name="btn_circle_size">75dp</dimen>
-    <dimen name="btn_circle_text_size">18sp</dimen>
+    <dimen name="btn_circle_text_size">20sp</dimen>
     <dimen name="btn_circle_text_size_pressed">14sp</dimen>
     <dimen name="btn_circle_padding_normal">8dp</dimen>
     <dimen name="btn_circle_padding_pressed">12dp</dimen>
