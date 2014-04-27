@@ -223,7 +223,6 @@
         android:layout_gravity="bottom|center_horizontal"
         android:background="@color/transparent"
         android:text="@string/msg_default_status"
-        android:textColor="@color/status_text"
-        android:padding="@dimen/standard_padding"/>
+        android:textColor="@color/status_text" />
 
 </FrameLayout>
