@@ -2,6 +2,7 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="default_padding">8dp</dimen>
 
     <!-- Button -->
     <dimen name="btn_padding_normal">4dp</dimen>
@@ -10,7 +11,7 @@
     <dimen name="btn_rect_height">34dp</dimen>
     <dimen name="btn_rect_text_size">14sp</dimen>
     <dimen name="btn_rect_text_size_pressed">10sp</dimen>
-    <dimen name="btn_rect_margin">32dp</dimen>
+    <dimen name="btn_rect_margin">16dp</dimen>
 
     <!-- Arrow Button -->
     <dimen name="btn_arrow_thickness">55dp</dimen>
@@ -19,9 +20,16 @@
 
     <!-- Circle Button -->
     <dimen name="btn_circle_size">75dp</dimen>
-    <dimen name="btn_circle_text_size">18sp</dimen>
+    <dimen name="btn_circle_text_size">20sp</dimen>
     <dimen name="btn_circle_text_size_pressed">14sp</dimen>
     <dimen name="btn_circle_padding_normal">8dp</dimen>
     <dimen name="btn_circle_padding_pressed">12dp</dimen>
+
+    <!-- Basic Controller Game Slot -->
+    <dimen name="basic_controller_game_slot_width">240dp</dimen>
+    <dimen name="basic_controller_game_slot_height">65dp</dimen>
+    <dimen name="basic_controller_game_slot_padding_left">8dp</dimen>
+    <dimen name="basic_controller_game_slot_padding_right">8dp</dimen>
+    <dimen name="basic_controller_game_slot_padding_bottom">6dp</dimen>
 
 </resources>
