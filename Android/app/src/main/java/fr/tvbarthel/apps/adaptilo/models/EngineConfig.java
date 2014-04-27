@@ -14,7 +14,7 @@ public class EngineConfig {
     /**
      * WebSocket server port
      */
-    private String mServerPort;
+    private int mServerPort;
 
     /**
      * Game room corresponding to the scanned instance
@@ -25,6 +25,10 @@ public class EngineConfig {
      * User role in the game
      */
     private String mUserRole;
+
+    public String toString() {
+        return "serverUri : " + mServerUri + "| port : " + mServerPort + "| room : " + mGameRoom + "| role : " + mUserRole;
+    }
 
     /**
      * GETTER and SETTER
@@ -38,11 +42,11 @@ public class EngineConfig {
         this.mServerUri = mServerUri;
     }
 
-    public String getServerPort() {
+    public int getServerPort() {
         return mServerPort;
     }
 
-    public void setServerPort(String mServerPort) {
+    public void setServerPort(int mServerPort) {
         this.mServerPort = mServerPort;
     }
 
