@@ -1,7 +1,15 @@
 package fr.tvbarthel.apps.adaptilo.models;
 
+import com.google.gson.annotations.SerializedName;
+
+import fr.tvbarthel.apps.adaptilo.helpers.MessageDeserializerHelper;
+
 public class Message {
+
+    @SerializedName(MessageDeserializerHelper.NODE_TYPE)
     private MessageType mType;
+
+    @SerializedName(MessageDeserializerHelper.NODE_CONTENT)
     private Object mContent;
 
     public Message() {

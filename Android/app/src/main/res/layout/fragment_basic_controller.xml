@@ -27,8 +27,7 @@
             android:text="@string/basic_controller_game_slot_fake_name"
             android:textColor="@color/basic_controller_game_slot_text"
             android:textSize="@dimen/basic_controller_game_slot_text_size"
-            android:visibility="gone"/>
-
+            android:visibility="gone" />
 
     </FrameLayout>
 
@@ -41,26 +40,27 @@
         android:orientation="horizontal">
 
         <fr.tvbarthel.apps.adaptilo.ui.TextPressedButton
-            android:id="@+id/basic_controller_btn_start"
+            android:id="@+id/basic_controller_btn_select"
             android:layout_width="@dimen/btn_rect_width"
             android:layout_height="@dimen/btn_rect_height"
             android:layout_marginRight="@dimen/btn_rect_margin"
+            android:background="@drawable/btn_rect"
+            android:text="@string/basic_controller_btn_select"
+            android:textColor="@color/secondary"
+            android:textSize="@dimen/btn_rect_text_size"
+            custom:textSizePressed="@dimen/btn_rect_text_size_pressed" />
+
+        <fr.tvbarthel.apps.adaptilo.ui.TextPressedButton
+            android:id="@+id/basic_controller_btn_start"
+            android:layout_width="@dimen/btn_rect_width"
+            android:layout_height="@dimen/btn_rect_height"
+            android:layout_marginLeft="@dimen/btn_rect_margin"
             android:background="@drawable/btn_rect"
             android:text="@string/basic_controller_btn_start"
             android:textColor="@color/secondary"
             android:textSize="@dimen/btn_rect_text_size"
             custom:textSizePressed="@dimen/btn_rect_text_size_pressed" />
 
-        <fr.tvbarthel.apps.adaptilo.ui.TextPressedButton
-            android:id="@+id/basic_controller_btn_select"
-            android:layout_width="@dimen/btn_rect_width"
-            android:layout_height="@dimen/btn_rect_height"
-            android:layout_marginLeft="@dimen/btn_rect_margin"
-            android:background="@drawable/btn_rect"
-            android:text="@string/basic_controller_btn_select"
-            android:textColor="@color/secondary"
-            android:textSize="@dimen/btn_rect_text_size"
-            custom:textSizePressed="@dimen/btn_rect_text_size_pressed" />
     </LinearLayout>
 
     <LinearLayout
@@ -138,9 +138,10 @@
                 android:id="@+id/basic_controller_btn_a"
                 android:layout_width="@dimen/btn_circle_size"
                 android:layout_height="@dimen/btn_circle_size"
-                android:layout_below="@id/basic_controller_left_pane_center"
-                android:layout_toLeftOf="@id/basic_controller_left_pane_center"
-                android:background="@drawable/btn_circle_holo_blue"
+
+                android:layout_above="@id/basic_controller_left_pane_center"
+                android:layout_toRightOf="@id/basic_controller_left_pane_center"
+                android:background="@drawable/btn_circle_holo_green"
                 android:text="@string/basic_controller_btn_a"
                 android:textColor="@color/secondary"
                 android:textSize="@dimen/btn_circle_text_size"
@@ -150,9 +151,9 @@
                 android:id="@+id/basic_controller_btn_b"
                 android:layout_width="@dimen/btn_circle_size"
                 android:layout_height="@dimen/btn_circle_size"
-                android:layout_above="@id/basic_controller_left_pane_center"
-                android:layout_toRightOf="@id/basic_controller_left_pane_center"
-                android:background="@drawable/btn_circle_holo_green"
+                android:layout_below="@id/basic_controller_left_pane_center"
+                android:layout_toLeftOf="@id/basic_controller_left_pane_center"
+                android:background="@drawable/btn_circle_holo_blue"
                 android:text="@string/basic_controller_btn_b"
                 android:textColor="@color/secondary"
                 android:textSize="@dimen/btn_circle_text_size"
