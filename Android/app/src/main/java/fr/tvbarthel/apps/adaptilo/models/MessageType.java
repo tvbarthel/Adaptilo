@@ -2,6 +2,14 @@ package fr.tvbarthel.apps.adaptilo.models;
 
 public enum MessageType {
 
-    REPLACE_CONTROLLER
+    /**
+     * send by the server to replace the controller
+     */
+    REPLACE_CONTROLLER,
+
+    /**
+     * send by the server to communicate client id
+     */
+    CONNECTION_COMPLETED
 
 }
