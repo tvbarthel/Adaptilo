@@ -45,7 +45,7 @@
             android:id="@+id/basic_controller_btn_select"
             android:layout_width="@dimen/btn_rect_width"
             android:layout_height="@dimen/btn_rect_height"
-            android:layout_marginRight="@dimen/btn_rect_margin"
+            android:layout_marginLeft="@dimen/btn_rect_margin"
             android:background="@drawable/btn_rect"
             android:fontFamily="sans-serif-light"
             android:text="@string/basic_controller_btn_select"
