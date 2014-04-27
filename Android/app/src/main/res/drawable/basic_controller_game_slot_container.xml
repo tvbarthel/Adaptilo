@@ -3,10 +3,10 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="@color/gray_light" />
+            <solid android:color="@color/gray_light"/>
             <size
                 android:width="200dp"
-                android:height="40dp" />
+                android:height="40dp"/>
         </shape>
     </item>
     <item
@@ -14,10 +14,10 @@
         android:left="@dimen/basic_controller_game_slot_container_padding_left"
         android:right="@dimen/basic_controller_game_slot_container_padding_right">
         <shape android:shape="rectangle">
-            <solid android:color="@android:color/white" />
+            <solid android:color="@color/basic_controller_game_slot_primary"/>
             <size
                 android:width="200dp"
-                android:height="40dp" />
+                android:height="40dp"/>
         </shape>
     </item>
 </layer-list>

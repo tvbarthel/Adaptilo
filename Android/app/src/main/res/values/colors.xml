@@ -19,7 +19,7 @@
 
 
     <!-- Basic Controller Game Slot -->
-    <color name="basic_controller_game_slot_primary">#ff424242</color>
-    <color name="basic_controller_game_slot_secondary">#ff5f5f5f</color>
+    <color name="basic_controller_game_slot_primary">#ff5f5f5f</color>
+    <color name="basic_controller_game_slot_secondary">#ffc4c4c4</color>
     <color name="basic_controller_game_slot_text">@color/holo_purple</color>
 </resources>
