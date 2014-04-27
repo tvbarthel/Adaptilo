@@ -17,18 +17,30 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_basic_controller, container, false);
         Typeface minecraftiaTypeFace = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Minecraftia.ttf");
-        ((Button) fragmentView.findViewById(R.id.basic_controller_btn_start)).setTypeface(minecraftiaTypeFace);
         ((Button) fragmentView.findViewById(R.id.basic_controller_btn_select)).setTypeface(minecraftiaTypeFace);
         ((Button) fragmentView.findViewById(R.id.basic_controller_btn_a)).setTypeface(minecraftiaTypeFace);
         ((Button) fragmentView.findViewById(R.id.basic_controller_btn_b)).setTypeface(minecraftiaTypeFace);
-        ((TextView) fragmentView.findViewById(R.id.basic_controller_game_slot_text)).setTypeface(minecraftiaTypeFace);
 
-        fragmentView.findViewById(R.id.basic_controller_btn_start).setOnClickListener(new View.OnClickListener() {
+        final TextView gameSlot = (TextView) fragmentView.findViewById(R.id.basic_controller_game_slot);
+        gameSlot.setTypeface(minecraftiaTypeFace);
+
+        Button startButton = (Button) fragmentView.findViewById(R.id.basic_controller_btn_start);
+        startButton.setTypeface(minecraftiaTypeFace);
+        startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mCallbacks.onLoadGameRequest();
+
+                // TODO remove, for test purpose only
+                int visibility = gameSlot.getVisibility();
+                if (visibility == View.VISIBLE) {
+                    gameSlot.setVisibility(View.GONE);
+                } else {
+                    gameSlot.setVisibility(View.VISIBLE);
+                }
             }
         });
+
         return fragmentView;
     }
 
