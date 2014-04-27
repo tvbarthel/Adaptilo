@@ -8,22 +8,28 @@
     android:orientation="vertical">
 
     <FrameLayout
-        android:id="@+id/basic_controller_game_slot"
-        android:layout_width="@dimen/basic_controller_game_slot_width"
-        android:layout_height="@dimen/basic_controller_game_slot_height"
+        android:id="@+id/basic_controller_game_slot_container"
+        android:layout_width="@dimen/basic_controller_game_slot_container_width"
+        android:layout_height="@dimen/basic_controller_game_slot_container_height"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/basic_controller_game_slot"
+        android:background="@drawable/basic_controller_game_slot_container"
         android:clickable="true"
-        android:padding="@dimen/default_padding">
+        android:paddingLeft="@dimen/basic_controller_game_slot_container_padding_left"
+        android:paddingRight="@dimen/basic_controller_game_slot_container_padding_right">
 
         <TextView
-            android:id="@+id/basic_controller_game_slot_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/basic_controller_game_slot_no_game"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/gray_light" />
+            android:id="@+id/basic_controller_game_slot"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/basic_controller_game_slot_height"
+            android:layout_gravity="bottom"
+            android:background="@drawable/basic_controller_game_slot"
+            android:gravity="center"
+            android:text="@string/basic_controller_game_slot_fake_name"
+            android:textColor="@color/basic_controller_game_slot_text"
+            android:textSize="@dimen/basic_controller_game_slot_text_size"
+            android:visibility="gone"/>
+
+
     </FrameLayout>
 
 

@@ -16,4 +16,10 @@
     <color name="btn_rect_secondary">@color/gray_light</color>
     <color name="btn_arrow_primary">@color/gray_dark</color>
     <color name="btn_arrow_secondary">@color/gray_light</color>
+
+
+    <!-- Basic Controller Game Slot -->
+    <color name="basic_controller_game_slot_primary">#ff424242</color>
+    <color name="basic_controller_game_slot_secondary">#ff5f5f5f</color>
+    <color name="basic_controller_game_slot_text">@color/holo_purple</color>
 </resources>

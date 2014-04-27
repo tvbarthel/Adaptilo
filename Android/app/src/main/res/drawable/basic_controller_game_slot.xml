@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/basic_controller_game_slot_pressed" android:state_pressed="true" />
-    <item android:drawable="@drawable/basic_controller_game_slot_normal" />
-</selector>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:left="24dp"
+        android:right="24dp">
+        <shape android:shape="rectangle">
+            <size
+                android:width="120dp"
+                android:height="50dp" />
+            <solid android:color="@color/basic_controller_game_slot_secondary" />
+        </shape>
+    </item>
+
+    <item
+        android:drawable="@color/basic_controller_game_slot_secondary"
+        android:top="12dp" />
+
+    <item
+        android:drawable="@color/basic_controller_game_slot_primary"
+        android:left="28dp"
+        android:right="28dp"
+        android:top="4dp" />
+
+    <item
+        android:drawable="@color/basic_controller_game_slot_primary"
+        android:top="16dp" />
+
+</layer-list>
+
