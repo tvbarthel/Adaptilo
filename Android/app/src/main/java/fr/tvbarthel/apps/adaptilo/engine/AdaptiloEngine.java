@@ -10,6 +10,7 @@ import com.google.zxing.integration.android.IntentResult;
 import java.net.URI;
 
 import fr.tvbarthel.apps.adaptilo.R;
+import fr.tvbarthel.apps.adaptilo.helpers.CaptureHelper;
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
 import fr.tvbarthel.apps.adaptilo.models.Message;
 import fr.tvbarthel.apps.adaptilo.network.AdaptiloClient;
@@ -109,7 +110,7 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
      * start QrCode scanner to load a game config
      */
     public void loadGame(Activity activity) {
-        IntentIntegrator.initiateScan(activity, IntentIntegrator.QR_CODE_TYPES, activity.getString(R.string.qr_code_scanner_prompt));
+        CaptureHelper.initiateScan(activity, IntentIntegrator.QR_CODE_TYPES, activity.getString(R.string.qr_code_scanner_prompt));
     }
 
     /**

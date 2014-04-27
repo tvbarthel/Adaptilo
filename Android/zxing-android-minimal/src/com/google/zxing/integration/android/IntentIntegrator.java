@@ -211,6 +211,7 @@ public final class IntentIntegrator {
      */
     public static Intent createScanIntent(Context context) {
         Intent intent = new Intent(context, com.google.zxing.client.android.CaptureActivity.class);
+
         intent.setAction(Intents.Scan.ACTION);
         return intent;
     }

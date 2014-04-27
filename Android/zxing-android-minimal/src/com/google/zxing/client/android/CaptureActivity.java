@@ -71,40 +71,40 @@ import java.util.Set;
  * @author dswitkin@google.com (Daniel Switkin)
  * @author Sean Owen
  */
-public final class CaptureActivity extends Activity implements SurfaceHolder.Callback {
+public class CaptureActivity extends Activity implements SurfaceHolder.Callback {
 
-    private static final String TAG = CaptureActivity.class.getSimpleName();
+    protected static final String TAG = CaptureActivity.class.getSimpleName();
 
-    private static final long DEFAULT_INTENT_RESULT_DURATION_MS = 1500L;
-    private static final long BULK_MODE_SCAN_DELAY_MS = 1000L;
+    protected static final long DEFAULT_INTENT_RESULT_DURATION_MS = 1500L;
+    protected static final long BULK_MODE_SCAN_DELAY_MS = 1000L;
 
-    private static final String PACKAGE_NAME = "com.google.zxing.client.android";
-    private static final String PRODUCT_SEARCH_URL_PREFIX = "http://www.google";
-    private static final String PRODUCT_SEARCH_URL_SUFFIX = "/m/products/scan";
-    private static final String[] ZXING_URLS = {"http://zxing.appspot.com/scan", "zxing://scan/"};
+    protected static final String PACKAGE_NAME = "com.google.zxing.client.android";
+    protected static final String PRODUCT_SEARCH_URL_PREFIX = "http://www.google";
+    protected static final String PRODUCT_SEARCH_URL_SUFFIX = "/m/products/scan";
+    protected static final String[] ZXING_URLS = {"http://zxing.appspot.com/scan", "zxing://scan/"};
 
-    private static final Set<ResultMetadataType> DISPLAYABLE_METADATA_TYPES =
+    protected static final Set<ResultMetadataType> DISPLAYABLE_METADATA_TYPES =
             EnumSet.of(ResultMetadataType.ISSUE_NUMBER,
                     ResultMetadataType.SUGGESTED_PRICE,
                     ResultMetadataType.ERROR_CORRECTION_LEVEL,
                     ResultMetadataType.POSSIBLE_COUNTRY);
 
-    private CameraManager cameraManager;
-    private CaptureActivityHandler handler;
-    private Result savedResultToShow;
-    private ViewfinderView viewfinderView;
-    private TextView statusView;
-    private View resultView;
-    private Result lastResult;
-    private boolean hasSurface;
-    private IntentSource source;
-    private String sourceUrl;
-    private Collection<BarcodeFormat> decodeFormats;
-    private Map<DecodeHintType, ?> decodeHints;
-    private String characterSet;
-    private InactivityTimer inactivityTimer;
-    private BeepManager beepManager;
-    private AmbientLightManager ambientLightManager;
+    protected CameraManager cameraManager;
+    protected CaptureActivityHandler handler;
+    protected Result savedResultToShow;
+    protected ViewfinderView viewfinderView;
+    protected TextView statusView;
+    protected View resultView;
+    protected Result lastResult;
+    protected boolean hasSurface;
+    protected IntentSource source;
+    protected String sourceUrl;
+    protected Collection<BarcodeFormat> decodeFormats;
+    protected Map<DecodeHintType, ?> decodeHints;
+    protected String characterSet;
+    protected InactivityTimer inactivityTimer;
+    protected BeepManager beepManager;
+    protected AmbientLightManager ambientLightManager;
 
     ViewfinderView getViewfinderView() {
         return viewfinderView;
