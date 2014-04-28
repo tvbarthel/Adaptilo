@@ -25,10 +25,10 @@ import android.util.Log;
 
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;
-import com.google.zxing.MultiFormatReader;
 import com.google.zxing.PlanarYUVLuminanceSource;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.qrcode.QRCodeReader;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Map;
@@ -38,12 +38,11 @@ final class DecodeHandler extends Handler {
     private static final String TAG = DecodeHandler.class.getSimpleName();
 
     private final CaptureActivity activity;
-    private final MultiFormatReader multiFormatReader;
+    private final QRCodeReader qrcodeReader;
     private boolean running = true;
 
     DecodeHandler(CaptureActivity activity, Map<DecodeHintType, Object> hints) {
-        multiFormatReader = new MultiFormatReader();
-        multiFormatReader.setHints(hints);
+        qrcodeReader = new QRCodeReader();
         this.activity = activity;
     }
 
@@ -77,11 +76,11 @@ final class DecodeHandler extends Handler {
         if (source != null) {
             BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
             try {
-                rawResult = multiFormatReader.decodeWithState(bitmap);
+                rawResult = qrcodeReader.decode(bitmap);
             } catch (Exception e) {
                 // continue
             } finally {
-                multiFormatReader.reset();
+                qrcodeReader.reset();
             }
         }
 

@@ -7,8 +7,8 @@
     <uses-permission android:name="android.permission.FLASHLIGHT" />
 
     <uses-sdk
-        android:minSdkVersion="7"
-        android:targetSdkVersion="10" />
+        android:minSdkVersion="9"
+        android:targetSdkVersion="19" />
 
     <!-- Don't require camera, as this requires a rear camera. This allows it to work on the Nexus 7 -->
     <uses-feature
@@ -50,9 +50,6 @@
             android:stateNotNeeded="true"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity
-            android:name="com.google.zxing.client.android.HelpActivity"
-            android:screenOrientation="user" />
     </application>
 
 </manifest>
