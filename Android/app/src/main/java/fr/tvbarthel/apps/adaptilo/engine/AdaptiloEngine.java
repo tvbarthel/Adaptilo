@@ -11,6 +11,8 @@ import java.net.URI;
 
 import fr.tvbarthel.apps.adaptilo.R;
 import fr.tvbarthel.apps.adaptilo.exceptions.QrCodeException;
+import fr.tvbarthel.apps.adaptilo.fragments.AdaptiloControllerFragment;
+import fr.tvbarthel.apps.adaptilo.fragments.BasicControllerFragment;
 import fr.tvbarthel.apps.adaptilo.helpers.QrCodeHelper;
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
 import fr.tvbarthel.apps.adaptilo.models.Message;
@@ -108,13 +110,6 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
     }
 
     /**
-     * start QrCode scanner to load a game config
-     */
-    public void loadGame(Activity activity) {
-        IntentIntegrator.initiateScan(activity, IntentIntegrator.QR_CODE_TYPES, activity.getString(R.string.qr_code_scanner_prompt));
-    }
-
-    /**
      * @param requestCode
      * @param resultCode
      * @param data
@@ -139,6 +134,13 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
         return config;
     }
 
+    /**
+     * start QrCode scanner to load a game config
+     */
+    public void loadGame(Activity activity) {
+        IntentIntegrator.initiateScan(activity, IntentIntegrator.QR_CODE_TYPES, activity.getString(R.string.qr_code_scanner_prompt));
+    }
+
     @Override
     public void onOpen() {
         mReadyToCommunicate = true;
@@ -148,7 +150,8 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
     public void onMessage(Message message) {
         switch (message.getType()) {
             case REPLACE_CONTROLLER:
-                mCallbacks.onReplaceControllerRequest(1);
+                //TODO process message to know which controller to use
+                mCallbacks.onReplaceControllerRequest(new BasicControllerFragment());
                 break;
             default:
                 mCallbacks.onMessageReceived(message);
@@ -180,8 +183,8 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
         /**
          * Engine received message to replace the current controller
          *
-         * @param controllerId
+         * @param adaptiloControllerFragment new controller to use
          */
-        public void onReplaceControllerRequest(int controllerId);
+        public void onReplaceControllerRequest(AdaptiloControllerFragment adaptiloControllerFragment);
     }
 }
