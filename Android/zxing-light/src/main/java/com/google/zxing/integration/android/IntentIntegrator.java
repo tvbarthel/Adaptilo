@@ -1,22 +1,15 @@
 package com.google.zxing.integration.android;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
-import android.util.Log;
 import android.view.Display;
-import com.google.zxing.client.android.Intents;
 
-import java.lang.CharSequence;import java.lang.Math;import java.lang.String;import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import com.google.zxing.client.android.Intents;
 
 /**
  * TODO: update these docs - a lot of it is not relevant anymore.
- *
+ * <p/>
  * <p>A utility class which helps ease integration with Barcode Scanner via {@link android.content.Intent}s. This is a simple
  * way to invoke barcode scanning and receive the result, without any need to integrate, modify, or learn the
  * project's source code.</p>
@@ -107,7 +100,7 @@ public final class IntentIntegrator {
             intentScan.putExtra("SCAN_FORMATS", formats);
 
             // Hack to use a wider viewfinder for 1D barcodes. This should probably be in the main code instead.
-            if(shouldBeWide(formats)) {
+            if (shouldBeWide(formats)) {
                 setWide(activity, intentScan);
             }
         }
@@ -122,7 +115,7 @@ public final class IntentIntegrator {
 
     /**
      * Heuristics for whether or not the barcode scanning rectangle should be wide or not.
-     *
+     * <p/>
      * Current heuristics make it wide if 1D barcode formats are scanned, and no QR codes.
      *
      * @param formats the barcode formats to scan, comma-separated
@@ -139,7 +132,7 @@ public final class IntentIntegrator {
      * Set a scan intent to use a wide rectangle, suitable for 1D barcode formats.
      *
      * @param activity the activity, used to measure display size
-     * @param intent the scanning intent
+     * @param intent   the scanning intent
      */
     public static void setWide(Activity activity, Intent intent) {
         Display display = activity.getWindowManager().getDefaultDisplay();
@@ -166,8 +159,8 @@ public final class IntentIntegrator {
      * {@link android.app.Activity#onActivityResult(int, int, android.content.Intent)} method.</p>
      *
      * @return null if the event handled here was not related to this class, or
-     *         else an {@link IntentResult} containing the result of the scan. If the user cancelled scanning,
-     *         the fields will be null.
+     * else an {@link IntentResult} containing the result of the scan. If the user cancelled scanning,
+     * the fields will be null.
      */
     public static IntentResult parseActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == REQUEST_CODE) {
@@ -186,7 +179,7 @@ public final class IntentIntegrator {
      * Shares the given text by encoding it as a barcode, such that another user can
      * scan the text off the screen of the device.
      *
-     * @param text            the text string to encode as a barcode
+     * @param text the text string to encode as a barcode
      */
     public static void shareText(Activity activity, CharSequence text) {
         // TODO: fix this

@@ -16,9 +16,6 @@
 
 package com.google.zxing.client.android;
 
-import com.google.zxing.ResultPoint;
-import com.google.zxing.client.android.camera.CameraManager;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -27,6 +24,9 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
+
+import com.google.zxing.ResultPoint;
+import com.google.zxing.client.android.camera.CameraManager;
 
 import java.util.ArrayList;
 import java.util.List;

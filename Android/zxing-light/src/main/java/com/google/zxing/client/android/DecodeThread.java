@@ -16,19 +16,16 @@
 
 package com.google.zxing.client.android;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
+
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.ResultPointCallback;
 
-import android.content.SharedPreferences;
-import android.os.Handler;
-import android.os.Looper;
-import android.preference.PreferenceManager;
-import android.util.Log;
-
 import java.util.Collection;
 import java.util.EnumMap;
-import java.util.EnumSet;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
