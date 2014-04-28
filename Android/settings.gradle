@@ -1,2 +1,1 @@
-include ':app'
-include ':zxing-android-minimal'
+include ':app', ':zxing-light'

@@ -1,9 +1,0 @@
-gen
-target
-.gradle
-build
-/build
-.idea
-maven-repository
-*.iml
-local.properties
