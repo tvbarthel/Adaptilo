@@ -10,7 +10,9 @@ import com.google.zxing.integration.android.IntentResult;
 import java.net.URI;
 
 import fr.tvbarthel.apps.adaptilo.R;
+import fr.tvbarthel.apps.adaptilo.exceptions.QrCodeException;
 import fr.tvbarthel.apps.adaptilo.helpers.CaptureHelper;
+import fr.tvbarthel.apps.adaptilo.helpers.QrCodeHelper;
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
 import fr.tvbarthel.apps.adaptilo.models.Message;
 import fr.tvbarthel.apps.adaptilo.network.AdaptiloClient;
@@ -125,9 +127,14 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
         IntentResult scanResult =
                 IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (scanResult != null && resultCode == Activity.RESULT_OK) {
-            //TODO check if QrCode content is an engine config
-            Log.d(TAG, "game config retrieved : " + scanResult.getContents());
-            config = new EngineConfig();
+            try {
+                //TODO inform user that a game is loaded
+                config = QrCodeHelper.verify(scanResult.getContents());
+                Log.d(TAG, "game config retrieved : " + config.toString());
+            } catch (QrCodeException e) {
+                //TODO inform user that the scanned QrCode was malformed
+                Log.d(TAG, "QrCode malformed " + e.getMessage());
+            }
         }
 
         return config;

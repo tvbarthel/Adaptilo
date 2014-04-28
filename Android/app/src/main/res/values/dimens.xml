@@ -33,7 +33,13 @@
     <dimen name="basic_controller_game_slot_container_padding_bottom">6dp</dimen>
 
     <!-- Basic Controller Game Slot -->
-    <dimen name="basic_controller_game_slot_height">40dp</dimen>
-    <dimen name="basic_controller_game_slot_text_size">14sp</dimen>
+    <dimen name="basic_controller_game_slot_text_size">16sp</dimen>
+
+    <!-- Basic Controller Game Name -->
+    <dimen name="basic_controller_game_name_bottom_border">8dp</dimen>
+    <dimen name="basic_controller_game_name_top_border">4dp</dimen>
+
+    <!-- Basic Controller Start Select bar !-->
+    <dimen name="basic_controller_game_bar_padding_top">32dp</dimen>
 
 </resources>

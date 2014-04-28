@@ -20,6 +20,7 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
         ((Button) fragmentView.findViewById(R.id.basic_controller_btn_select)).setTypeface(minecraftiaTypeFace);
         ((Button) fragmentView.findViewById(R.id.basic_controller_btn_a)).setTypeface(minecraftiaTypeFace);
         ((Button) fragmentView.findViewById(R.id.basic_controller_btn_b)).setTypeface(minecraftiaTypeFace);
+        ((TextView) fragmentView.findViewById(R.id.basic_controller_game_name)).setTypeface(minecraftiaTypeFace);
 
         final TextView gameSlot = (TextView) fragmentView.findViewById(R.id.basic_controller_game_slot);
         gameSlot.setTypeface(minecraftiaTypeFace);

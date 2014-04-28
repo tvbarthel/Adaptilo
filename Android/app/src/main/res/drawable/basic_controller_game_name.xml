@@ -6,7 +6,9 @@
             <solid android:color="@color/gray_light"/>
         </shape>
     </item>
-    <item android:top="@dimen/default_padding">
+    <item
+        android:bottom="@dimen/basic_controller_game_name_bottom_border"
+        android:top="@dimen/basic_controller_game_name_top_border">
         <shape android:shape="rectangle">
             <solid android:color="@color/secondary"/>
         </shape>
