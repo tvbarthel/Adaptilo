@@ -3,6 +3,7 @@ package fr.tvbarthel.apps.adaptilo.helpers;
 import android.net.Uri;
 import android.util.Log;
 
+import fr.tvbarthel.apps.adaptilo.exceptions.QrCodeException;
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
 
 /**
@@ -36,7 +37,7 @@ public final class QrCodeHelper {
      * @param content info from QrCode
      * @return null if content not well formed
      */
-    public static EngineConfig verify(String content) {
+    public static EngineConfig verify(String content) throws QrCodeException {
         EngineConfig config = new EngineConfig();
 
         Uri scannedUri = Uri.parse(content);
@@ -50,32 +51,32 @@ public final class QrCodeHelper {
 
         if (!URI_SCHEME.equals(scheme)) {
             Log.e(TAG, "QrCode uri scheme must correspond to adaptilo");
-            return null;
+            throw new QrCodeException("QrCode uri scheme must correspond to adaptilo");
         }
 
         if (room == null) {
             Log.e(TAG, "room query param not found");
-            return null;
+            throw new QrCodeException("room query param not found");
         }
 
         if (role == null) {
             Log.e(TAG, "role query param not found");
-            return null;
+            throw new QrCodeException("role query param not found");
         }
 
         if (port == -1) {
             Log.e(TAG, "serverPort not found");
-            return null;
+            throw new QrCodeException("serverPort not found");
         }
 
         if (host == null) {
             Log.e(TAG, "websocket host not found");
-            return null;
+            throw new QrCodeException("websocket host not found");
         }
 
         if (gameName == null) {
             Log.e(TAG, "fail to decode path");
-            return null;
+            throw new QrCodeException("fail to decode path");
         }
 
         config.setServerUri(host + gameName);
