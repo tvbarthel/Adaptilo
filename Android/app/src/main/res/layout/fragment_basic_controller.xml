@@ -170,8 +170,8 @@
         android:textColor="@color/gray_light"
         android:gravity="end"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/basic_controller_game_name"
         android:padding="@dimen/default_padding"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:textSize="@dimen/basic_controller_game_slot_text_size"/>
 
 
