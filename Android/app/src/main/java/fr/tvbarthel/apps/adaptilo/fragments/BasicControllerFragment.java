@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import fr.tvbarthel.apps.adaptilo.R;
 import fr.tvbarthel.apps.adaptilo.activities.BasicControllerCaptureActivity;
-import fr.tvbarthel.apps.adaptilo.helpers.CaptureHelper;
+import fr.tvbarthel.apps.adaptilo.helpers.QrCodeHelper;
 import fr.tvbarthel.apps.adaptilo.models.Message;
 
 public class BasicControllerFragment extends AdaptiloControllerFragment {
@@ -56,7 +56,7 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
      * start QrCode scanner to load a game config.
      */
     public void startQrCodeScanner() {
-        CaptureHelper.initiateQrCodeScan(getActivity(), BasicControllerCaptureActivity.class,
+        QrCodeHelper.initiateQrCodeScan(getActivity(), BasicControllerCaptureActivity.class,
                 getString(R.string.qr_code_scanner_prompt));
     }
 
