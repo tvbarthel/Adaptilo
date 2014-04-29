@@ -2,7 +2,7 @@ apply plugin: 'android'
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.0.3"
+    buildToolsVersion '19.0.3'
 
     defaultConfig {
         minSdkVersion 9
@@ -18,20 +18,11 @@ android {
     }
 }
 
-repositories {
-    mavenCentral()
-
-    maven {
-        url "https://raw.github.com/embarkmobile/zxing-android-minimal/mvn-repo/maven-repository/"
-    }
-}
-
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:support-v4:19.1.0'
     compile 'com.android.support:appcompat-v7:19.+'
     compile 'org.java-websocket:Java-WebSocket:1.3.0'
     compile 'com.google.code.gson:gson:2.2.4'
-    compile 'com.google.zxing:core:2.2'
-    compile 'com.embarkmobile:zxing-android-minimal:1.2.0@aar'
+    compile project(':zxing-light')
 }

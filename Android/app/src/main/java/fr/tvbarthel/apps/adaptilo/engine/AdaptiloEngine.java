@@ -1,12 +1,7 @@
 package fr.tvbarthel.apps.adaptilo.engine;
 
-import android.app.Activity;
-
-import com.google.zxing.integration.android.IntentIntegrator;
-
 import java.net.URI;
 
-import fr.tvbarthel.apps.adaptilo.R;
 import fr.tvbarthel.apps.adaptilo.fragments.AdaptiloControllerFragment;
 import fr.tvbarthel.apps.adaptilo.fragments.BasicControllerFragment;
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
@@ -102,13 +97,6 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
     public void setEngineConfig(EngineConfig config) {
         mEngineConfig = config;
         mAdaptiloClient = new AdaptiloClient(URI.create(mEngineConfig.getServerUri()), this);
-    }
-
-    /**
-     * start QrCode scanner to load a game config
-     */
-    public void startScanner(Activity activity) {
-        IntentIntegrator.initiateScan(activity, IntentIntegrator.QR_CODE_TYPES, activity.getString(R.string.qr_code_scanner_prompt));
     }
 
     @Override
