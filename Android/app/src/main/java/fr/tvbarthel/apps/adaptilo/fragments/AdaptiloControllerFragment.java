@@ -1,10 +1,12 @@
 package fr.tvbarthel.apps.adaptilo.fragments;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.widget.Toast;
 
 import fr.tvbarthel.apps.adaptilo.engine.AdaptiloEngine;
+import fr.tvbarthel.apps.adaptilo.exceptions.QrCodeException;
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
 import fr.tvbarthel.apps.adaptilo.models.Message;
 
@@ -14,6 +16,11 @@ import fr.tvbarthel.apps.adaptilo.models.Message;
  * The controller can send messages to a callback and can receive messages.
  */
 abstract public class AdaptiloControllerFragment extends Fragment implements AdaptiloEngine.Callbacks {
+
+    /**
+     * Logcat
+     */
+    private static final String TAG = AdaptiloControllerFragment.class.getName();
 
     /**
      * Adaptilo core part
@@ -47,20 +54,23 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
     }
 
     /**
-     * parse onActivityResult to know if it was for AdaptiloEngine
+     * load game config into the controller after scan success
      *
-     * @param requestCode
-     * @param resultCode
-     * @param data
-     * @return false if result wasn't for AdaptiloEngine
+     * @param config
      */
-    public boolean parseLoadGameResult(int requestCode, int resultCode, Intent data) {
-        boolean onActivityResultForAdaptiloEngine = false;
-        EngineConfig config = mAdaptiloEngine.parseLoadGameResult(requestCode, resultCode, data);
-        if (config != null) {
-            onActivityResultForAdaptiloEngine = true;
-        }
-        return onActivityResultForAdaptiloEngine;
+    public void scannerSuccess(EngineConfig config) {
+        mAdaptiloEngine.setEngineConfig(config);
+        Log.d(TAG, "scannerSuccess : " + config.toString());
+    }
+
+    /**
+     * scanner error
+     *
+     * @param ex
+     */
+    public void scannerError(QrCodeException ex) {
+        Toast.makeText(getActivity(), "QrCode Malformed", Toast.LENGTH_LONG).show();
+        Log.d(TAG, "scannerError : " + ex.getMessage());
     }
 
     @Override

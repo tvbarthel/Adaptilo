@@ -30,7 +30,7 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAdaptiloEngine.loadGame(getActivity());
+                mAdaptiloEngine.startScanner(getActivity());
 
                 // TODO remove, for test purpose only
                 int visibility = gameSlot.getVisibility();

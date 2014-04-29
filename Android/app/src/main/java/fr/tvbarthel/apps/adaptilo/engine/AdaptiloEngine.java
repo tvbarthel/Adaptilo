@@ -1,19 +1,14 @@
 package fr.tvbarthel.apps.adaptilo.engine;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.util.Log;
 
 import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 
 import java.net.URI;
 
 import fr.tvbarthel.apps.adaptilo.R;
-import fr.tvbarthel.apps.adaptilo.exceptions.QrCodeException;
 import fr.tvbarthel.apps.adaptilo.fragments.AdaptiloControllerFragment;
 import fr.tvbarthel.apps.adaptilo.fragments.BasicControllerFragment;
-import fr.tvbarthel.apps.adaptilo.helpers.QrCodeHelper;
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
 import fr.tvbarthel.apps.adaptilo.models.Message;
 import fr.tvbarthel.apps.adaptilo.network.AdaptiloClient;
@@ -111,34 +106,9 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
 
 
     /**
-     * @param requestCode
-     * @param resultCode
-     * @param data
-     * @return
-     */
-    public EngineConfig parseLoadGameResult(int requestCode, int resultCode, Intent data) {
-        EngineConfig config = null;
-
-        IntentResult scanResult =
-                IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (scanResult != null && resultCode == Activity.RESULT_OK) {
-            try {
-                //TODO inform user that a game is loaded
-                config = QrCodeHelper.verify(scanResult.getContents());
-                Log.d(TAG, "game config retrieved : " + config.toString());
-            } catch (QrCodeException e) {
-                //TODO inform user that the scanned QrCode was malformed
-                Log.d(TAG, "QrCode malformed " + e.getMessage());
-            }
-        }
-
-        return config;
-    }
-
-    /**
      * start QrCode scanner to load a game config
      */
-    public void loadGame(Activity activity) {
+    public void startScanner(Activity activity) {
         IntentIntegrator.initiateScan(activity, IntentIntegrator.QR_CODE_TYPES, activity.getString(R.string.qr_code_scanner_prompt));
     }
 

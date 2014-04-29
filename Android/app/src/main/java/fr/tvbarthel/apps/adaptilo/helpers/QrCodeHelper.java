@@ -1,7 +1,12 @@
 package fr.tvbarthel.apps.adaptilo.helpers;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import fr.tvbarthel.apps.adaptilo.exceptions.QrCodeException;
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
@@ -32,10 +37,33 @@ public final class QrCodeHelper {
     private static final String URI_QUERY_PARAM_ROLE = "role";
 
     /**
+     * verifiy if scanned content from onActivityResult id well-formed
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     * @return
+     * @throws QrCodeException
+     */
+    public static EngineConfig verifyFromActivityResult(int requestCode, int resultCode, Intent data) throws QrCodeException {
+        EngineConfig config = null;
+
+        IntentResult scanResult =
+                IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (scanResult != null && resultCode == Activity.RESULT_OK) {
+
+            config = verify(scanResult.getContents());
+        }
+
+        return config;
+    }
+
+    /**
      * verify if scanned content is well formed
      *
      * @param content info from QrCode
      * @return null if content not well formed
+     * @throws QrCodeException
      */
     public static EngineConfig verify(String content) throws QrCodeException {
         EngineConfig config = new EngineConfig();
