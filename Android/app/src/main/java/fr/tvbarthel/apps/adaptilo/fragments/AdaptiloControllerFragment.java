@@ -3,6 +3,7 @@ package fr.tvbarthel.apps.adaptilo.fragments;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.widget.Toast;
 
 import fr.tvbarthel.apps.adaptilo.engine.AdaptiloEngine;
 import fr.tvbarthel.apps.adaptilo.exceptions.QrCodeException;
@@ -68,7 +69,7 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
      * @param ex
      */
     public void scannerError(QrCodeException ex) {
-        //TODO process error
+        Toast.makeText(getActivity(), "QrCode Malformed", Toast.LENGTH_LONG).show();
         Log.d(TAG, "scannerError : " + ex.getMessage());
     }
 
