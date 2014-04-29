@@ -3,6 +3,7 @@ package fr.tvbarthel.apps.adaptilo.models;
 import com.google.gson.annotations.SerializedName;
 
 import fr.tvbarthel.apps.adaptilo.helpers.MessageDeserializerHelper;
+import fr.tvbarthel.apps.adaptilo.models.enums.MessageType;
 
 public class Message {
 

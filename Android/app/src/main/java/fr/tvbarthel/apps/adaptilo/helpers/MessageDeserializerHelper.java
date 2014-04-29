@@ -9,7 +9,7 @@ import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
 
 import fr.tvbarthel.apps.adaptilo.models.Message;
-import fr.tvbarthel.apps.adaptilo.models.MessageType;
+import fr.tvbarthel.apps.adaptilo.models.enums.MessageType;
 
 /**
  * Adapter for deserialization of {@link fr.tvbarthel.apps.adaptilo.models.Message}

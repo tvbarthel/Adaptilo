@@ -1,4 +1,4 @@
-package fr.tvbarthel.apps.adaptilo.models;
+package fr.tvbarthel.apps.adaptilo.models.enums;
 
 public enum MessageType {
 
