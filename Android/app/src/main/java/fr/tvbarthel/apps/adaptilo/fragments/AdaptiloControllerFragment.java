@@ -52,7 +52,7 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
     abstract public void onMessage(Message messageToHandle);
 
     public AdaptiloControllerFragment() {
-        mAdaptiloEngine = new AdaptiloEngine(getActivity(), this);
+        mAdaptiloEngine = new AdaptiloEngine(this);
     }
 
     /**
@@ -85,6 +85,7 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
         }
 
         mCallbacks = (Callbacks) activity;
+        mAdaptiloEngine.initEngine(getActivity().getApplicationContext());
     }
 
     @Override

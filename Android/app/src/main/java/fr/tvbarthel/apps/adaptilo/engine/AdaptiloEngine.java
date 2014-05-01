@@ -1,11 +1,14 @@
 package fr.tvbarthel.apps.adaptilo.engine;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Vibrator;
 
 import java.net.URI;
 
 import fr.tvbarthel.apps.adaptilo.fragments.AdaptiloControllerFragment;
 import fr.tvbarthel.apps.adaptilo.fragments.BasicControllerFragment;
+import fr.tvbarthel.apps.adaptilo.helpers.SharedPreferencesHelper;
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
 import fr.tvbarthel.apps.adaptilo.models.Message;
 import fr.tvbarthel.apps.adaptilo.network.AdaptiloClient;
@@ -19,6 +22,11 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
      * LogCat
      */
     private static final String TAG = AdaptiloEngine.class.getName();
+
+    /**
+     * default duration in milli
+     */
+    private static final int VIBRATOR_ON_KEY_DURATION = 10;
 
     /**
      * Context used to start and stop some systems services directly from the server
@@ -41,6 +49,26 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
     private Callbacks mCallbacks;
 
     /**
+     * Vibrator object used to vibrate
+     */
+    private Vibrator mVibrator;
+
+    /**
+     * is user allowing vibration on key event ?
+     */
+    private boolean mVibrateOnKeyEvent;
+
+    /**
+     * is user allowing vibration on server event ?
+     */
+    private boolean mVibrateOnServerEvent;
+
+    /**
+     * shared preferences listener for vibrator preference
+     */
+    private SharedPreferences.OnSharedPreferenceChangeListener mVibratorPreferencesListener;
+
+    /**
      * let the engine know if the WebSocket client is connected
      */
     private boolean mReadyToCommunicate;
@@ -50,10 +78,22 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
      *
      * @param callbacks the {@link fr.tvbarthel.apps.adaptilo.engine.AdaptiloEngine.Callbacks} to be used.
      */
-    public AdaptiloEngine(Context context, Callbacks callbacks) {
-        mContext = context;
+    public AdaptiloEngine(Callbacks callbacks) {
         mCallbacks = callbacks;
         mReadyToCommunicate = false;
+    }
+
+    /**
+     * Initialize engine features which need context. Should be called directly since it's already
+     * managed by the {@link fr.tvbarthel.apps.adaptilo.fragments.AdaptiloControllerFragment}
+     *
+     * @param context
+     */
+    public void initEngine(Context context) {
+        if (mContext == null) {
+            mContext = context;
+            initVibrator();
+        }
     }
 
     /**
@@ -92,6 +132,10 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
      * @param message
      */
     public void sendUserInput(Message message) {
+        if (mVibrateOnKeyEvent) {
+            mVibrator.vibrate(VIBRATOR_ON_KEY_DURATION);
+        }
+
         if (mReadyToCommunicate) {
             mAdaptiloClient.send(message);
         }
@@ -133,6 +177,42 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
     @Override
     public void onError(Exception ex) {
 
+    }
+
+    /**
+     * Retrieve the vibrator as well as user preferences regarding to vibrator policy
+     * <p/>
+     * Since vibrator preference can pe change in select menu of controller, a listener should
+     * be register in order to adapt vibrator behaviour to the most recent user preference
+     * <p/>
+     * TODO default values are true for test purpose only
+     */
+    private void initVibrator() {
+        SharedPreferences prefs = mContext.getSharedPreferences(
+                SharedPreferencesHelper.VIBRATOR_PREFERENCE, Context.MODE_PRIVATE);
+
+        mVibrateOnKeyEvent =
+                prefs.getBoolean(SharedPreferencesHelper.KEY_VIBRATE_ON_KEY_EVENT, true);
+
+        mVibrateOnServerEvent =
+                prefs.getBoolean(SharedPreferencesHelper.KEY_VIBRATE_ON_SERVER_EVENT, true);
+
+        mVibratorPreferencesListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                if (SharedPreferencesHelper.KEY_VIBRATE_ON_KEY_EVENT.equals(key)) {
+                    mVibrateOnKeyEvent = sharedPreferences.getBoolean(key, true);
+                } else if (SharedPreferencesHelper.KEY_VIBRATE_ON_SERVER_EVENT.equals(key)) {
+                    mVibrateOnServerEvent = sharedPreferences.getBoolean(key, true);
+                }
+            }
+        };
+        prefs.registerOnSharedPreferenceChangeListener(mVibratorPreferencesListener);
+
+        // retrieve vibrator
+        if (mVibrateOnServerEvent || mVibrateOnServerEvent) {
+            mVibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
+        }
     }
 
     /**
