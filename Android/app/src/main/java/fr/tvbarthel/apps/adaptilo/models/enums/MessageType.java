@@ -15,6 +15,11 @@ public enum MessageType {
     /**
      * send by the client when user perform an input, press a key for instance
      */
-    USER_INPUT
+    USER_INPUT,
+
+    /**
+     * send by the {@link fr.tvbarthel.apps.adaptilo.engine.AdaptiloEngine} when it's ready.
+     */
+    ENGINE_READY
 
 }

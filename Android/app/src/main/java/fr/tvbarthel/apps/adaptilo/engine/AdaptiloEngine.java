@@ -6,6 +6,7 @@ import fr.tvbarthel.apps.adaptilo.fragments.AdaptiloControllerFragment;
 import fr.tvbarthel.apps.adaptilo.fragments.BasicControllerFragment;
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
 import fr.tvbarthel.apps.adaptilo.models.Message;
+import fr.tvbarthel.apps.adaptilo.models.enums.MessageType;
 import fr.tvbarthel.apps.adaptilo.network.AdaptiloClient;
 
 /**
@@ -107,6 +108,7 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
     @Override
     public void onOpen() {
         mReadyToCommunicate = true;
+        mCallbacks.onMessageReceived(new Message(MessageType.ENGINE_READY, null));
     }
 
     @Override

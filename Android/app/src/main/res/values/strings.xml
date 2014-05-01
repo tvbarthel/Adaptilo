@@ -14,6 +14,7 @@
     <string name="basic_controller_name">Basic Controller</string>
     <string name="basic_controller_message_loading">Loading</string>
     <string name="basic_controller_qrcode_scanner_error">Invalid QrCode</string>
+    <string name="basic_controller_message_playing">Playing…</string>
 
 
 </resources>

@@ -2,7 +2,6 @@ package fr.tvbarthel.apps.adaptilo.fragments;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -66,6 +65,10 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     @Override
     public void onMessage(Message messageToHandle) {
         // TODO handle the message
+        MessageType messageType = messageToHandle.getType();
+        if (MessageType.ENGINE_READY.equals(messageType)) {
+            handleEngineReadyMessage(messageToHandle);
+        }
     }
 
     @Override
@@ -84,6 +87,15 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     protected void scannerSuccess(EngineConfig config) {
         super.scannerSuccess(config);
         mAdaptiloEngine.start();
+    }
+
+    private void handleEngineReadyMessage(Message message) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                showOnScreenMessage(R.string.basic_controller_message_playing);
+            }
+        });
     }
 
     /**
