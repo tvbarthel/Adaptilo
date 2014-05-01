@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import fr.tvbarthel.apps.adaptilo.R;
 import fr.tvbarthel.apps.adaptilo.activities.BasicControllerCaptureActivity;
+import fr.tvbarthel.apps.adaptilo.exceptions.QrCodeException;
 import fr.tvbarthel.apps.adaptilo.helpers.QrCodeHelper;
 import fr.tvbarthel.apps.adaptilo.models.Message;
 import fr.tvbarthel.apps.adaptilo.models.UserEvent;
@@ -57,6 +58,18 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     @Override
     public void onMessage(Message messageToHandle) {
         // TODO handle the message
+    }
+
+    @Override
+    protected void onScannerCanceled() {
+        // hide the on screen message that should be R.string.basic_controller_message_loading
+        hideOnScreenMessage();
+    }
+
+    @Override
+    protected void scannerError(QrCodeException ex) {
+        super.scannerError(ex);
+        showOnScreenMessage(R.string.basic_controller_qrcode_scanner_error);
     }
 
     /**

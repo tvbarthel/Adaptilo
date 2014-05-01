@@ -24,6 +24,11 @@ public final class QrCodeHelper {
     private static final String TAG = QrCodeHelper.class.getName();
 
     /**
+     * Request code used by startActivityForResult.
+     */
+    public static final int REQUEST_CODE = IntentIntegrator.REQUEST_CODE;
+
+    /**
      * uri scheme of QrCode content
      */
     private static final String URI_SCHEME = "adaptilo";
@@ -48,7 +53,7 @@ public final class QrCodeHelper {
     public static void initiateQrCodeScan(Fragment fragment, Class<? extends CaptureActivity> scannerActivityClass, String prompt) {
         Intent intent = IntentIntegrator.createScanIntent(fragment.getActivity(), IntentIntegrator.QR_CODE_TYPES, prompt);
         intent.setClass(fragment.getActivity(), scannerActivityClass);
-        fragment.startActivityForResult(intent, IntentIntegrator.REQUEST_CODE);
+        fragment.startActivityForResult(intent, REQUEST_CODE);
     }
 
     /**
@@ -62,14 +67,10 @@ public final class QrCodeHelper {
      */
     public static EngineConfig verifyFromActivityResult(int requestCode, int resultCode, Intent data) throws QrCodeException {
         EngineConfig config = null;
-
-        IntentResult scanResult =
-                IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (scanResult != null && resultCode == Activity.RESULT_OK) {
-
             config = verify(scanResult.getContents());
         }
-
         return config;
     }
 

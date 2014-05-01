@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.widget.Toast;
 
 import fr.tvbarthel.apps.adaptilo.engine.AdaptiloEngine;
 import fr.tvbarthel.apps.adaptilo.exceptions.QrCodeException;
@@ -71,7 +70,6 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
      * @param ex
      */
     protected void scannerError(QrCodeException ex) {
-        Toast.makeText(getActivity(), "QrCode Malformed", Toast.LENGTH_LONG).show();
         Log.d(TAG, "scannerError : " + ex.getMessage());
     }
 
@@ -105,19 +103,34 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        EngineConfig config = null;
-        try {
-            config = QrCodeHelper.verifyFromActivityResult(requestCode, resultCode, data);
-        } catch (QrCodeException e) {
-            scannerError(e);
-        } finally {
-            if (config != null) {
-                scannerSuccess(config);
-            } else {
-                super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == QrCodeHelper.REQUEST_CODE) {
+            handleQrCodeResult(requestCode, resultCode, data);
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    protected void handleQrCodeResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_CANCELED) {
+            onScannerCanceled();
+        } else {
+            EngineConfig config = null;
+            try {
+                config = QrCodeHelper.verifyFromActivityResult(requestCode, resultCode, data);
+            } catch (QrCodeException e) {
+                scannerError(e);
+            } finally {
+                if (config != null) {
+                    scannerSuccess(config);
+                }
             }
         }
     }
+
+    /**
+     * QrCode scanner has been canceled.
+     */
+    abstract protected void onScannerCanceled();
 
     /**
      * Callbacks
