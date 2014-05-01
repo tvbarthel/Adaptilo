@@ -132,7 +132,7 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
      * @param message
      */
     public void sendUserInput(Message message) {
-        if (mVibrateOnKeyEvent) {
+        if (mVibrator != null && mVibrateOnKeyEvent) {
             mVibrator.vibrate(VIBRATOR_ON_KEY_DURATION);
         }
 
