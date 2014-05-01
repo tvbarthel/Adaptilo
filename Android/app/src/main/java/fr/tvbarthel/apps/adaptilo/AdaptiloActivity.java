@@ -1,13 +1,9 @@
 package fr.tvbarthel.apps.adaptilo;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
-import fr.tvbarthel.apps.adaptilo.exceptions.QrCodeException;
 import fr.tvbarthel.apps.adaptilo.fragments.AdaptiloControllerFragment;
-import fr.tvbarthel.apps.adaptilo.helpers.QrCodeHelper;
-import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
 
 /**
  * Activity which can handle {@link fr.tvbarthel.apps.adaptilo.fragments.AdaptiloControllerFragment}
@@ -39,22 +35,6 @@ public abstract class AdaptiloActivity extends FragmentActivity implements Adapt
 
         if (savedInstanceState == null) {
             setAdaptiloController(getDefaultController());
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        EngineConfig config = null;
-        try {
-            config = QrCodeHelper.verifyFromActivityResult(requestCode, resultCode, data);
-        } catch (QrCodeException e) {
-            mAdaptiloControllerFragment.scannerError(e);
-        }
-
-        if (config == null) {
-            super.onActivityResult(requestCode, resultCode, data);
-        } else {
-            mAdaptiloControllerFragment.scannerSuccess(config);
         }
     }
 

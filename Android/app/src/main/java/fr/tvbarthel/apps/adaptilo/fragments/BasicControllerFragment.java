@@ -64,7 +64,7 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
      */
     public void startQrCodeScanner() {
         showOnScreenMessage(R.string.basic_controller_message_loading);
-        QrCodeHelper.initiateQrCodeScan(getActivity(), BasicControllerCaptureActivity.class,
+        QrCodeHelper.initiateQrCodeScan(this, BasicControllerCaptureActivity.class,
                 getString(R.string.qr_code_scanner_prompt));
     }
 

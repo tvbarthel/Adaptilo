@@ -1,12 +1,14 @@
 package fr.tvbarthel.apps.adaptilo.fragments;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.widget.Toast;
 
 import fr.tvbarthel.apps.adaptilo.engine.AdaptiloEngine;
 import fr.tvbarthel.apps.adaptilo.exceptions.QrCodeException;
+import fr.tvbarthel.apps.adaptilo.helpers.QrCodeHelper;
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
 import fr.tvbarthel.apps.adaptilo.models.Message;
 
@@ -58,7 +60,7 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
      *
      * @param config
      */
-    public void scannerSuccess(EngineConfig config) {
+    protected void scannerSuccess(EngineConfig config) {
         mAdaptiloEngine.setEngineConfig(config);
         Log.d(TAG, "scannerSuccess : " + config.toString());
     }
@@ -68,7 +70,7 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
      *
      * @param ex
      */
-    public void scannerError(QrCodeException ex) {
+    protected void scannerError(QrCodeException ex) {
         Toast.makeText(getActivity(), "QrCode Malformed", Toast.LENGTH_LONG).show();
         Log.d(TAG, "scannerError : " + ex.getMessage());
     }
@@ -99,6 +101,22 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
     @Override
     public void onReplaceControllerRequest(AdaptiloControllerFragment adaptiloControllerFragment) {
         mCallbacks.onReplaceControllerRequest(adaptiloControllerFragment);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        EngineConfig config = null;
+        try {
+            config = QrCodeHelper.verifyFromActivityResult(requestCode, resultCode, data);
+        } catch (QrCodeException e) {
+            scannerError(e);
+        } finally {
+            if (config != null) {
+                scannerSuccess(config);
+            } else {
+                super.onActivityResult(requestCode, resultCode, data);
+            }
+        }
     }
 
     /**

@@ -3,6 +3,7 @@ package fr.tvbarthel.apps.adaptilo.helpers;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.google.zxing.client.android.CaptureActivity;
@@ -40,14 +41,14 @@ public final class QrCodeHelper {
     /**
      * Start an activity for scanning a QrCode.
      *
-     * @param startActivity        the {@link android.app.Activity} calling startActivityForResult.
+     * @param fragment             the {@link android.support.v4.app.Fragment} calling startActivityForResult.
      * @param scannerActivityClass the activity that will be launched.
      * @param prompt               the text to be displayed on screen.
      */
-    public static void initiateQrCodeScan(Activity startActivity, Class<? extends CaptureActivity> scannerActivityClass, String prompt) {
-        Intent intent = IntentIntegrator.createScanIntent(startActivity, IntentIntegrator.QR_CODE_TYPES, prompt);
-        intent.setClass(startActivity, scannerActivityClass);
-        startActivity.startActivityForResult(intent, IntentIntegrator.REQUEST_CODE);
+    public static void initiateQrCodeScan(Fragment fragment, Class<? extends CaptureActivity> scannerActivityClass, String prompt) {
+        Intent intent = IntentIntegrator.createScanIntent(fragment.getActivity(), IntentIntegrator.QR_CODE_TYPES, prompt);
+        intent.setClass(fragment.getActivity(), scannerActivityClass);
+        fragment.startActivityForResult(intent, IntentIntegrator.REQUEST_CODE);
     }
 
     /**
