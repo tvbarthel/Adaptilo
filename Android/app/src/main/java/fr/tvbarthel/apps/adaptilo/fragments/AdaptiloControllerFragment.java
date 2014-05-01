@@ -52,7 +52,7 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
     abstract public void onMessage(Message messageToHandle);
 
     public AdaptiloControllerFragment() {
-        mAdaptiloEngine = new AdaptiloEngine(this);
+        mAdaptiloEngine = new AdaptiloEngine(getActivity(), this);
     }
 
     /**

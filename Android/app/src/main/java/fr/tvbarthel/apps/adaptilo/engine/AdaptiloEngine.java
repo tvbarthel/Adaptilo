@@ -1,5 +1,7 @@
 package fr.tvbarthel.apps.adaptilo.engine;
 
+import android.content.Context;
+
 import java.net.URI;
 
 import fr.tvbarthel.apps.adaptilo.fragments.AdaptiloControllerFragment;
@@ -17,6 +19,11 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
      * LogCat
      */
     private static final String TAG = AdaptiloEngine.class.getName();
+
+    /**
+     * Context used to start and stop some systems services directly from the server
+     */
+    private Context mContext;
 
     /**
      * Engine config from QrCode to reach the right server in the right room with the wished role
@@ -43,7 +50,8 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
      *
      * @param callbacks the {@link fr.tvbarthel.apps.adaptilo.engine.AdaptiloEngine.Callbacks} to be used.
      */
-    public AdaptiloEngine(Callbacks callbacks) {
+    public AdaptiloEngine(Context context, Callbacks callbacks) {
+        mContext = context;
         mCallbacks = callbacks;
         mReadyToCommunicate = false;
     }
