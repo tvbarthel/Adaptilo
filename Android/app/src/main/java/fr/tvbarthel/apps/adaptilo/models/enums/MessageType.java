@@ -13,6 +13,16 @@ public enum MessageType {
     CONNECTION_COMPLETED,
 
     /**
+     * send by the server to perform vibration
+     */
+    VIBRATOR,
+
+    /**
+     * send by the server to perform vibration pattern
+     */
+    VIBRATOR_PATTERN,
+
+    /**
      * send by the client when user perform an input, press a key for instance
      */
     USER_INPUT

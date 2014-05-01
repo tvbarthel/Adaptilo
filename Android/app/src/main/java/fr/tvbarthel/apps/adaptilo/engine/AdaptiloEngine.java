@@ -163,6 +163,16 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
                 //TODO process message to know which controller to use
                 mCallbacks.onReplaceControllerRequest(new BasicControllerFragment());
                 break;
+            case VIBRATOR:
+                if (vibrateOnServerEventIsAllowed()) {
+                    mVibrator.vibrate((Long) message.getContent());
+                }
+                break;
+            case VIBRATOR_PATTERN:
+                if (vibrateOnServerEventIsAllowed()) {
+                    mVibrator.vibrate((long[]) message.getContent(), -1);
+                }
+                break;
             default:
                 mCallbacks.onMessageReceived(message);
                 break;
@@ -213,6 +223,15 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
         if (mVibrateOnServerEvent || mVibrateOnServerEvent) {
             mVibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
         }
+    }
+
+    /**
+     * return true if vibration could be perform on server event
+     *
+     * @return
+     */
+    private boolean vibrateOnServerEventIsAllowed() {
+        return (mVibrator != null && mVibrateOnServerEvent);
     }
 
     /**
