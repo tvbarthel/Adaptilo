@@ -43,10 +43,14 @@ public class BasicControllerOptionsFragment extends DialogFragment {
                 SharedPreferencesHelper.VIBRATOR_PREFERENCE, Context.MODE_PRIVATE);
 
         mCurrentUserVibrationKeyPolicy =
-                mVibratorSharedPreferences.getBoolean(SharedPreferencesHelper.KEY_VIBRATE_ON_KEY_EVENT, true);
+                mVibratorSharedPreferences.getBoolean(
+                        SharedPreferencesHelper.KEY_VIBRATE_ON_KEY_EVENT,
+                        SharedPreferencesHelper.DEFAULT_VIBRATE_ON_KEY_EVENT);
 
         mCurrentUserVibrationServerPolicy =
-                mVibratorSharedPreferences.getBoolean(SharedPreferencesHelper.KEY_VIBRATE_ON_SERVER_EVENT, true);
+                mVibratorSharedPreferences.getBoolean(
+                        SharedPreferencesHelper.KEY_VIBRATE_ON_SERVER_EVENT,
+                        SharedPreferencesHelper.DEFAULT_VIBRATE_ON_SERVER_EVENT);
     }
 
     @Override

@@ -194,26 +194,31 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
      * <p/>
      * Since vibrator preference can pe change in select menu of controller, a listener should
      * be register in order to adapt vibrator behaviour to the most recent user preference
-     * <p/>
-     * TODO default values are true for test purpose only
      */
     private void initVibrator() {
         SharedPreferences prefs = mContext.getSharedPreferences(
                 SharedPreferencesHelper.VIBRATOR_PREFERENCE, Context.MODE_PRIVATE);
 
         mVibrateOnKeyEvent =
-                prefs.getBoolean(SharedPreferencesHelper.KEY_VIBRATE_ON_KEY_EVENT, true);
+                prefs.getBoolean(SharedPreferencesHelper.KEY_VIBRATE_ON_KEY_EVENT,
+                        SharedPreferencesHelper.DEFAULT_VIBRATE_ON_KEY_EVENT);
 
         mVibrateOnServerEvent =
-                prefs.getBoolean(SharedPreferencesHelper.KEY_VIBRATE_ON_SERVER_EVENT, true);
+                prefs.getBoolean(SharedPreferencesHelper.KEY_VIBRATE_ON_SERVER_EVENT,
+                        SharedPreferencesHelper.DEFAULT_VIBRATE_ON_SERVER_EVENT);
 
         mVibratorPreferencesListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
                 if (SharedPreferencesHelper.KEY_VIBRATE_ON_KEY_EVENT.equals(key)) {
-                    mVibrateOnKeyEvent = sharedPreferences.getBoolean(key, true);
+                    mVibrateOnKeyEvent = sharedPreferences.getBoolean(
+                            SharedPreferencesHelper.KEY_VIBRATE_ON_KEY_EVENT,
+                            SharedPreferencesHelper.DEFAULT_VIBRATE_ON_KEY_EVENT);
+
                 } else if (SharedPreferencesHelper.KEY_VIBRATE_ON_SERVER_EVENT.equals(key)) {
-                    mVibrateOnServerEvent = sharedPreferences.getBoolean(key, true);
+                    mVibrateOnServerEvent = sharedPreferences.getBoolean(
+                            SharedPreferencesHelper.KEY_VIBRATE_ON_SERVER_EVENT,
+                            SharedPreferencesHelper.DEFAULT_VIBRATE_ON_SERVER_EVENT);
                 }
             }
         };
