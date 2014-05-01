@@ -11,8 +11,8 @@
     <string name="basic_controller_btn_b">B</string>
     <string name="basic_controller_btn_start">start</string>
     <string name="basic_controller_btn_select">select</string>
-    <string name="basic_controller_game_slot_fake_name">My Super Game</string>
     <string name="basic_controller_name">Basic Controller</string>
+    <string name="basic_controller_message_loading">Loading</string>
 
 
 </resources>

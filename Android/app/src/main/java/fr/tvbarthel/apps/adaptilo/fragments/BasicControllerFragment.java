@@ -2,7 +2,6 @@ package fr.tvbarthel.apps.adaptilo.fragments;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -32,6 +31,11 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
             R.id.basic_controller_btn_arrow_left,
             R.id.basic_controller_btn_arrow_right};
 
+    /**
+     * A {@link android.widget.TextView} used to show messages to the user.
+     */
+    protected TextView mOnScreenMessage;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_basic_controller, container, false);
@@ -41,8 +45,8 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
         ((Button) fragmentView.findViewById(R.id.basic_controller_btn_select)).setTypeface(minecraftiaTypeFace);
         ((TextView) fragmentView.findViewById(R.id.basic_controller_game_name)).setTypeface(minecraftiaTypeFace);
 
-        final TextView gameSlot = (TextView) fragmentView.findViewById(R.id.basic_controller_game_slot);
-        gameSlot.setTypeface(minecraftiaTypeFace);
+        mOnScreenMessage = (TextView) fragmentView.findViewById(R.id.basic_controller_on_screen_message);
+        mOnScreenMessage.setTypeface(minecraftiaTypeFace);
 
         final View.OnTouchListener keyListener = new View.OnTouchListener() {
             @Override
@@ -110,14 +114,6 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
             @Override
             public void onClick(View v) {
                 startQrCodeScanner();
-
-                // TODO remove, for test purpose only
-                int visibility = gameSlot.getVisibility();
-                if (visibility == View.VISIBLE) {
-                    gameSlot.setVisibility(View.GONE);
-                } else {
-                    gameSlot.setVisibility(View.VISIBLE);
-                }
             }
         });
 
@@ -133,8 +129,26 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
      * start QrCode scanner to load a game config.
      */
     public void startQrCodeScanner() {
+        showOnScreenMessage(R.string.basic_controller_message_loading);
         QrCodeHelper.initiateQrCodeScan(getActivity(), BasicControllerCaptureActivity.class,
                 getString(R.string.qr_code_scanner_prompt));
+    }
+
+    /**
+     * Show an on screen message.
+     *
+     * @param resourceId the resource id of the string to be shown.
+     */
+    protected void showOnScreenMessage(int resourceId) {
+        mOnScreenMessage.setVisibility(View.VISIBLE);
+        mOnScreenMessage.setText(resourceId);
+    }
+
+    /**
+     * Hide the on screen message.
+      */
+    protected void hideOnScreenMessage() {
+        mOnScreenMessage.setVisibility(View.INVISIBLE);
     }
 
 }

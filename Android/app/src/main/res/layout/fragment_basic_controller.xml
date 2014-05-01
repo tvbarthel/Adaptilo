@@ -2,6 +2,7 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:custom="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/basic_controller_background">
@@ -16,12 +17,12 @@
         android:visibility="visible">
 
         <TextView
-            android:id="@+id/basic_controller_game_slot"
+            android:id="@+id/basic_controller_on_screen_message"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="@string/basic_controller_game_slot_fake_name"
+            tools:text="My message"
             android:textColor="@color/basic_controller_game_slot_text"
             android:textSize="@dimen/basic_controller_game_slot_text_size"
             android:visibility="visible"/>
