@@ -43,36 +43,6 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
         }
     };
 
-    /**
-     * catch and process messages send to your controller
-     *
-     * @param messageToHandle messages send from the server
-     */
-    abstract public void onMessage(Message messageToHandle);
-
-    public AdaptiloControllerFragment() {
-        mAdaptiloEngine = new AdaptiloEngine(this);
-    }
-
-    /**
-     * load game config into the controller after scan success
-     *
-     * @param config
-     */
-    protected void scannerSuccess(EngineConfig config) {
-        mAdaptiloEngine.setEngineConfig(config);
-        Log.d(TAG, "scannerSuccess : " + config.toString());
-    }
-
-    /**
-     * scanner error
-     *
-     * @param ex
-     */
-    protected void scannerError(QrCodeException ex) {
-        Log.d(TAG, "scannerError : " + ex.getMessage());
-    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -108,6 +78,36 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    /**
+     * catch and process messages send to your controller
+     *
+     * @param messageToHandle messages send from the server
+     */
+    abstract public void onMessage(Message messageToHandle);
+
+    public AdaptiloControllerFragment() {
+        mAdaptiloEngine = new AdaptiloEngine(this);
+    }
+
+    /**
+     * load game config into the controller after scan success
+     *
+     * @param config
+     */
+    protected void scannerSuccess(EngineConfig config) {
+        mAdaptiloEngine.setEngineConfig(config);
+        Log.d(TAG, "scannerSuccess : " + config.toString());
+    }
+
+    /**
+     * scanner error
+     *
+     * @param ex
+     */
+    protected void scannerError(QrCodeException ex) {
+        Log.d(TAG, "scannerError : " + ex.getMessage());
     }
 
     protected void handleQrCodeResult(int requestCode, int resultCode, Intent data) {
