@@ -6,6 +6,7 @@ import org.java_websocket.server.WebSocketServer;
 
 import java.net.InetSocketAddress;
 import java.util.Collection;
+import java.util.Random;
 
 /**
  * A very simple server used to test the communication with the Android application.
@@ -21,6 +22,10 @@ public class AdaptiloServer extends WebSocketServer {
     @Override
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
         System.out.println(TAG + " onOpen - " + conn.toString() + ", " + handshake.toString());
+        // Fake a completed connection.
+        final int connectionId = new Random().nextInt();
+        System.out.println(TAG + " give ID -> " + connectionId);
+        conn.send("{type:'CONNECTION_COMPLETED', content:" + connectionId + "}");
     }
 
     @Override
@@ -38,11 +43,11 @@ public class AdaptiloServer extends WebSocketServer {
         System.out.println(TAG + " onError - " + conn.toString() + ", " + ex.getLocalizedMessage());
     }
 
-    public void sendToAll( String text ) {
+    public void sendToAll(String text) {
         Collection<WebSocket> con = connections();
-        synchronized ( con ) {
-            for( WebSocket c : con ) {
-                c.send( text );
+        synchronized (con) {
+            for (WebSocket c : con) {
+                c.send(text);
             }
         }
     }

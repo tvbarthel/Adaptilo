@@ -85,7 +85,9 @@ public class AdaptiloClient extends WebSocketClient {
     @Override
     public void onOpen(ServerHandshake handshakedata) {
         Log.d(TAG, "onOpen");
-        mCallbacks.onOpen();
+        // Do not call Callback.onOpen() here !
+        // The websocket is openned, but we need the connectionId
+        // Before the AdaptiloClient can be used.
     }
 
     @Override
@@ -95,6 +97,7 @@ public class AdaptiloClient extends WebSocketClient {
         switch (messageReceived.getType()) {
             case CONNECTION_COMPLETED:
                 mConnectionId = (Integer) messageReceived.getContent();
+                mCallbacks.onOpen();
                 break;
             default:
                 mCallbacks.onMessage(messageReceived);
