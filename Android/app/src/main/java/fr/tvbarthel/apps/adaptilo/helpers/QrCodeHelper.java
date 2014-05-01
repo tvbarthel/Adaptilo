@@ -123,7 +123,7 @@ public final class QrCodeHelper {
             throw new QrCodeException("fail to decode path");
         }
 
-        config.setServerUri(host + gameName);
+        config.setServerUri(scannedUri);
         config.setUserRole(role);
         config.setGameRoom(room);
         config.setServerPort(port);

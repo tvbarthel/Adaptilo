@@ -2,6 +2,7 @@ package fr.tvbarthel.apps.adaptilo.fragments;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,6 +14,7 @@ import fr.tvbarthel.apps.adaptilo.R;
 import fr.tvbarthel.apps.adaptilo.activities.BasicControllerCaptureActivity;
 import fr.tvbarthel.apps.adaptilo.exceptions.QrCodeException;
 import fr.tvbarthel.apps.adaptilo.helpers.QrCodeHelper;
+import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
 import fr.tvbarthel.apps.adaptilo.models.Message;
 import fr.tvbarthel.apps.adaptilo.models.UserEvent;
 import fr.tvbarthel.apps.adaptilo.models.enums.EventAction;
@@ -56,6 +58,12 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     }
 
     @Override
+    public void onDetach() {
+        mAdaptiloEngine.stop();
+        super.onDetach();
+    }
+
+    @Override
     public void onMessage(Message messageToHandle) {
         // TODO handle the message
     }
@@ -70,6 +78,12 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     protected void scannerError(QrCodeException ex) {
         super.scannerError(ex);
         showOnScreenMessage(R.string.basic_controller_qrcode_scanner_error);
+    }
+
+    @Override
+    protected void scannerSuccess(EngineConfig config) {
+        super.scannerSuccess(config);
+        mAdaptiloEngine.start();
     }
 
     /**

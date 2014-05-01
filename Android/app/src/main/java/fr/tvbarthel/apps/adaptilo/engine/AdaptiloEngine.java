@@ -59,7 +59,10 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
      * processing that occurs at these transitions to a minimum
      */
     public void start() {
-        if (mEngineConfig != null && mAdaptiloClient != null) {
+        if (mEngineConfig != null) {
+            // convert android.net.Uri to java.net.URI
+            URI serverUri = URI.create(mEngineConfig.getServerUri().toString());
+            mAdaptiloClient = new AdaptiloClient(serverUri, this);
             mAdaptiloClient.connect();
         }
     }
@@ -76,6 +79,7 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
      */
     public void stop() {
         mAdaptiloClient.close();
+        mAdaptiloClient = null;
     }
 
     /**
@@ -96,7 +100,6 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
      */
     public void setEngineConfig(EngineConfig config) {
         mEngineConfig = config;
-        mAdaptiloClient = new AdaptiloClient(URI.create(mEngineConfig.getServerUri()), this);
     }
 
     @Override

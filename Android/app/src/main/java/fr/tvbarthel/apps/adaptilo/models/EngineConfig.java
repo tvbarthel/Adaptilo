@@ -1,5 +1,9 @@
 package fr.tvbarthel.apps.adaptilo.models;
 
+import android.net.Uri;
+
+import java.net.URI;
+
 /**
  * Configuration parameters for {@link fr.tvbarthel.apps.adaptilo.engine.AdaptiloEngine} should
  * come from a QrCode
@@ -9,7 +13,7 @@ public class EngineConfig {
     /**
      * WebSocket server uri
      */
-    private String mServerUri;
+    private Uri mServerUri;
 
     /**
      * WebSocket server port
@@ -34,11 +38,11 @@ public class EngineConfig {
      * GETTER and SETTER
      */
 
-    public String getServerUri() {
+    public Uri getServerUri() {
         return mServerUri;
     }
 
-    public void setServerUri(String mServerUri) {
+    public void setServerUri(Uri mServerUri) {
         this.mServerUri = mServerUri;
     }
 
