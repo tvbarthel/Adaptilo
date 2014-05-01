@@ -78,8 +78,10 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
      * processing that occurs at these transitions to a minimum
      */
     public void stop() {
-        mAdaptiloClient.close();
-        mAdaptiloClient = null;
+        if(mAdaptiloClient != null) {
+            mAdaptiloClient.close();
+            mAdaptiloClient = null;
+        }
     }
 
     /**
