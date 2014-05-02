@@ -11,6 +11,7 @@ import fr.tvbarthel.apps.adaptilo.fragments.BasicControllerFragment;
 import fr.tvbarthel.apps.adaptilo.helpers.SharedPreferencesHelper;
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
 import fr.tvbarthel.apps.adaptilo.models.Message;
+import fr.tvbarthel.apps.adaptilo.models.UserEvent;
 import fr.tvbarthel.apps.adaptilo.network.AdaptiloClient;
 
 /**
@@ -26,7 +27,7 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
     /**
      * default duration in milli
      */
-    private static final int VIBRATOR_ON_KEY_DURATION = 10;
+    private static final int VIBRATOR_ON_KEY_DURATION = 15;
 
     /**
      * Context used to start and stop some systems services directly from the server
@@ -83,6 +84,45 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
         mReadyToCommunicate = false;
     }
 
+    @Override
+    public void onOpen() {
+        mReadyToCommunicate = true;
+    }
+
+    @Override
+    public void onMessage(Message message) {
+        switch (message.getType()) {
+            case REPLACE_CONTROLLER:
+                //TODO process message to know which controller to use
+                mCallbacks.onReplaceControllerRequest(new BasicControllerFragment());
+                break;
+            case VIBRATOR:
+                if (vibrateOnServerEventIsAllowed()) {
+                    mVibrator.vibrate((Long) message.getContent());
+                }
+                break;
+            case VIBRATOR_PATTERN:
+                if (vibrateOnServerEventIsAllowed()) {
+                    mVibrator.vibrate((long[]) message.getContent(), -1);
+                }
+                break;
+            default:
+                mCallbacks.onMessageReceived(message);
+                break;
+        }
+    }
+
+    @Override
+    public void onClose() {
+        mReadyToCommunicate = false;
+    }
+
+
+    @Override
+    public void onError(Exception ex) {
+
+    }
+
     /**
      * Initialize engine features which need context. Should be called directly since it's already
      * managed by the {@link fr.tvbarthel.apps.adaptilo.fragments.AdaptiloControllerFragment}
@@ -132,10 +172,7 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
      * @param message
      */
     public void sendUserInput(Message message) {
-        if (mVibrator != null && mVibrateOnKeyEvent) {
-            mVibrator.vibrate(VIBRATOR_ON_KEY_DURATION);
-        }
-
+        vibrateOnUserEvent((UserEvent) message.getContent());
         if (mReadyToCommunicate) {
             mAdaptiloClient.send(message);
         }
@@ -151,43 +188,6 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
         mAdaptiloClient = new AdaptiloClient(URI.create(mEngineConfig.getServerUri()), this);
     }
 
-    @Override
-    public void onOpen() {
-        mReadyToCommunicate = true;
-    }
-
-    @Override
-    public void onMessage(Message message) {
-        switch (message.getType()) {
-            case REPLACE_CONTROLLER:
-                //TODO process message to know which controller to use
-                mCallbacks.onReplaceControllerRequest(new BasicControllerFragment());
-                break;
-            case VIBRATOR:
-                if (vibrateOnServerEventIsAllowed()) {
-                    mVibrator.vibrate((Long) message.getContent());
-                }
-                break;
-            case VIBRATOR_PATTERN:
-                if (vibrateOnServerEventIsAllowed()) {
-                    mVibrator.vibrate((long[]) message.getContent(), -1);
-                }
-                break;
-            default:
-                mCallbacks.onMessageReceived(message);
-                break;
-        }
-    }
-
-    @Override
-    public void onClose() {
-        mReadyToCommunicate = false;
-    }
-
-    @Override
-    public void onError(Exception ex) {
-
-    }
 
     /**
      * Retrieve the vibrator as well as user preferences regarding to vibrator policy
@@ -237,6 +237,21 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
      */
     private boolean vibrateOnServerEventIsAllowed() {
         return (mVibrator != null && mVibrateOnServerEvent);
+    }
+
+    /**
+     * vibrate according to user input
+     *
+     * @param userEvent
+     */
+    private void vibrateOnUserEvent(UserEvent userEvent) {
+        if (mVibrator != null && mVibrateOnKeyEvent) {
+            switch (userEvent.getEventAction()) {
+                case ACTION_KEY_DOWN:
+                    mVibrator.vibrate(VIBRATOR_ON_KEY_DURATION);
+                    break;
+            }
+        }
     }
 
     /**
