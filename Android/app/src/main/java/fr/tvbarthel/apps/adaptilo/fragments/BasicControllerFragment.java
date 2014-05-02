@@ -45,13 +45,13 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
         View fragmentView = inflater.inflate(R.layout.fragment_basic_controller, container, false);
 
         mCustomTypeFace = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Minecraftia.ttf");
-        ((Button) fragmentView.findViewById(R.id.basic_controller_btn_select)).setTypeface(mCustomTypeFace);
         ((TextView) fragmentView.findViewById(R.id.basic_controller_game_name)).setTypeface(mCustomTypeFace);
         mOnScreenMessage = (TextView) fragmentView.findViewById(R.id.basic_controller_on_screen_message);
         mOnScreenMessage.setTypeface(mCustomTypeFace);
 
         initKeyButtons(fragmentView);
         initStartButton(fragmentView);
+        initSelectButton(fragmentView);
 
         return fragmentView;
     }
@@ -119,6 +119,22 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
             @Override
             public void onClick(View v) {
                 startQrCodeScanner();
+            }
+        });
+    }
+
+    /**
+     * Init the select button.
+     *
+     * @param fragmentView the {@link android.view.View} for the fragment's UI.
+     */
+    protected void initSelectButton(View fragmentView) {
+        Button selectButton = (Button) fragmentView.findViewById(R.id.basic_controller_btn_select);
+        selectButton.setTypeface(mCustomTypeFace);
+        selectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                (new BasicControllerOptionsFragment()).show(getFragmentManager(), "dialog_options");
             }
         });
     }

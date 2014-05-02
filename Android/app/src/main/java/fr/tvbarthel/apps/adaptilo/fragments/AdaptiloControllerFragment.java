@@ -53,6 +53,7 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
         }
 
         mCallbacks = (Callbacks) activity;
+        mAdaptiloEngine.initEngine(getActivity().getApplicationContext());
     }
 
     @Override

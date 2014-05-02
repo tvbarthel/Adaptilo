@@ -36,11 +36,22 @@ public class MessageDeserializerHelper implements JsonDeserializer<Message> {
         Message message = new Message();
         message.setType(messageType);
 
+        JsonElement content = jsonObject.get(NODE_CONTENT);
+
         switch (messageType) {
             case CONNECTION_COMPLETED:
-                JsonElement content = jsonObject.get(NODE_CONTENT);
                 Integer connectionId = context.deserialize(content, Integer.class);
                 message.setContent(connectionId);
+                break;
+
+            case VIBRATOR:
+                Long duration = context.deserialize(content, Long.class);
+                message.setContent(duration);
+                break;
+
+            case VIBRATOR_PATTERN:
+                long[] pattern = context.deserialize(content, long[].class);
+                message.setContent(pattern);
                 break;
         }
         return message;

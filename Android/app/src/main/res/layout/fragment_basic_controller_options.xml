@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/default_padding">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/basic_controller_options_title"
+        android:id="@+id/fragment_basic_controller_options_title"
+        android:textColor="@color/gray_dark"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/basic_controller_options_vibrator_key"
+        android:textColor="@color/gray_dark"
+        android:id="@+id/fragment_basic_controller_options_key_label"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/fragment_basic_controller_options_title"/>
+
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/fragment_basic_controller_options_key_toggle"
+        android:layout_gravity="end"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/fragment_basic_controller_options_key_label"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/basic_controller_options_vibrator_server"
+        android:textColor="@color/gray_dark"
+        android:gravity="center"
+        android:id="@+id/fragment_basic_controller_options_server_label"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/fragment_basic_controller_options_key_toggle"/>
+
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/fragment_basic_controller_options_server_toggle"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/fragment_basic_controller_options_server_label"/>
+
+</RelativeLayout>

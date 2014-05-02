@@ -16,5 +16,11 @@
     <string name="basic_controller_qrcode_scanner_error">Invalid QrCode</string>
     <string name="basic_controller_message_playing">Playing…</string>
 
+    <!-- Basic Controller Options Fragment !-->
+    <string name="basic_controller_options_title">Pause</string>
+    <string name="basic_controller_options_vibrator_key">Vibrate on keypress</string>
+    <string name="basic_controller_options_vibrator_server">Allow vibration events from the server</string>
+    <string name="basic_controller_options_positive">Save and resume</string>
+    <string name="basic_controller_options_negative">Resume</string>
 
 </resources>

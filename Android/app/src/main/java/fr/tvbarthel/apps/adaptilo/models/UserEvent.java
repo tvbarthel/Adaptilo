@@ -44,27 +44,27 @@ public class UserEvent {
         mEventTimestamp = System.currentTimeMillis();
     }
 
-    public EventType getmEventType() {
+    public EventType getEventType() {
         return mEventType;
     }
 
-    public void setmEventType(EventType mEventType) {
+    public void setEventType(EventType mEventType) {
         this.mEventType = mEventType;
     }
 
-    public EventAction getmEventAction() {
+    public EventAction getEventAction() {
         return mEventAction;
     }
 
-    public void setmEventAction(EventAction mEventAction) {
+    public void setEventAction(EventAction mEventAction) {
         this.mEventAction = mEventAction;
     }
 
-    public Long getmEventTimestamp() {
+    public Long getEventTimestamp() {
         return mEventTimestamp;
     }
 
-    public void setmEventTimestamp(Long mEventTimestamp) {
+    public void setEventTimestamp(Long mEventTimestamp) {
         this.mEventTimestamp = mEventTimestamp;
     }
 }
