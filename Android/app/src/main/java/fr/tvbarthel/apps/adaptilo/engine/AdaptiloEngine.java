@@ -175,6 +175,24 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
     }
 
     /**
+     * pause the engine
+     */
+    public void pause() {
+        if (mAdaptiloClient != null && mReadyToCommunicate) {
+            mAdaptiloClient.send(new Message(MessageType.PAUSE, null));
+        }
+    }
+
+    /**
+     * resume the engine
+     */
+    public void resume() {
+        if (mAdaptiloClient != null && mReadyToCommunicate) {
+            mAdaptiloClient.send(new Message(MessageType.RESUME, null));
+        }
+    }
+
+    /**
      * Engine will process user input and send message to the WebSocket server
      *
      * @param message

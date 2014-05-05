@@ -36,6 +36,13 @@ public class BasicControllerOptionsFragment extends DialogFragment {
 
     private boolean mCurrentUserVibrationServerPolicy;
 
+    private Callbacks mCallbacks;
+
+    public BasicControllerOptionsFragment(Callbacks callbacks) {
+        super();
+        mCallbacks = callbacks;
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -78,11 +85,17 @@ public class BasicControllerOptionsFragment extends DialogFragment {
         mServerVibrationToggleButton.setTypeface(typeface);
         mServerVibrationToggleButton.setChecked(mCurrentUserVibrationServerPolicy);
 
-        builder.setNegativeButton(R.string.basic_controller_options_negative, null)
+        builder.setNegativeButton(R.string.basic_controller_options_negative, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mCallbacks.onDialogHidden();
+            }
+        })
                 .setPositiveButton(R.string.basic_controller_options_positive, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         saveOptions();
+                        mCallbacks.onDialogHidden();
                     }
                 })
                 .setView(dialogView);
@@ -113,5 +126,15 @@ public class BasicControllerOptionsFragment extends DialogFragment {
         vibratorEditor.putBoolean(SharedPreferencesHelper.KEY_VIBRATE_ON_SERVER_EVENT,
                 mServerVibrationToggleButton.isChecked());
         vibratorEditor.commit();
+    }
+
+    /**
+     * catch events
+     */
+    public interface Callbacks {
+        /**
+         * called when dialog fragment is dismissed
+         */
+        public void onDialogHidden();
     }
 }

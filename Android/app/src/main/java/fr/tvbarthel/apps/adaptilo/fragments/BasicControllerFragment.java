@@ -134,7 +134,14 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
         selectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                (new BasicControllerOptionsFragment()).show(getFragmentManager(), "dialog_options");
+                final BasicControllerOptionsFragment options = new BasicControllerOptionsFragment(new BasicControllerOptionsFragment.Callbacks() {
+                    @Override
+                    public void onDialogHidden() {
+                        mAdaptiloEngine.resume();
+                    }
+                });
+                mAdaptiloEngine.pause();
+                (options).show(getFragmentManager(), "dialog_options");
             }
         });
     }

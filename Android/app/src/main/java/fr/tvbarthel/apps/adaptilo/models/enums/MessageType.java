@@ -30,6 +30,16 @@ public enum MessageType {
     /**
      * send by the {@link fr.tvbarthel.apps.adaptilo.engine.AdaptiloEngine} when it's ready.
      */
-    ENGINE_READY
+    ENGINE_READY,
+
+    /**
+     * send by the client when game should be paused
+     */
+    PAUSE,
+
+    /**
+     * send by the client when game should be resumed
+     */
+    RESUME,
 
 }

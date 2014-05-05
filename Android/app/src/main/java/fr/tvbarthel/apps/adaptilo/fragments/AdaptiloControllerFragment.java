@@ -60,6 +60,18 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
     public void onDetach() {
         super.onDetach();
         mCallbacks = sDummyCallbacks;
+        mAdaptiloEngine.stop();
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        mAdaptiloEngine.pause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mAdaptiloEngine.resume();
     }
 
     @Override
