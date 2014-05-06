@@ -88,6 +88,7 @@ public class AdaptiloClient extends WebSocketClient {
         // Do not call Callback.onOpen() here !
         // The websocket is openned, but we need the connectionId
         // Before the AdaptiloClient can be used.
+        mCallbacks.onConfigRequested();
     }
 
     @Override
@@ -121,6 +122,12 @@ public class AdaptiloClient extends WebSocketClient {
      * Callbacks interface
      */
     public interface Callbacks {
+
+        /**
+         * Connection open, wait for a config to complete connection
+         */
+        public void onConfigRequested();
+
         /**
          * Client ready to send message
          */

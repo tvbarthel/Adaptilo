@@ -11,6 +11,7 @@ import fr.tvbarthel.apps.adaptilo.fragments.BasicControllerFragment;
 import fr.tvbarthel.apps.adaptilo.helpers.SharedPreferencesHelper;
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
 import fr.tvbarthel.apps.adaptilo.models.Message;
+import fr.tvbarthel.apps.adaptilo.models.RegisterControllerRequest;
 import fr.tvbarthel.apps.adaptilo.models.UserEvent;
 import fr.tvbarthel.apps.adaptilo.models.enums.MessageType;
 import fr.tvbarthel.apps.adaptilo.network.AdaptiloClient;
@@ -83,6 +84,16 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
     public AdaptiloEngine(Callbacks callbacks) {
         mCallbacks = callbacks;
         mReadyToCommunicate = false;
+    }
+
+    @Override
+    public void onConfigRequested() {
+        //send the current loaded config
+        mAdaptiloClient.send(new Message(MessageType.REGISTER_CONTROLLER, new RegisterControllerRequest(
+                mEngineConfig.getServerUri().getPath(),
+                mEngineConfig.getGameRoom(),
+                mEngineConfig.getUserRole()
+        )));
     }
 
     @Override

@@ -1,4 +1,4 @@
-package fr.tvbarthel.apps.adaptilo.models.enums;
+package fr.tvbarthel.apps.adaptilo.server.models;
 
 public enum MessageType {
 
@@ -28,7 +28,7 @@ public enum MessageType {
     USER_INPUT,
 
     /**
-     * send by the {@link fr.tvbarthel.apps.adaptilo.engine.AdaptiloEngine} when it's ready.
+     * send by the client when it's ready.
      */
     ENGINE_READY,
 
@@ -43,7 +43,7 @@ public enum MessageType {
     RESUME,
 
     /**
-     * send by the {@link fr.tvbarthel.apps.adaptilo.engine.AdaptiloEngine} when a game has been loaded
+     * send by the client when a game has been loaded
      */
     REGISTER_CONTROLLER
 
