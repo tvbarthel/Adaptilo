@@ -8,7 +8,7 @@ public class NetworkMessage {
     /**
      * connection id which identify the client on the server
      */
-    private int mConnectionId;
+    private String mConnectionId;
 
     /**
      * message to deliver
@@ -16,7 +16,7 @@ public class NetworkMessage {
     private Message mMessage;
 
 
-    public NetworkMessage(int connectionId, Message message) {
+    public NetworkMessage(String connectionId, Message message) {
         mConnectionId = connectionId;
         mMessage = message;
     }
@@ -25,11 +25,11 @@ public class NetworkMessage {
      * GETTER AND SETTER
      */
 
-    public int getConnectionId() {
+    public String getConnectionId() {
         return mConnectionId;
     }
 
-    public void setConnectionId(int mConnectionId) {
+    public void setConnectionId(String mConnectionId) {
         this.mConnectionId = mConnectionId;
     }
 

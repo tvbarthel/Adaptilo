@@ -40,7 +40,7 @@ public class AdaptiloClient extends WebSocketClient {
     /**
      * identify client on the server
      */
-    private int mConnectionId;
+    private String mConnectionId;
 
     public AdaptiloClient(URI serverURI, Callbacks callbacks) {
         super(serverURI);
@@ -97,7 +97,8 @@ public class AdaptiloClient extends WebSocketClient {
         final Message messageReceived = mGsonParser.fromJson(message, Message.class);
         switch (messageReceived.getType()) {
             case CONNECTION_COMPLETED:
-                mConnectionId = (Integer) messageReceived.getContent();
+                mConnectionId = (String) messageReceived.getContent();
+                Log.d(TAG, "CONNECTION_COMPLETED : " + mConnectionId);
                 mCallbacks.onOpen();
                 break;
             default:

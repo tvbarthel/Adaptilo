@@ -37,7 +37,7 @@ public class MessageDeserializerHelper implements JsonDeserializer<Message> {
 
         switch (messageType) {
             case CONNECTION_COMPLETED:
-                Integer connectionId = context.deserialize(content, Integer.class);
+                String connectionId = context.deserialize(content, String.class);
                 message.setContent(connectionId);
                 break;
 
