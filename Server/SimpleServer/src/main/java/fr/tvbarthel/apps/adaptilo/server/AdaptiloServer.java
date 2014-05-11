@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import fr.tvbarthel.apps.adaptilo.server.helpers.MessageDeserializerHelper;
 import fr.tvbarthel.apps.adaptilo.server.models.Message;
+import fr.tvbarthel.apps.adaptilo.server.models.MessageType;
 import fr.tvbarthel.apps.adaptilo.server.models.NetworkMessage;
 import fr.tvbarthel.apps.adaptilo.server.models.RegisterControllerRequest;
 import org.java_websocket.WebSocket;
@@ -51,22 +52,25 @@ public class AdaptiloServer extends WebSocketServer {
         final NetworkMessage messageReceived = mParser.fromJson(message, NetworkMessage.class);
         final Message messageContent = messageReceived.getMessage();
         final String connectionId = messageReceived.getConnectionId();
+        Message answer = null;
 
         //process each message type
         switch (messageContent.getType()) {
             case REGISTER_CONTROLLER:
                 final RegisterControllerRequest registerControllerRequest =
                         (RegisterControllerRequest) messageContent.getContent();
-                System.out.println(TAG + " REGISTER_CONFIG - " + registerControllerRequest.getGameName());
-
                 final int seed = new Random().nextInt();
                 final String givenId = registerControllerRequest.getGameName() +
                         registerControllerRequest.getGameRoom() +
                         registerControllerRequest.getGameRole() +
                         seed;
                 System.out.println(TAG + " give ID -> " + givenId);
-                conn.send("{type:'CONNECTION_COMPLETED', content:'" + givenId + "'}");
+                answer = new Message(MessageType.CONNECTION_COMPLETED, givenId);
                 break;
+        }
+
+        if (answer != null) {
+            conn.send(mParser.toJson(answer));
         }
     }
 
