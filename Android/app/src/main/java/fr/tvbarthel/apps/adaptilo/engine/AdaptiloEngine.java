@@ -2,12 +2,16 @@ package fr.tvbarthel.apps.adaptilo.engine;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Vibrator;
+import android.util.Log;
 
 import java.net.URI;
 
 import fr.tvbarthel.apps.adaptilo.fragments.AdaptiloControllerFragment;
 import fr.tvbarthel.apps.adaptilo.fragments.BasicControllerFragment;
+import fr.tvbarthel.apps.adaptilo.helpers.SensorListenerHelper;
 import fr.tvbarthel.apps.adaptilo.helpers.SharedPreferencesHelper;
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
 import fr.tvbarthel.apps.adaptilo.models.Message;
@@ -75,6 +79,22 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
      * let the engine know if the WebSocket client is connected
      */
     private boolean mReadyToCommunicate;
+
+    /**
+     * sensor manager
+     */
+    private SensorManager mSensorManager;
+
+    /**
+     * accelerometer
+     */
+    private Sensor mAccelerometer;
+
+    /**
+     * listener for shake event
+     */
+    private ShakeListener mShakeListener;
+
 
     /**
      * Create a new AdaptiloEngine to process userInput.
@@ -146,6 +166,8 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
         if (mContext == null) {
             mContext = context;
             initVibrator();
+
+            mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         }
     }
 
@@ -192,6 +214,11 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
         if (mAdaptiloClient != null && mReadyToCommunicate) {
             mAdaptiloClient.send(new Message(MessageType.PAUSE, null));
         }
+
+        //shake detection
+        if (mShakeListener != null) {
+            shakeDetection(SensorListenerHelper.PAUSE);
+        }
     }
 
     /**
@@ -200,6 +227,11 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
     public void resume() {
         if (mAdaptiloClient != null && mReadyToCommunicate) {
             mAdaptiloClient.send(new Message(MessageType.RESUME, null));
+        }
+
+        //shake detection
+        if (mShakeListener != null) {
+            shakeDetection(SensorListenerHelper.RESUME);
         }
     }
 
@@ -222,6 +254,55 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
      */
     public void setEngineConfig(EngineConfig config) {
         mEngineConfig = config;
+    }
+
+    /**
+     * manage shake detection
+     *
+     * @param state {@link fr.tvbarthel.apps.adaptilo.helpers.SensorListenerHelper}
+     */
+    private void shakeDetection(int state) {
+        switch (state) {
+            case SensorListenerHelper.START:
+                initAccelerometer();
+                if (mShakeListener == null) {
+                    mShakeListener = new ShakeListener() {
+                        @Override
+                        public void onShakeDetected() {
+                            //TODO send shake event to the server
+                            Log.d("DEBUG====", "onShakeDetected");
+                        }
+
+                        @Override
+                        public void onShaking(float speed) {
+                            //TODO send shake event to the server
+                        }
+                    };
+                }
+                mSensorManager.registerListener(mShakeListener,
+                        mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+                break;
+            case SensorListenerHelper.RESUME:
+                mSensorManager.registerListener(mShakeListener,
+                        mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+                break;
+            case SensorListenerHelper.PAUSE:
+                mSensorManager.unregisterListener(mShakeListener, mAccelerometer);
+                break;
+            case SensorListenerHelper.STOP:
+                mSensorManager.unregisterListener(mShakeListener, mAccelerometer);
+                mShakeListener = null;
+                break;
+        }
+    }
+
+    /**
+     * initialize accelerometer
+     */
+    private void initAccelerometer() {
+        if (mAccelerometer == null) {
+            mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        }
     }
 
     /**
