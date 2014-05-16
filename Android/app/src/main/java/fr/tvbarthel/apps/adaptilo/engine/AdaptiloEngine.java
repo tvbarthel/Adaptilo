@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Vibrator;
-import android.util.Log;
 
 import java.net.URI;
 
@@ -168,6 +167,7 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
             initVibrator();
 
             mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+            shakeDetection(SensorListenerHelper.START);
         }
     }
 
@@ -270,11 +270,10 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
                         @Override
                         public void onShakeDetected() {
                             //TODO send shake event to the server
-                            Log.d("DEBUG====", "onShakeDetected");
                         }
 
                         @Override
-                        public void onShaking(float speed) {
+                        public void onShaking(double speed) {
                             //TODO send shake event to the server
                         }
                     };

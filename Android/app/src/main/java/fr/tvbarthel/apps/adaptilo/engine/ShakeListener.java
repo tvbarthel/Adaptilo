@@ -12,7 +12,27 @@ public abstract class ShakeListener implements SensorEventListener {
     /**
      * noise boundary for shake detection
      */
-    private static final float SHAKE_BOUNDARY = 20.0f;
+    private static final float SHAKE_BOUNDARY = 18.0f;
+
+    /**
+     * time in milli between two shake to considered that user is shaking
+     */
+    private static final int SHAKE_SPEED_BOUNDARY = 2000;
+
+    /**
+     * smoothing ratio for Low-Pass filter algorithm
+     */
+    private static final double LOW_PASS_FILTER_SMOOTHING = 3.0d;
+
+    /**
+     * last shake
+     */
+    private double mLastCheck = 0.0d;
+
+    /**
+     * last shake speed
+     */
+    private double mLastSpeed = 0.0d;
 
     /**
      * called when shake is detected
@@ -24,7 +44,7 @@ public abstract class ShakeListener implements SensorEventListener {
      *
      * @param speed
      */
-    public abstract void onShaking(float speed);
+    public abstract void onShaking(double speed);
 
 
     @Override
@@ -37,8 +57,20 @@ public abstract class ShakeListener implements SensorEventListener {
             final float shakeAcceleration = (float) Math.sqrt((double) (x * x + y * y + z * z));
 
             if (shakeAcceleration > SHAKE_BOUNDARY) {
-                onShakeDetected();
+                final double currentShake = System.currentTimeMillis();
+                final double delay = currentShake - mLastCheck;
+                if (delay <= SHAKE_SPEED_BOUNDARY) {
+                    //user is shaking
+                    final double newSpeed = 2.0f / delay * 1000;
+                    mLastSpeed = mLastSpeed + (newSpeed - mLastSpeed) / LOW_PASS_FILTER_SMOOTHING;
+                    onShaking(mLastSpeed);
+                } else {
+                    //first shake
+                    onShakeDetected();
+                }
+                mLastCheck = currentShake;
             }
+
 
         }
     }
