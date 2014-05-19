@@ -45,6 +45,11 @@ public enum MessageType {
     /**
      * send by the client when a game has been loaded
      */
-    REGISTER_CONTROLLER
+    REGISTER_CONTROLLER,
+
+    /**
+     * send by the client when sensor events are fired
+     */
+    SENSOR_INPUT
 
 }

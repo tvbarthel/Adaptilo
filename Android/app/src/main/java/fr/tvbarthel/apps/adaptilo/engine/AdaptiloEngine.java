@@ -15,7 +15,10 @@ import fr.tvbarthel.apps.adaptilo.helpers.SharedPreferencesHelper;
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
 import fr.tvbarthel.apps.adaptilo.models.Message;
 import fr.tvbarthel.apps.adaptilo.models.RegisterControllerRequest;
+import fr.tvbarthel.apps.adaptilo.models.SensorEvent;
 import fr.tvbarthel.apps.adaptilo.models.UserEvent;
+import fr.tvbarthel.apps.adaptilo.models.enums.EventAction;
+import fr.tvbarthel.apps.adaptilo.models.enums.EventType;
 import fr.tvbarthel.apps.adaptilo.models.enums.MessageType;
 import fr.tvbarthel.apps.adaptilo.network.AdaptiloClient;
 
@@ -269,12 +272,24 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
                     mShakeListener = new ShakeListener() {
                         @Override
                         public void onShakeDetected() {
-                            //TODO send shake event to the server
+                            //send shake detected
+                            if (mReadyToCommunicate) {
+                                final SensorEvent sensorEvent =
+                                        new SensorEvent(EventType.SHAKER, EventAction.ACTION_HAPPENED, 0);
+                                final Message message = new Message(MessageType.SENSOR_INPUT, sensorEvent);
+                                mAdaptiloClient.send(message);
+                            }
                         }
 
                         @Override
                         public void onShaking(double speed) {
-                            //TODO send shake event to the server
+                            //send shaking event
+                            if (mReadyToCommunicate) {
+                                final SensorEvent sensorEvent =
+                                        new SensorEvent(EventType.SHAKER, EventAction.ACTION_DOING, speed);
+                                final Message message = new Message(MessageType.SENSOR_INPUT, sensorEvent);
+                                mAdaptiloClient.send(message);
+                            }
                         }
                     };
                 }

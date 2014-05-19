@@ -7,5 +7,9 @@ public enum EventAction {
 
     ACTION_KEY_DOWN,
 
-    ACTION_KEY_UP
+    ACTION_KEY_UP,
+
+    ACTION_HAPPENED,
+
+    ACTION_DOING
 }

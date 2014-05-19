@@ -15,6 +15,11 @@ public enum EventType {
 
     KEY_ARROW_RIGHT,
 
-    KEY_ARROW_DOWN
+    KEY_ARROW_DOWN,
+
+    /**
+     * linked to {@link fr.tvbarthel.apps.adaptilo.engine.ShakeListener}
+     */
+    SHAKER
 
 }

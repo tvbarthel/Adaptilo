@@ -12,18 +12,18 @@ public class UserEvent {
      * type of the event, KEY_A for instance.
      * {@link fr.tvbarthel.apps.adaptilo.models.enums.EventType}
      */
-    private EventType mEventType;
+    protected EventType mEventType;
 
     /**
      * action performed for the given type, ACTION_KEY_DOWN for instance.
      * {@link fr.tvbarthel.apps.adaptilo.models.enums.EventAction}
      */
-    private EventAction mEventAction;
+    protected EventAction mEventAction;
 
     /**
      * timestamp of the event
      */
-    private Long mEventTimestamp;
+    protected Long mEventTimestamp;
 
     /**
      * default constructor
