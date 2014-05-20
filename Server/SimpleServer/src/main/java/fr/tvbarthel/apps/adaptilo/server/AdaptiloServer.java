@@ -3,10 +3,7 @@ package fr.tvbarthel.apps.adaptilo.server;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import fr.tvbarthel.apps.adaptilo.server.helpers.MessageDeserializerHelper;
-import fr.tvbarthel.apps.adaptilo.server.models.Message;
-import fr.tvbarthel.apps.adaptilo.server.models.MessageType;
-import fr.tvbarthel.apps.adaptilo.server.models.NetworkMessage;
-import fr.tvbarthel.apps.adaptilo.server.models.RegisterControllerRequest;
+import fr.tvbarthel.apps.adaptilo.server.models.*;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -86,6 +83,16 @@ public class AdaptiloServer extends WebSocketServer {
                 c.send(text);
             }
         }
+    }
+
+    /**
+     * allow to test shaker activation and deactivation
+     * TODO remove, only for test purpose
+     */
+    public void enableShaker(boolean enable) {
+        final EventAction action = enable ? EventAction.ACTION_ENABLE : EventAction.ACTION_DISABLE;
+        final Event enableShaker = new Event(EventType.SHAKER, action);
+        sendToAll(mParser.toJson(new Message(MessageType.SENSOR, enableShaker)));
     }
 
     /**

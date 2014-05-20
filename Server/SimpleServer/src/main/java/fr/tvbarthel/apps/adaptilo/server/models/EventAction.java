@@ -1,7 +1,7 @@
-package fr.tvbarthel.apps.adaptilo.models.enums;
+package fr.tvbarthel.apps.adaptilo.server.models;
 
 /**
- * Action which can be perform by an {@link fr.tvbarthel.apps.adaptilo.models.enums.EventType}
+ * Action which can be performed by a client
  */
 public enum EventAction {
 

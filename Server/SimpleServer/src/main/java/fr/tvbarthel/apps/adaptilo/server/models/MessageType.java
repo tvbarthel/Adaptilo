@@ -50,6 +50,6 @@ public enum MessageType {
     /**
      * send by the client when sensor events are fired
      */
-    SENSOR_INPUT
+    SENSOR
 
 }

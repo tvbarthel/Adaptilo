@@ -8,6 +8,7 @@ import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 
+import fr.tvbarthel.apps.adaptilo.models.Event;
 import fr.tvbarthel.apps.adaptilo.models.Message;
 import fr.tvbarthel.apps.adaptilo.models.enums.MessageType;
 
@@ -52,6 +53,11 @@ public class MessageDeserializerHelper implements JsonDeserializer<Message> {
             case VIBRATOR_PATTERN:
                 long[] pattern = context.deserialize(content, long[].class);
                 message.setContent(pattern);
+                break;
+
+            case SENSOR:
+                Event event = context.deserialize(content, Event.class);
+                message.setContent(event);
                 break;
         }
         return message;

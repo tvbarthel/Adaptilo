@@ -1,6 +1,7 @@
 package fr.tvbarthel.apps.adaptilo.server.helpers;
 
 import com.google.gson.*;
+import fr.tvbarthel.apps.adaptilo.server.models.Event;
 import fr.tvbarthel.apps.adaptilo.server.models.Message;
 import fr.tvbarthel.apps.adaptilo.server.models.MessageType;
 import fr.tvbarthel.apps.adaptilo.server.models.RegisterControllerRequest;
@@ -54,6 +55,11 @@ public class MessageDeserializerHelper implements JsonDeserializer<Message> {
             case REGISTER_CONTROLLER:
                 RegisterControllerRequest registrationRequest = context.deserialize(content, RegisterControllerRequest.class);
                 message.setContent(registrationRequest);
+                break;
+
+            case SENSOR:
+                Event event = context.deserialize(content, Event.class);
+                message.setContent(event);
                 break;
         }
         return message;

@@ -6,19 +6,7 @@ import fr.tvbarthel.apps.adaptilo.models.enums.EventType;
 /**
  * Encapsulate user event
  */
-public class UserEvent {
-
-    /**
-     * type of the event, KEY_A for instance.
-     * {@link fr.tvbarthel.apps.adaptilo.models.enums.EventType}
-     */
-    protected EventType mEventType;
-
-    /**
-     * action performed for the given type, ACTION_KEY_DOWN for instance.
-     * {@link fr.tvbarthel.apps.adaptilo.models.enums.EventAction}
-     */
-    protected EventAction mEventAction;
+public class UserEvent extends Event {
 
     /**
      * timestamp of the event
@@ -29,7 +17,7 @@ public class UserEvent {
      * default constructor
      */
     public UserEvent() {
-
+        super();
     }
 
     /**
@@ -39,25 +27,8 @@ public class UserEvent {
      * @param action
      */
     public UserEvent(EventType type, EventAction action) {
-        mEventType = type;
-        mEventAction = action;
+        super(type, action);
         mEventTimestamp = System.currentTimeMillis();
-    }
-
-    public EventType getEventType() {
-        return mEventType;
-    }
-
-    public void setEventType(EventType mEventType) {
-        this.mEventType = mEventType;
-    }
-
-    public EventAction getEventAction() {
-        return mEventAction;
-    }
-
-    public void setEventAction(EventAction mEventAction) {
-        this.mEventAction = mEventAction;
     }
 
     public Long getEventTimestamp() {

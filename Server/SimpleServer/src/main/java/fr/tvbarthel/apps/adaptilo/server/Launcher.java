@@ -19,6 +19,10 @@ public class Launcher {
                 System.out.println("exit");
                 server.stop();
                 break;
+            } else if (in.equals("enable shaker")) {
+                server.enableShaker(true);
+            } else if (in.equals("disable shaker")) {
+                server.enableShaker(false);
             } else {
                 System.out.println("sendToAll " + in);
                 server.sendToAll(in);

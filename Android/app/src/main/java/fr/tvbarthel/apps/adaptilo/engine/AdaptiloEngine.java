@@ -13,6 +13,7 @@ import fr.tvbarthel.apps.adaptilo.fragments.BasicControllerFragment;
 import fr.tvbarthel.apps.adaptilo.helpers.SensorListenerHelper;
 import fr.tvbarthel.apps.adaptilo.helpers.SharedPreferencesHelper;
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
+import fr.tvbarthel.apps.adaptilo.models.Event;
 import fr.tvbarthel.apps.adaptilo.models.Message;
 import fr.tvbarthel.apps.adaptilo.models.RegisterControllerRequest;
 import fr.tvbarthel.apps.adaptilo.models.SensorEvent;
@@ -141,6 +142,10 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
                     mVibrator.vibrate((long[]) message.getContent(), -1);
                 }
                 break;
+
+            case SENSOR:
+                processSensorEvent((Event) message.getContent());
+                break;
             default:
                 mCallbacks.onMessageReceived(message);
                 break;
@@ -170,7 +175,6 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
             initVibrator();
 
             mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
-            shakeDetection(SensorListenerHelper.START);
         }
     }
 
@@ -260,6 +264,24 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
     }
 
     /**
+     * handle message from server regarding sensor
+     *
+     * @param content
+     */
+    private void processSensorEvent(Event content) {
+        final EventAction action = content.getEventAction();
+        switch (content.getEventType()) {
+            case SHAKER:
+                if (action == EventAction.ACTION_ENABLE) {
+                    shakeDetection(SensorListenerHelper.START);
+                } else if (action == EventAction.ACTION_DISABLE) {
+                    shakeDetection(SensorListenerHelper.STOP);
+                }
+                break;
+        }
+    }
+
+    /**
      * manage shake detection
      *
      * @param state {@link fr.tvbarthel.apps.adaptilo.helpers.SensorListenerHelper}
@@ -276,7 +298,7 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
                             if (mReadyToCommunicate) {
                                 final SensorEvent sensorEvent =
                                         new SensorEvent(EventType.SHAKER, EventAction.ACTION_HAPPENED, 0);
-                                final Message message = new Message(MessageType.SENSOR_INPUT, sensorEvent);
+                                final Message message = new Message(MessageType.SENSOR, sensorEvent);
                                 mAdaptiloClient.send(message);
                             }
                         }
@@ -287,7 +309,7 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
                             if (mReadyToCommunicate) {
                                 final SensorEvent sensorEvent =
                                         new SensorEvent(EventType.SHAKER, EventAction.ACTION_DOING, speed);
-                                final Message message = new Message(MessageType.SENSOR_INPUT, sensorEvent);
+                                final Message message = new Message(MessageType.SENSOR, sensorEvent);
                                 mAdaptiloClient.send(message);
                             }
                         }

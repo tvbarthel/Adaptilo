@@ -50,6 +50,6 @@ public enum MessageType {
     /**
      * send by the {@link fr.tvbarthel.apps.adaptilo.engine.AdaptiloEngine} when sensor events are fired
      */
-    SENSOR_INPUT
+    SENSOR
 
 }
