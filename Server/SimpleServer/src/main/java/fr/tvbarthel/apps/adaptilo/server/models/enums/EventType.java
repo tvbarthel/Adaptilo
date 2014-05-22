@@ -1,4 +1,4 @@
-package fr.tvbarthel.apps.adaptilo.server.models;
+package fr.tvbarthel.apps.adaptilo.server.models.enums;
 
 /**
  * enum of available events, "physical" button on your controller for instance

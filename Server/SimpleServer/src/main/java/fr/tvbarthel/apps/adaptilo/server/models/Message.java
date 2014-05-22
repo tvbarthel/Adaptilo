@@ -2,6 +2,7 @@ package fr.tvbarthel.apps.adaptilo.server.models;
 
 import com.google.gson.annotations.SerializedName;
 import fr.tvbarthel.apps.adaptilo.server.helpers.MessageDeserializerHelper;
+import fr.tvbarthel.apps.adaptilo.server.models.enums.MessageType;
 
 public class Message {
 

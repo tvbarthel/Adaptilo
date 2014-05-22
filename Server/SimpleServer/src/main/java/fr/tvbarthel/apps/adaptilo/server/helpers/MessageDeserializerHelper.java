@@ -3,7 +3,7 @@ package fr.tvbarthel.apps.adaptilo.server.helpers;
 import com.google.gson.*;
 import fr.tvbarthel.apps.adaptilo.server.models.Event;
 import fr.tvbarthel.apps.adaptilo.server.models.Message;
-import fr.tvbarthel.apps.adaptilo.server.models.MessageType;
+import fr.tvbarthel.apps.adaptilo.server.models.enums.MessageType;
 import fr.tvbarthel.apps.adaptilo.server.models.RegisterControllerRequest;
 
 import java.lang.reflect.Type;
