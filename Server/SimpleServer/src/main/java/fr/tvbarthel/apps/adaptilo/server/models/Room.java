@@ -9,9 +9,9 @@ import java.util.List;
 public class Room {
 
     /**
-     * name used to identify current room. Should be unique.
+     * external id used to identify current room. Should be unique.
      */
-    private String mName;
+    private String mId;
 
     /**
      * room limit for roles
@@ -28,19 +28,11 @@ public class Room {
      */
     private List<Role> mRoles;
 
-    public Room() {
+    public Room(String rommId, int maxRoles) {
+        mId = rommId;
         mRoles = new ArrayList<Role>();
         mAvailableRoles = new ArrayList<String>();
-    }
-
-    public Room(String name) {
-        this();
-        mName = name;
-    }
-
-    public Room(String name, int maxRoles) {
-        this(name);
-        maxRoles = maxRoles;
+        mMaxRoles = maxRoles;
     }
 
     /**
@@ -93,8 +85,8 @@ public class Room {
         }
 
         //check room size
-        final int max = shouldReplace ? mMaxRoles - 1 : mMaxRoles;
-        if (mRoles.size() >= max) {
+        final int remainingSlot = shouldReplace ? mMaxRoles - 1 : mMaxRoles;
+        if (mRoles.size() > remainingSlot) {
             return false;
         }
 
@@ -111,12 +103,12 @@ public class Room {
      * GETTER & SETTER
      */
 
-    public String getName() {
-        return mName;
+    public String getRoomId() {
+        return mId;
     }
 
-    public void setName(String mName) {
-        this.mName = mName;
+    public void setRoomId(String roomId) {
+        this.mId = roomId;
     }
 
     public int getMaxRoles() {

@@ -3,10 +3,7 @@ package fr.tvbarthel.apps.adaptilo.server;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import fr.tvbarthel.apps.adaptilo.server.helpers.MessageDeserializerHelper;
-import fr.tvbarthel.apps.adaptilo.server.models.Event;
-import fr.tvbarthel.apps.adaptilo.server.models.Message;
-import fr.tvbarthel.apps.adaptilo.server.models.NetworkMessage;
-import fr.tvbarthel.apps.adaptilo.server.models.RegisterControllerRequest;
+import fr.tvbarthel.apps.adaptilo.server.models.*;
 import fr.tvbarthel.apps.adaptilo.server.models.enums.EventAction;
 import fr.tvbarthel.apps.adaptilo.server.models.enums.EventType;
 import fr.tvbarthel.apps.adaptilo.server.models.enums.MessageType;
@@ -19,13 +16,29 @@ import java.util.Collection;
 import java.util.Random;
 
 /**
- * A very simple server used to test the communication with the Android application.
+ * Abstract server used to communicate with Adaptilo App.
+ * Handle all basic features such as :
+ * |    connection and id generation / disconnection
+ * |    register room and QrCode generation for role/ unregister
+ * |    pause / resume
  */
-public class AdaptiloServer extends WebSocketServer {
+public abstract class AdaptiloServer extends WebSocketServer {
 
     private static final String TAG = AdaptiloServer.class.getCanonicalName();
 
+    /**
+     * parser for json serialization / deserialization
+     */
     private Gson mParser;
+
+    /**
+     * handle role registration
+     *
+     * @param role
+     * @param roomId
+     * @return should return true if registration succeeds
+     */
+    protected abstract boolean registerRoleInRoom(Role role, String roomId);
 
     public AdaptiloServer(InetSocketAddress address) {
         super(address);
@@ -61,7 +74,7 @@ public class AdaptiloServer extends WebSocketServer {
         switch (messageContent.getType()) {
             case REGISTER_CONTROLLER:
                 final RegisterControllerRequest request = (RegisterControllerRequest) messageContent.getContent();
-                answer = registerController(request);
+                answer = registerController(conn, request);
                 break;
         }
 
@@ -96,7 +109,7 @@ public class AdaptiloServer extends WebSocketServer {
      * allow to test vibrator
      * TODO remove, only for test purpose
      *
-     * @param duration
+     * @param duration duration of the vibration
      */
     public void vibrate(Long duration) {
         sendToAll(mParser.toJson(new Message(MessageType.VIBRATOR, duration)));
@@ -118,17 +131,35 @@ public class AdaptiloServer extends WebSocketServer {
      * @param request registration request from network
      * @return answer which should be send back
      */
-    private Message registerController(RegisterControllerRequest request) {
-        //generate unique external id base on game, room and role
-        final int seed = new Random().nextInt();
-        final String givenId = request.getGameName() +
-                request.getGameRoom() +
-                request.getGameRole() +
-                seed;
+    private Message registerController(WebSocket conn, RegisterControllerRequest request) {
+        //generate unique external identifier
+        final String givenId = generateExternalId(request.getGameName(), request.getGameRoom(), request.getGameRole());
+        final Role roleToRegister = new Role(request.getGameRole(), conn, givenId);
+        Message answer = null;
 
-        //TODO register role
-        System.out.println(TAG + " give ID -> " + givenId);
-        return new Message(MessageType.CONNECTION_COMPLETED, givenId);
+        if (registerRoleInRoom(roleToRegister, request.getGameRoom())) {
+            //registration completed, prepare server answer
+            System.out.println(TAG + " registration completed, game :  " + request.getGameName() + " room : " + request.getGameRole() + " role : " + request.getGameRole() + " id : " + givenId);
+            answer = new Message(MessageType.CONNECTION_COMPLETED, givenId);
+        } else {
+            //registration request mal formed, close connection
+            conn.close();
+        }
+
+        return answer;
+    }
+
+    /**
+     * generate external id according to game, room, role and randomized seed
+     *
+     * @param game game requested
+     * @param room room requested
+     * @param role role requested
+     * @return external id generated
+     */
+    private String generateExternalId(String game, String room, String role) {
+        final int seed = new Random().nextInt();
+        return game + room + role + seed;
     }
 
     /**
