@@ -60,15 +60,8 @@ public class AdaptiloServer extends WebSocketServer {
         //process each message type
         switch (messageContent.getType()) {
             case REGISTER_CONTROLLER:
-                final RegisterControllerRequest registerControllerRequest =
-                        (RegisterControllerRequest) messageContent.getContent();
-                final int seed = new Random().nextInt();
-                final String givenId = registerControllerRequest.getGameName() +
-                        registerControllerRequest.getGameRoom() +
-                        registerControllerRequest.getGameRole() +
-                        seed;
-                System.out.println(TAG + " give ID -> " + givenId);
-                answer = new Message(MessageType.CONNECTION_COMPLETED, givenId);
+                final RegisterControllerRequest request = (RegisterControllerRequest) messageContent.getContent();
+                answer = registerController(request);
                 break;
         }
 
@@ -117,6 +110,25 @@ public class AdaptiloServer extends WebSocketServer {
         final EventAction action = enable ? EventAction.ACTION_ENABLE : EventAction.ACTION_DISABLE;
         final Event enableShaker = new Event(EventType.SHAKER, action);
         sendToAll(mParser.toJson(new Message(MessageType.SENSOR, enableShaker)));
+    }
+
+    /**
+     * process to the registration of a controller
+     *
+     * @param request registration request from network
+     * @return answer which should be send back
+     */
+    private Message registerController(RegisterControllerRequest request) {
+        //generate unique external id base on game, room and role
+        final int seed = new Random().nextInt();
+        final String givenId = request.getGameName() +
+                request.getGameRoom() +
+                request.getGameRole() +
+                seed;
+
+        //TODO register role
+        System.out.println(TAG + " give ID -> " + givenId);
+        return new Message(MessageType.CONNECTION_COMPLETED, givenId);
     }
 
     /**
