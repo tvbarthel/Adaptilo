@@ -2,8 +2,6 @@ package fr.tvbarthel.apps.adaptilo.models;
 
 import android.net.Uri;
 
-import java.net.URI;
-
 /**
  * Configuration parameters for {@link fr.tvbarthel.apps.adaptilo.engine.AdaptiloEngine} should
  * come from a QrCode

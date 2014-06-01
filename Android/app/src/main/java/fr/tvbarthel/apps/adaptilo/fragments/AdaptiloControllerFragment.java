@@ -62,6 +62,7 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
         mCallbacks = sDummyCallbacks;
         mAdaptiloEngine.stop();
     }
+
     @Override
     public void onPause() {
         super.onPause();
