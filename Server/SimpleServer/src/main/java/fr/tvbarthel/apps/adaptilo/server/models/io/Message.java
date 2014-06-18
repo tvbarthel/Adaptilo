@@ -1,4 +1,4 @@
-package fr.tvbarthel.apps.adaptilo.server.models;
+package fr.tvbarthel.apps.adaptilo.server.models.io;
 
 import com.google.gson.annotations.SerializedName;
 import fr.tvbarthel.apps.adaptilo.server.helpers.MessageDeserializerHelper;

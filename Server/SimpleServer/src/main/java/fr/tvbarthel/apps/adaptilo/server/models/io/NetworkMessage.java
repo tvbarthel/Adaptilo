@@ -1,4 +1,4 @@
-package fr.tvbarthel.apps.adaptilo.server.models;
+package fr.tvbarthel.apps.adaptilo.server.models.io;
 
 /**
  * use to send message to the server with the current connection id
