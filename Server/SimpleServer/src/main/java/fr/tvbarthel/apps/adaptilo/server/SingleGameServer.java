@@ -13,6 +13,11 @@ import java.util.List;
 public class SingleGameServer extends AdaptiloServer {
 
     /**
+     * Used to log in console.
+     */
+    private static final String TAG = SingleGameServer.class.getCanonicalName();
+
+    /**
      * name fo the game
      */
     private String mGameName;
@@ -52,16 +57,24 @@ public class SingleGameServer extends AdaptiloServer {
 
 
     @Override
-    protected boolean registerRoleInRoom(Role role, String roomId) {
+    protected boolean registerRoleInRoom(String gameName, Role role, String roomId) {
         Room requestedRoom = null;
+
+        if (!mGameName.equals(gameName)) {
+            //current game name doesn't match requested one
+            System.out.println(TAG + " current game name " + mGameName + " doesn't match requested one : " + gameName);
+            return false;
+        }
 
         if (mGameRooms.isEmpty()) {
             //create room first
+            System.out.println(TAG + " No created rooms for this game, need to create one first.");
             return false;
         }
 
         if (!mAllowedRoles.contains(role.getName())) {
             //role not allowed for this game
+            System.out.println(TAG + " Role : " + role.getName() + " doesn't allowed in this game.");
             return false;
         }
 
@@ -75,6 +88,7 @@ public class SingleGameServer extends AdaptiloServer {
 
         if (requestedRoom == null) {
             //request room not found
+            System.out.println(TAG + " Room with id : " + roomId + " doesn't exist.");
             return false;
         }
 

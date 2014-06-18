@@ -3,10 +3,14 @@ package fr.tvbarthel.apps.adaptilo.server;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import fr.tvbarthel.apps.adaptilo.server.helpers.MessageDeserializerHelper;
-import fr.tvbarthel.apps.adaptilo.server.models.*;
+import fr.tvbarthel.apps.adaptilo.server.models.Event;
+import fr.tvbarthel.apps.adaptilo.server.models.Role;
 import fr.tvbarthel.apps.adaptilo.server.models.enums.EventAction;
 import fr.tvbarthel.apps.adaptilo.server.models.enums.EventType;
 import fr.tvbarthel.apps.adaptilo.server.models.enums.MessageType;
+import fr.tvbarthel.apps.adaptilo.server.models.io.Message;
+import fr.tvbarthel.apps.adaptilo.server.models.io.NetworkMessage;
+import fr.tvbarthel.apps.adaptilo.server.models.io.RegisterControllerRequest;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -34,11 +38,12 @@ public abstract class AdaptiloServer extends WebSocketServer {
     /**
      * handle role registration
      *
-     * @param role
-     * @param roomId
+     * @param gameName name og the game
+     * @param role     role to register
+     * @param roomId   room id in which role request registration
      * @return should return true if registration succeeds
      */
-    protected abstract boolean registerRoleInRoom(Role role, String roomId);
+    protected abstract boolean registerRoleInRoom(String gameName, Role role, String roomId);
 
     public AdaptiloServer(InetSocketAddress address) {
         super(address);
@@ -137,7 +142,7 @@ public abstract class AdaptiloServer extends WebSocketServer {
         final Role roleToRegister = new Role(request.getGameRole(), conn, givenId);
         Message answer = null;
 
-        if (registerRoleInRoom(roleToRegister, request.getGameRoom())) {
+        if (registerRoleInRoom(request.getGameName(), roleToRegister, request.getGameRoom())) {
             //registration completed, prepare server answer
             System.out.println(TAG + " registration completed, game :  " + request.getGameName() + " room : " + request.getGameRole() + " role : " + request.getGameRole() + " id : " + givenId);
             answer = new Message(MessageType.CONNECTION_COMPLETED, givenId);

@@ -15,10 +15,10 @@ public class Launcher {
         //create roles
         final ArrayList<String> roles = new ArrayList<String>();
         roles.add("controller");
-        roles.add("filed");
+        roles.add("field");
 
         //create server
-        final SingleGameServer server = new SingleGameServer(new InetSocketAddress(8887), "testGame", roles);
+        final SingleGameServer server = new SingleGameServer(new InetSocketAddress(8887), "/testGame", roles);
 
         server.start();
         BufferedReader sysin = new BufferedReader(new InputStreamReader(System.in));
