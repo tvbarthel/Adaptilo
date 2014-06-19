@@ -13,19 +13,19 @@ API
 
 * Client to Server :
 <pre>
-    Actor1 ---------ServerRequest----------> Server
-    Actor1 <--------ServerResponse---------- Server
+    Actor1 |--------ServerRequest---------- Server
+    Actor1 --------ServerResponse----------|Server
 </pre>
 
 * Server to Client :
 <pre>
-    Actor1 <------------Message------------- Server
+    Actor1 |-----------Message------------- Server
 </pre>
 
 * Client to Server to Clients :
 <pre>
-    Actor1 ---------ServerRequest----------> Server ------------Message-------------> Actor2
-                                                    ------------Message-------------> Actor3
+    Actor1 |--------ServerRequest---------- Server |-----------Message------------- Actor2
+                                                   |-----------Message------------- Actor3
 </pre>
 
 ### Model
