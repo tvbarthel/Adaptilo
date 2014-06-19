@@ -33,7 +33,7 @@ API
 * Message 
 ```java
         int type : type of message {@see MessageType section}
-        String content : content of message
+        Object content : content of message
 ```
 *Example* 
 ```json
