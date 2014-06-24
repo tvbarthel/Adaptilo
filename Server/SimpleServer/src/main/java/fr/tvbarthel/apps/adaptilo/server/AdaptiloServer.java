@@ -9,7 +9,7 @@ import fr.tvbarthel.apps.adaptilo.server.models.enums.EventAction;
 import fr.tvbarthel.apps.adaptilo.server.models.enums.EventType;
 import fr.tvbarthel.apps.adaptilo.server.models.enums.MessageType;
 import fr.tvbarthel.apps.adaptilo.server.models.io.Message;
-import fr.tvbarthel.apps.adaptilo.server.models.io.NetworkMessage;
+import fr.tvbarthel.apps.adaptilo.server.models.io.ServerRequest;
 import fr.tvbarthel.apps.adaptilo.server.models.io.RegisterControllerRequest;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
@@ -70,7 +70,7 @@ public abstract class AdaptiloServer extends WebSocketServer {
 
         //extract basic info for all message
         System.out.println(TAG + " onMessage - " + conn.toString() + ", " + message);
-        final NetworkMessage messageReceived = mParser.fromJson(message, NetworkMessage.class);
+        final ServerRequest messageReceived = mParser.fromJson(message, ServerRequest.class);
         final Message messageContent = messageReceived.getMessage();
         final String connectionId = messageReceived.getConnectionId();
         Message answer = null;

@@ -9,13 +9,23 @@ import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
 
 import fr.tvbarthel.apps.adaptilo.models.Event;
-import fr.tvbarthel.apps.adaptilo.models.io.Message;
 import fr.tvbarthel.apps.adaptilo.models.enums.MessageType;
+import fr.tvbarthel.apps.adaptilo.models.io.Message;
 
 /**
  * Adapter for deserialization of {@link fr.tvbarthel.apps.adaptilo.models.io.Message}
  */
 public class MessageDeserializerHelper implements JsonDeserializer<Message> {
+
+    /**
+     * json node key for connection id
+     */
+    public static final String NODE_CONNECTION_ID = "connectionId";
+
+    /**
+     * json node key for message
+     */
+    public static final String NODE_MESSAGE = "message";
 
     /**
      * json node key for message type

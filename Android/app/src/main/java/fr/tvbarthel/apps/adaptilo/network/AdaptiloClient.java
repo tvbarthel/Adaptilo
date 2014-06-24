@@ -14,7 +14,7 @@ import java.util.Map;
 
 import fr.tvbarthel.apps.adaptilo.helpers.MessageDeserializerHelper;
 import fr.tvbarthel.apps.adaptilo.models.io.Message;
-import fr.tvbarthel.apps.adaptilo.models.io.NetworkMessage;
+import fr.tvbarthel.apps.adaptilo.models.io.ServerRequest;
 
 /**
  * Simple {@link org.java_websocket.client.WebSocketClient} used communicate with the server
@@ -66,8 +66,8 @@ public class AdaptiloClient extends WebSocketClient {
      * @param message
      */
     public void send(Message message) {
-        final NetworkMessage networkMessage = new NetworkMessage(mConnectionId, message);
-        this.send(mGsonParser.toJson(networkMessage));
+        final ServerRequest serverRequest = new ServerRequest(mConnectionId, message);
+        this.send(mGsonParser.toJson(serverRequest));
     }
 
     /**
