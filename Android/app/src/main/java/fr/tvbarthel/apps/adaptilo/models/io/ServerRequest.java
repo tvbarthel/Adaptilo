@@ -12,8 +12,8 @@ public class ServerRequest {
     /**
      * connection id which identify the client on the server
      */
-    @SerializedName(MessageDeserializerHelper.NODE_CONNECTION_ID)
-    private String mConnectionId;
+    @SerializedName(MessageDeserializerHelper.NODE_EXTERNAL_ID)
+    private String mExternalId;
 
     /**
      * message to deliver
@@ -23,7 +23,7 @@ public class ServerRequest {
 
 
     public ServerRequest(String connectionId, Message message) {
-        mConnectionId = connectionId;
+        mExternalId = connectionId;
         mMessage = message;
     }
 
@@ -31,12 +31,12 @@ public class ServerRequest {
      * GETTER AND SETTER
      */
 
-    public String getConnectionId() {
-        return mConnectionId;
+    public String getExternalIdId() {
+        return mExternalId;
     }
 
-    public void setConnectionId(String mConnectionId) {
-        this.mConnectionId = mConnectionId;
+    public void setExternalId(String mConnectionId) {
+        this.mExternalId = mConnectionId;
     }
 
     public Message getMessage() {

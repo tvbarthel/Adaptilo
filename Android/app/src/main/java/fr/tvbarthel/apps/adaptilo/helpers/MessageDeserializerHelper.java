@@ -18,9 +18,9 @@ import fr.tvbarthel.apps.adaptilo.models.io.Message;
 public class MessageDeserializerHelper implements JsonDeserializer<Message> {
 
     /**
-     * json node key for connection id
+     * json node key for external id
      */
-    public static final String NODE_CONNECTION_ID = "connectionId";
+    public static final String NODE_EXTERNAL_ID = "externalId";
 
     /**
      * json node key for message

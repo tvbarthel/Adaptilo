@@ -1,7 +1,6 @@
 package fr.tvbarthel.apps.adaptilo.server.helpers;
 
 import com.google.gson.*;
-import com.google.gson.annotations.SerializedName;
 import fr.tvbarthel.apps.adaptilo.server.models.Event;
 import fr.tvbarthel.apps.adaptilo.server.models.enums.MessageType;
 import fr.tvbarthel.apps.adaptilo.server.models.io.Message;
@@ -16,15 +15,13 @@ import java.lang.reflect.Type;
 public class MessageDeserializerHelper implements JsonDeserializer<Message> {
 
     /**
-     * json node key for connection id
+     * json node key for external id
      */
-    @SerializedName(MessageDeserializerHelper.NODE_CONNECTION_ID)
-    public static final String NODE_CONNECTION_ID = "connectionId";
+    public static final String NODE_EXTERNAL_ID = "externalId";
 
     /**
      * json node key for message
      */
-    @SerializedName(MessageDeserializerHelper.NODE_MESSAGE)
     public static final String NODE_MESSAGE = "message";
 
     /**

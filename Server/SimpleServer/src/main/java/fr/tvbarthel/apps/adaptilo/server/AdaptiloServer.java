@@ -72,7 +72,7 @@ public abstract class AdaptiloServer extends WebSocketServer {
         System.out.println(TAG + " onMessage - " + conn.toString() + ", " + message);
         final ServerRequest messageReceived = mParser.fromJson(message, ServerRequest.class);
         final Message messageContent = messageReceived.getMessage();
-        final String connectionId = messageReceived.getConnectionId();
+        final String connectionId = messageReceived.getExternalId();
         Message answer = null;
 
         //process each message type
