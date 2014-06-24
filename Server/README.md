@@ -13,27 +13,27 @@ API
 
 * Client to Server :
 <pre>
-    Actor1 ---------ServerRequest----------> Server
-    Actor1 <--------ServerResponse---------- Server
+    Actor1 |--------ServerRequest---------- Server
+    Actor1 --------ServerResponse----------|Server
 </pre>
 
 * Server to Client :
 <pre>
-    Actor1 <------------Message------------- Server
+    Actor1 |-----------Message------------- Server
 </pre>
 
 * Client to Server to Clients :
 <pre>
-    Actor1 ---------ServerRequest----------> Server ------------Message-------------> Actor2
-                                                    ------------Message-------------> Actor3
+    Actor1 |--------ServerRequest---------- Server |-----------Message------------- Actor2
+                                                   |-----------Message------------- Actor3
 </pre>
 
 ### Model
 
-* ####Message 
+* Message 
 ```java
         int type : type of message {@see MessageType section}
-        String content : content of message
+        Object content : content of message
 ```
 *Example* 
 ```json
@@ -45,7 +45,7 @@ API
     }
 ```
 
-* ####ServerRequest
+* ServerRequest
 ```java
         String externalId : id used to identify each client, null if first connection
         Message message: content of the request
@@ -64,7 +64,7 @@ API
     }
 ```
 
-* ####ServerResponse
+* ServerResponse
 ```java
         int status : status of the response {@see ServerResponseStatus section}
         Message message: content of the request
