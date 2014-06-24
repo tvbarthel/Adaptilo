@@ -13,12 +13,12 @@ import java.net.URI;
 import java.util.Map;
 
 import fr.tvbarthel.apps.adaptilo.helpers.MessageDeserializerHelper;
-import fr.tvbarthel.apps.adaptilo.models.Message;
-import fr.tvbarthel.apps.adaptilo.models.NetworkMessage;
+import fr.tvbarthel.apps.adaptilo.models.io.Message;
+import fr.tvbarthel.apps.adaptilo.models.io.NetworkMessage;
 
 /**
  * Simple {@link org.java_websocket.client.WebSocketClient} used communicate with the server
- * through{@link fr.tvbarthel.apps.adaptilo.models.Message}
+ * through{@link fr.tvbarthel.apps.adaptilo.models.io.Message}
  */
 public class AdaptiloClient extends WebSocketClient {
 

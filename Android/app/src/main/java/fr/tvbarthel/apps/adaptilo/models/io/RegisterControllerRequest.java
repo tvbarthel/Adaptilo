@@ -1,16 +1,18 @@
-package fr.tvbarthel.apps.adaptilo.models;
+package fr.tvbarthel.apps.adaptilo.models.io;
 
 import com.google.gson.annotations.SerializedName;
 
+import fr.tvbarthel.apps.adaptilo.helpers.MessageDeserializerHelper;
+
 public class RegisterControllerRequest {
 
-    @SerializedName("gameName")
+    @SerializedName(MessageDeserializerHelper.NODE_GAME_NAME)
     private String mGameName;
 
-    @SerializedName("gameRoom")
+    @SerializedName(MessageDeserializerHelper.NODE_GAME_ROOM)
     private String mGameRoom;
 
-    @SerializedName("gameRole")
+    @SerializedName(MessageDeserializerHelper.NODE_GAME_ROLE)
     private String mGameRole;
 
     public RegisterControllerRequest() {

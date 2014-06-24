@@ -9,7 +9,7 @@ import fr.tvbarthel.apps.adaptilo.engine.AdaptiloEngine;
 import fr.tvbarthel.apps.adaptilo.exceptions.QrCodeException;
 import fr.tvbarthel.apps.adaptilo.helpers.QrCodeHelper;
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
-import fr.tvbarthel.apps.adaptilo.models.Message;
+import fr.tvbarthel.apps.adaptilo.models.io.Message;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} that represents a controller.
