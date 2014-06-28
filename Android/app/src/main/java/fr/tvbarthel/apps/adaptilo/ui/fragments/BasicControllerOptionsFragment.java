@@ -1,4 +1,4 @@
-package fr.tvbarthel.apps.adaptilo.fragments;
+package fr.tvbarthel.apps.adaptilo.ui.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;

@@ -1,9 +1,9 @@
-package fr.tvbarthel.apps.adaptilo;
+package fr.tvbarthel.apps.adaptilo.ui.activities;
 
 import android.os.Bundle;
 
-import fr.tvbarthel.apps.adaptilo.fragments.AdaptiloControllerFragment;
-import fr.tvbarthel.apps.adaptilo.fragments.BasicControllerFragment;
+import fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloControllerFragment;
+import fr.tvbarthel.apps.adaptilo.ui.fragments.BasicControllerFragment;
 
 
 public class MainActivity extends AdaptiloActivity {

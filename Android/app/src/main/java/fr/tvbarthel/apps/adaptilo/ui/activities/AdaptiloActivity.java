@@ -1,12 +1,13 @@
-package fr.tvbarthel.apps.adaptilo;
+package fr.tvbarthel.apps.adaptilo.ui.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
-import fr.tvbarthel.apps.adaptilo.fragments.AdaptiloControllerFragment;
+import fr.tvbarthel.apps.adaptilo.R;
+import fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloControllerFragment;
 
 /**
- * Activity which can handle {@link fr.tvbarthel.apps.adaptilo.fragments.AdaptiloControllerFragment}
+ * Activity which can handle {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloControllerFragment}
  * events
  */
 public abstract class AdaptiloActivity extends FragmentActivity implements AdaptiloControllerFragment.Callbacks {

@@ -1,4 +1,4 @@
-package fr.tvbarthel.apps.adaptilo.fragments;
+package fr.tvbarthel.apps.adaptilo.ui.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -8,7 +8,7 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import fr.tvbarthel.apps.adaptilo.R;
-import fr.tvbarthel.apps.adaptilo.activities.BasicControllerCaptureActivity;
+import fr.tvbarthel.apps.adaptilo.ui.activities.BasicControllerCaptureActivity;
 import fr.tvbarthel.apps.adaptilo.engine.AdaptiloEngine;
 import fr.tvbarthel.apps.adaptilo.exceptions.QrCodeException;
 import fr.tvbarthel.apps.adaptilo.helpers.QrCodeHelper;
