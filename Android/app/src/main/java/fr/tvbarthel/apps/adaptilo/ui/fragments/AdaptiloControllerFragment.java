@@ -8,12 +8,12 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import fr.tvbarthel.apps.adaptilo.R;
-import fr.tvbarthel.apps.adaptilo.ui.activities.BasicControllerCaptureActivity;
 import fr.tvbarthel.apps.adaptilo.engine.AdaptiloEngine;
 import fr.tvbarthel.apps.adaptilo.exceptions.QrCodeException;
 import fr.tvbarthel.apps.adaptilo.helpers.QrCodeHelper;
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
 import fr.tvbarthel.apps.adaptilo.models.io.Message;
+import fr.tvbarthel.apps.adaptilo.ui.activities.BasicControllerCaptureActivity;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} that represents a controller.
@@ -66,6 +66,13 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
      * new one.
      */
     abstract public AlertDialog onStartDialogNeeded();
+
+    /**
+     * Called when matching select dialog as been closed by the user.
+     *
+     * @param optionSaved true when options has been saved.
+     */
+    abstract public void onSelectDialogClosed(boolean optionSaved);
 
 
     /**

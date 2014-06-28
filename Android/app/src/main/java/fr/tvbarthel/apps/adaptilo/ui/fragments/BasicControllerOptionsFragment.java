@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -21,7 +20,7 @@ import fr.tvbarthel.apps.adaptilo.helpers.SharedPreferencesHelper;
 /**
  * Dialog fragment for BasicController options
  */
-public class BasicControllerOptionsFragment extends DialogFragment {
+public class BasicControllerOptionsFragment extends AdaptiloSelectDialogFragment {
 
     /**
      * shared preferences used for vibrator policy
@@ -36,11 +35,17 @@ public class BasicControllerOptionsFragment extends DialogFragment {
 
     private boolean mCurrentUserVibrationServerPolicy;
 
-    private Callbacks mCallbacks;
 
-    public BasicControllerOptionsFragment(Callbacks callbacks) {
-        super();
-        mCallbacks = callbacks;
+    /**
+     * Empty constructor as needed (cf lint)
+     */
+    public BasicControllerOptionsFragment() {
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setCancelable(false);
     }
 
     @Override
@@ -61,14 +66,8 @@ public class BasicControllerOptionsFragment extends DialogFragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setCancelable(false);
-    }
-
-    @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog alertDialog = getAlertDialog();
         final LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View dialogView = inflater.inflate(R.layout.fragment_basic_controller_options, null);
 
@@ -85,22 +84,7 @@ public class BasicControllerOptionsFragment extends DialogFragment {
         mServerVibrationToggleButton.setTypeface(typeface);
         mServerVibrationToggleButton.setChecked(mCurrentUserVibrationServerPolicy);
 
-        builder.setNegativeButton(R.string.basic_controller_options_negative, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                mCallbacks.onDialogHidden();
-            }
-        })
-                .setPositiveButton(R.string.basic_controller_options_positive, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        saveOptions();
-                        mCallbacks.onDialogHidden();
-                    }
-                })
-                .setView(dialogView);
-
-        final AlertDialog alertDialog = builder.create();
+        alertDialog.setView(dialogView);
 
         //custom alert button
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
@@ -116,25 +100,15 @@ public class BasicControllerOptionsFragment extends DialogFragment {
         return alertDialog;
     }
 
-    /**
-     * save user preferences
-     */
-    private void saveOptions() {
+    @Override
+    protected boolean saveOptions() {
         final SharedPreferences.Editor vibratorEditor = mVibratorSharedPreferences.edit();
         vibratorEditor.putBoolean(SharedPreferencesHelper.KEY_VIBRATE_ON_KEY_EVENT,
                 mKeyVibrationToggleButton.isChecked());
         vibratorEditor.putBoolean(SharedPreferencesHelper.KEY_VIBRATE_ON_SERVER_EVENT,
                 mServerVibrationToggleButton.isChecked());
         vibratorEditor.commit();
-    }
 
-    /**
-     * catch events
-     */
-    public interface Callbacks {
-        /**
-         * called when dialog fragment is dismissed
-         */
-        public void onDialogHidden();
+        return true;
     }
 }

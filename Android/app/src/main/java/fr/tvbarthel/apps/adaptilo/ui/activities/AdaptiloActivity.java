@@ -5,12 +5,15 @@ import android.support.v4.app.FragmentActivity;
 
 import fr.tvbarthel.apps.adaptilo.R;
 import fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloControllerFragment;
+import fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloSelectDialogFragment;
 
 /**
  * Activity which can handle {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloControllerFragment}
  * events
  */
-public abstract class AdaptiloActivity extends FragmentActivity implements AdaptiloControllerFragment.Callbacks {
+public abstract class AdaptiloActivity extends FragmentActivity implements
+        AdaptiloControllerFragment.Callbacks,
+        AdaptiloSelectDialogFragment.Callbacks {
 
     /**
      * Logcat
@@ -42,6 +45,11 @@ public abstract class AdaptiloActivity extends FragmentActivity implements Adapt
     @Override
     public void onReplaceControllerRequest(AdaptiloControllerFragment controllerFragment) {
         setAdaptiloController(controllerFragment);
+    }
+
+    @Override
+    public void onSelectDialogClose(boolean optionSaved) {
+        mAdaptiloControllerFragment.onSelectDialogClosed(optionSaved);
     }
 
     /**

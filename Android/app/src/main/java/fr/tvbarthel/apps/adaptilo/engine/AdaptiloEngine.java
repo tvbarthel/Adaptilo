@@ -9,8 +9,8 @@ import android.util.Log;
 
 import java.net.URI;
 
-import fr.tvbarthel.apps.adaptilo.fragments.AdaptiloControllerFragment;
-import fr.tvbarthel.apps.adaptilo.fragments.BasicControllerFragment;
+import fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloControllerFragment;
+import fr.tvbarthel.apps.adaptilo.ui.fragments.BasicControllerFragment;
 import fr.tvbarthel.apps.adaptilo.helpers.SensorListenerHelper;
 import fr.tvbarthel.apps.adaptilo.helpers.SharedPreferencesHelper;
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
@@ -188,7 +188,7 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
 
     /**
      * Initialize engine features which need context. Should be called directly since it's already
-     * managed by the {@link fr.tvbarthel.apps.adaptilo.fragments.AdaptiloControllerFragment}
+     * managed by the {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloControllerFragment}
      *
      * @param context
      */

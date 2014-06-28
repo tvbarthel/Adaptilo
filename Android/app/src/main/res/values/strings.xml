@@ -21,11 +21,14 @@
     <string name="start_new_game_disconnect">Disconnect</string>
     <string name="start_new_game_cancel">Cancel</string>
 
+    <!-- Default Select dialog !-->
+    <string name="select_dialog_options_positive">Save and resume</string>
+    <string name="select_dialog_options_negative">Resume</string>
+
     <!-- Basic Controller Options Fragment !-->
     <string name="basic_controller_options_title">Pause</string>
     <string name="basic_controller_options_vibrator_key">Vibrate on keypress</string>
     <string name="basic_controller_options_vibrator_server">Allow vibration events from the server</string>
-    <string name="basic_controller_options_positive">Save and resume</string>
-    <string name="basic_controller_options_negative">Resume</string>
+
 
 </resources>

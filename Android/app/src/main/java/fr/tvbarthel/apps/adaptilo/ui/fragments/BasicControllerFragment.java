@@ -3,6 +3,7 @@ package fr.tvbarthel.apps.adaptilo.ui.fragments;
 import android.app.AlertDialog;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +21,11 @@ import fr.tvbarthel.apps.adaptilo.models.enums.MessageType;
 import fr.tvbarthel.apps.adaptilo.models.io.Message;
 
 public class BasicControllerFragment extends AdaptiloControllerFragment {
+
+    /**
+     * Log cat.
+     */
+    private static final String TAG = BasicControllerFragment.class.getName();
 
     /**
      * controller keys which can be pressed by the user
@@ -75,6 +81,13 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         return builder.create();
     }
+
+    @Override
+    public void onSelectDialogClosed(boolean optionSaved) {
+        Log.d(TAG, "onSelectDialogClosed : " + optionSaved);
+        mAdaptiloEngine.resume();
+    }
+
 
     @Override
     protected void onScannerCanceled() {
@@ -138,12 +151,7 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
         selectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final BasicControllerOptionsFragment options = new BasicControllerOptionsFragment(new BasicControllerOptionsFragment.Callbacks() {
-                    @Override
-                    public void onDialogHidden() {
-                        mAdaptiloEngine.resume();
-                    }
-                });
+                final BasicControllerOptionsFragment options = new BasicControllerOptionsFragment();
                 mAdaptiloEngine.pause();
                 (options).show(getFragmentManager(), "dialog_options");
             }
