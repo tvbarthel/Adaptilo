@@ -11,6 +11,11 @@ import java.util.List;
 public class Room {
 
     /**
+     * More readable log.
+     */
+    private static final String TAG = Room.class.getCanonicalName();
+
+    /**
      * external id used to identify current room. Should be unique.
      */
     private String mId;
@@ -55,9 +60,9 @@ public class Room {
     }
 
     /**
-     * find a role by its id. Useful when you have to identify a request from the network.
+     * find a role by user external id. Useful when you have to identify a request from the network.
      *
-     * @param id role id send with each network message
+     * @param id external id send with each network message
      * @return matching role or null if not found
      */
     public Role findRoleById(String id) {
@@ -88,14 +93,15 @@ public class Room {
         }
 
         //check room size
-        final int remainingSlot = shouldReplace ? mMaxRoles - 1 : mMaxRoles;
-        if (mRoles.size() > remainingSlot) {
+        final int remainingSlot = shouldReplace ? mRoles.size() - 1 : mRoles.size();
+        if (mMaxRoles < remainingSlot) {
             return ClosingError.REGISTRATION_REQUESTED_ROOM_IS_EMPTY;
         }
 
         //delete current registered role if replace is requested
         if (shouldReplace) {
             mRoles.remove(findRoleByName(role.getName()));
+            System.out.println(TAG + " role " + role.getName() + " replaced in room  " + this.getRoomId());
         }
 
         mRoles.add(role);

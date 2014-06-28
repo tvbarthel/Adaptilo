@@ -109,7 +109,7 @@ public class AdaptiloClient extends WebSocketClient {
 
     @Override
     public void onClose(int code, String reason, boolean remote) {
-        Log.d(TAG, "onClose : " + code);
+        Log.d(TAG, "onClose : " + code + " remote : " + remote);
         mCallbacks.onClose(code);
     }
 
