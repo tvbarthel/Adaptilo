@@ -78,14 +78,14 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     }
 
     @Override
-    protected void scannerError(QrCodeException ex) {
-        super.scannerError(ex);
+    protected void onScannerError(QrCodeException ex) {
+        super.onScannerError(ex);
         showOnScreenMessage(R.string.basic_controller_qrcode_scanner_error);
     }
 
     @Override
-    protected void scannerSuccess(EngineConfig config) {
-        super.scannerSuccess(config);
+    protected void onScannerSuccess(EngineConfig config) {
+        super.onScannerSuccess(config);
         mAdaptiloEngine.start();
     }
 

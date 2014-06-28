@@ -109,9 +109,9 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
      *
      * @param config
      */
-    protected void scannerSuccess(EngineConfig config) {
+    protected void onScannerSuccess(EngineConfig config) {
         mAdaptiloEngine.setEngineConfig(config);
-        Log.d(TAG, "scannerSuccess : " + config.toString());
+        Log.d(TAG, "onScannerSuccess : " + config.toString());
     }
 
     /**
@@ -119,8 +119,8 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
      *
      * @param ex
      */
-    protected void scannerError(QrCodeException ex) {
-        Log.d(TAG, "scannerError : " + ex.getMessage());
+    protected void onScannerError(QrCodeException ex) {
+        Log.d(TAG, "onScannerError : " + ex.getMessage());
     }
 
     protected void handleQrCodeResult(int requestCode, int resultCode, Intent data) {
@@ -131,10 +131,10 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
             try {
                 config = QrCodeHelper.verifyFromActivityResult(requestCode, resultCode, data);
             } catch (QrCodeException e) {
-                scannerError(e);
+                onScannerError(e);
             } finally {
                 if (config != null) {
-                    scannerSuccess(config);
+                    onScannerSuccess(config);
                 }
             }
         }
