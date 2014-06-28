@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import fr.tvbarthel.apps.adaptilo.R;
 import fr.tvbarthel.apps.adaptilo.engine.AdaptiloEngine;
@@ -19,6 +22,13 @@ import fr.tvbarthel.apps.adaptilo.ui.activities.BasicControllerCaptureActivity;
  * A simple {@link android.support.v4.app.Fragment} that represents a controller.
  * <p/>
  * The controller can send messages to a callback and can receive messages.
+ * <p/>
+ * All controller must at least display a select button for consistency in basic features
+ * <p/>
+ * This abstract controller encapsulate select start button behavior. Implementations only
+ * handle visual callback and dialog customization. Therefor any implementation of
+ * {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloControllerFragment} must provide an
+ * implementation of its {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloSelectDialogFragment}
  */
 abstract public class AdaptiloControllerFragment extends Fragment implements AdaptiloEngine.Callbacks {
 
@@ -68,6 +78,22 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
     abstract public AlertDialog onStartDialogNeeded();
 
     /**
+     * Used to retrieve and initialize select button in controller implementation.
+     *
+     * @return select button id in controller implementation view.
+     */
+    abstract protected int getSelectButtonId();
+
+    /**
+     * Called to retrieve implementations of
+     * {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloSelectDialogFragment} for the current
+     * {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloControllerFragment} implementation.
+     *
+     * @return Select dialog fragment.
+     */
+    abstract protected AdaptiloSelectDialogFragment getSelectDialogFragment();
+
+    /**
      * Called when matching select dialog as been closed by the user.
      *
      * @param optionSaved true when options has been saved.
@@ -96,6 +122,22 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
 
         mCallbacks = (Callbacks) activity;
         mAdaptiloEngine.initEngine(getActivity().getApplicationContext());
+    }
+
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        //initialize select button with values matching implementation needs.
+        final Button selectButton = (Button) view.findViewById(getSelectButtonId());
+        selectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAdaptiloEngine.pause();
+                getSelectDialogFragment().show(getFragmentManager(), "select_dialog_fragment");
+            }
+        });
     }
 
     @Override

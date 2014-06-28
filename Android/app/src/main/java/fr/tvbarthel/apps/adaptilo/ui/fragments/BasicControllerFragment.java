@@ -83,6 +83,17 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     }
 
     @Override
+    protected int getSelectButtonId() {
+        return R.id.basic_controller_btn_select;
+    }
+
+    @Override
+    protected AdaptiloSelectDialogFragment getSelectDialogFragment() {
+        return new BasicControllerOptionsFragment();
+    }
+
+
+    @Override
     public void onSelectDialogClosed(boolean optionSaved) {
         Log.d(TAG, "onSelectDialogClosed : " + optionSaved);
         mAdaptiloEngine.resume();
@@ -141,21 +152,13 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     }
 
     /**
-     * Init the select button.
+     * Change typo of select button
      *
      * @param fragmentView the {@link android.view.View} for the fragment's UI.
      */
     protected void initSelectButton(View fragmentView) {
         Button selectButton = (Button) fragmentView.findViewById(R.id.basic_controller_btn_select);
         selectButton.setTypeface(mCustomTypeFace);
-        selectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final BasicControllerOptionsFragment options = new BasicControllerOptionsFragment();
-                mAdaptiloEngine.pause();
-                (options).show(getFragmentManager(), "dialog_options");
-            }
-        });
     }
 
     /**
