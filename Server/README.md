@@ -14,7 +14,7 @@ API
 * Client to Server :
 <pre>
     Actor1 |--------ServerRequest---------- Server
-    Actor1 --------ServerResponse----------|Server
+    Actor1 -----------Message--------------|Server
 </pre>
 
 * Server to Client :
@@ -54,25 +54,6 @@ API
 ```json
     {
         "externalId" : "/testGamevirtualcontroller1921394365",
-        "message" : {
-                       "type" : "USER_INPUT",
-                       "content" : {
-                                     "eventAction" : "KEY_A",
-                                     "eventTimeStamp" : 1403207477362,
-                        }
-        }
-    }
-```
-
-* ServerResponse
-```java
-        int status : status of the response {@see ServerResponseStatus section}
-        Message message: content of the request
-```
-*Example* 
-```json
-    {
-        "status" : 0,
         "message" : {
                        "type" : "USER_INPUT",
                        "content" : {
@@ -137,10 +118,39 @@ API
 
 ```
 
-## **Message Types**
+## **Closing error**
 
-* SUCCEED : 0
-* FAILURE : 1
-* INTERNAL_ERROR : 2
+Error code used when connection is closed. Websocket.close(int code)
 
+```java
 
+    ////////////////////////////////////////
+    /////////// REGISTRATION ERROR /////////
+    ////////////////////////////////////////
+
+    /**
+     * Requested game name doesn't exist.
+     */
+    public static final int REGISTRATION_REQUESTED_GAME_NAME_UNKNOWN = 2000;
+
+    /**
+     * No rooms have been created yet for the requested game name.
+     */
+    public static final int REGISTRATION_NO_ROOM_CREATED = 2001;
+
+    /**
+     * Requested room id doesn't exist.
+     */
+    public static final int REGISTRATION_REQUESTED_ROOM_UNKNOW = 2003;
+
+    /**
+     * Requested role doesn't exist for the given game.
+     */
+    public static final int REGISTRATION_REQUESTED_ROLE_UNKNOWN = 2004;
+
+    /**
+     * Requested room is empty.
+     */
+    public static final int REGISTRATION_REQUESTED_ROOM_IS_EMPTY = 2005;
+
+```
