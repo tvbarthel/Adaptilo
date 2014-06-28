@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Vibrator;
+import android.util.Log;
 
 import java.net.URI;
 
@@ -14,13 +15,14 @@ import fr.tvbarthel.apps.adaptilo.helpers.SensorListenerHelper;
 import fr.tvbarthel.apps.adaptilo.helpers.SharedPreferencesHelper;
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
 import fr.tvbarthel.apps.adaptilo.models.Event;
-import fr.tvbarthel.apps.adaptilo.models.io.Message;
-import fr.tvbarthel.apps.adaptilo.models.io.RegisterControllerRequest;
 import fr.tvbarthel.apps.adaptilo.models.SensorEvent;
 import fr.tvbarthel.apps.adaptilo.models.UserEvent;
 import fr.tvbarthel.apps.adaptilo.models.enums.EventAction;
 import fr.tvbarthel.apps.adaptilo.models.enums.EventType;
 import fr.tvbarthel.apps.adaptilo.models.enums.MessageType;
+import fr.tvbarthel.apps.adaptilo.models.io.ClosingError;
+import fr.tvbarthel.apps.adaptilo.models.io.Message;
+import fr.tvbarthel.apps.adaptilo.models.io.RegisterControllerRequest;
 import fr.tvbarthel.apps.adaptilo.network.AdaptiloClient;
 
 /**
@@ -153,8 +155,29 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
     }
 
     @Override
-    public void onClose() {
+    public void onClose(int code) {
         mReadyToCommunicate = false;
+
+        switch (code) {
+            case ClosingError.REGISTRATION_REQUESTED_GAME_NAME_UNKNOWN:
+                Log.e(TAG, "Connection closed : " + "REGISTRATION_REQUESTED_GAME_NAME_UNKNOWN");
+                break;
+            case ClosingError.REGISTRATION_NO_ROOM_CREATED:
+                Log.e(TAG, "Connection closed : " + "REGISTRATION_NO_ROOM_CREATED");
+                break;
+            case ClosingError.REGISTRATION_REQUESTED_ROOM_UNKNOW:
+                Log.e(TAG, "Connection closed : " + "REGISTRATION_REQUESTED_ROOM_UNKNOW");
+                break;
+            case ClosingError.REGISTRATION_REQUESTED_ROLE_UNKNOWN:
+                Log.e(TAG, "Connection closed : " + "REGISTRATION_REQUESTED_ROLE_UNKNOWN");
+                break;
+            case ClosingError.REGISTRATION_REQUESTED_ROOM_IS_EMPTY:
+                Log.e(TAG, "Connection closed : " + "REGISTRATION_REQUESTED_ROOM_IS_EMPTY");
+                break;
+            default:
+                Log.e(TAG, "Connection closed : " + "Error code unknown.");
+                break;
+        }
     }
 
 

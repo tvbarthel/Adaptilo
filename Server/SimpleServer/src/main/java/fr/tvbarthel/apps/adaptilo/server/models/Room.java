@@ -1,5 +1,7 @@
 package fr.tvbarthel.apps.adaptilo.server.models;
 
+import fr.tvbarthel.apps.adaptilo.server.models.io.ClosingError;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,29 +76,30 @@ public class Room {
      *
      * @param role          role to register
      * @param shouldReplace true if replacement is requested, set false if many client can play the same role
-     * @return
+     * @return 0 if registration succeed or an
+     *         {@link fr.tvbarthel.apps.adaptilo.server.models.io.ClosingError}
      */
-    public boolean registerRole(Role role, boolean shouldReplace) {
+    public int registerRole(Role role, boolean shouldReplace) {
         if (!mAvailableRoles.isEmpty()) {
             //check if given role is allowed
             if (!mAvailableRoles.contains(role.getName())) {
-                return false;
+                return ClosingError.REGISTRATION_REQUESTED_ROLE_UNKNOWN;
             }
         }
 
         //check room size
         final int remainingSlot = shouldReplace ? mMaxRoles - 1 : mMaxRoles;
         if (mRoles.size() > remainingSlot) {
-            return false;
+            return ClosingError.REGISTRATION_REQUESTED_ROOM_IS_EMPTY;
         }
 
-        //delete current registered role if replace if requested
+        //delete current registered role if replace is requested
         if (shouldReplace) {
             mRoles.remove(findRoleByName(role.getName()));
         }
 
         mRoles.add(role);
-        return true;
+        return 0;
     }
 
     /**

@@ -9,8 +9,8 @@ import fr.tvbarthel.apps.adaptilo.server.models.enums.EventAction;
 import fr.tvbarthel.apps.adaptilo.server.models.enums.EventType;
 import fr.tvbarthel.apps.adaptilo.server.models.enums.MessageType;
 import fr.tvbarthel.apps.adaptilo.server.models.io.Message;
-import fr.tvbarthel.apps.adaptilo.server.models.io.ServerRequest;
 import fr.tvbarthel.apps.adaptilo.server.models.io.RegisterControllerRequest;
+import fr.tvbarthel.apps.adaptilo.server.models.io.ServerRequest;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -41,9 +41,10 @@ public abstract class AdaptiloServer extends WebSocketServer {
      * @param gameName name og the game
      * @param role     role to register
      * @param roomId   room id in which role request registration
-     * @return should return true if registration succeeds
+     * @return should return 0 if registration succeeds, else an
+     *         {@link fr.tvbarthel.apps.adaptilo.server.models.io.ClosingError} matching a registration code.
      */
-    protected abstract boolean registerRoleInRoom(String gameName, Role role, String roomId);
+    protected abstract int registerRoleInRoom(String gameName, Role role, String roomId);
 
     public AdaptiloServer(InetSocketAddress address) {
         super(address);
@@ -142,15 +143,21 @@ public abstract class AdaptiloServer extends WebSocketServer {
         final Role roleToRegister = new Role(request.getGameRole(), conn, givenId);
         Message answer = null;
 
-        if (registerRoleInRoom(request.getGameName(), roleToRegister, request.getGameRoom())) {
-            //registration completed, prepare server answer
-            System.out.println(TAG + " registration completed, game :  " + request.getGameName() + " room : " + request.getGameRole() + " role : " + request.getGameRole() + " id : " + givenId);
-            answer = new Message(MessageType.CONNECTION_COMPLETED, givenId);
-        } else {
-            //registration request mal formed, close connection
-            conn.close();
-        }
+        final int registrationCode = registerRoleInRoom(request.getGameName(), roleToRegister, request.getGameRoom());
 
+        switch (registrationCode) {
+            case 0:
+                //registration completed, prepare server answer
+                System.out.println(TAG + " registration completed, game :  " + request.getGameName()
+                        + " room : " + request.getGameRole() + " role : " + request.getGameRole() + " id : " + givenId);
+
+                //build answer to send to the requester
+                answer = new Message(MessageType.CONNECTION_COMPLETED, givenId);
+                break;
+            default:
+                //registration fail, close connection and send registration error code
+                conn.close(registrationCode);
+        }
         return answer;
     }
 

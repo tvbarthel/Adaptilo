@@ -2,6 +2,7 @@ package fr.tvbarthel.apps.adaptilo.server;
 
 import fr.tvbarthel.apps.adaptilo.server.models.Role;
 import fr.tvbarthel.apps.adaptilo.server.models.Room;
+import fr.tvbarthel.apps.adaptilo.server.models.io.ClosingError;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -57,25 +58,25 @@ public class SingleGameServer extends AdaptiloServer {
 
 
     @Override
-    protected boolean registerRoleInRoom(String gameName, Role role, String roomId) {
+    protected int registerRoleInRoom(String gameName, Role role, String roomId) {
         Room requestedRoom = null;
 
         if (!mGameName.equals(gameName)) {
             //current game name doesn't match requested one
             System.out.println(TAG + " current game name " + mGameName + " doesn't match requested one : " + gameName);
-            return false;
+            return ClosingError.REGISTRATION_REQUESTED_GAME_NAME_UNKNOWN;
         }
 
         if (mGameRooms.isEmpty()) {
             //create room first
             System.out.println(TAG + " No created rooms for this game, need to create one first.");
-            return false;
+            return ClosingError.REGISTRATION_NO_ROOM_CREATED;
         }
 
         if (!mAllowedRoles.contains(role.getName())) {
             //role not allowed for this game
             System.out.println(TAG + " Role : " + role.getName() + " doesn't allowed in this game.");
-            return false;
+            return ClosingError.REGISTRATION_REQUESTED_ROLE_UNKNOWN;
         }
 
         for (Room room : mGameRooms) {
@@ -89,7 +90,7 @@ public class SingleGameServer extends AdaptiloServer {
         if (requestedRoom == null) {
             //request room not found
             System.out.println(TAG + " Room with id : " + roomId + " doesn't exist.");
-            return false;
+            return ClosingError.REGISTRATION_REQUESTED_ROOM_UNKNOW;
         }
 
         //TODO always replace for test purpose
