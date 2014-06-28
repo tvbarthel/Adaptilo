@@ -2,8 +2,6 @@ package fr.tvbarthel.apps.adaptilo.models;
 
 import android.net.Uri;
 
-import java.net.URI;
-
 /**
  * Configuration parameters for {@link fr.tvbarthel.apps.adaptilo.engine.AdaptiloEngine} should
  * come from a QrCode
@@ -29,6 +27,11 @@ public class EngineConfig {
      * User role in the game
      */
     private String mUserRole;
+
+    /**
+     * Name of the game.
+     */
+    private String mGameName;
 
     public String toString() {
         return "serverUri : " + mServerUri + "| port : " + mServerPort + "| room : " + mGameRoom + "| role : " + mUserRole;
@@ -68,5 +71,13 @@ public class EngineConfig {
 
     public void setUserRole(String mServerRole) {
         this.mUserRole = mServerRole;
+    }
+
+    public String getGameName() {
+        return mGameName;
+    }
+
+    public void setGameName(String mGameName) {
+        this.mGameName = mGameName;
     }
 }

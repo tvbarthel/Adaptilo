@@ -115,7 +115,7 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
     public void onConfigRequested() {
         //send the current loaded config
         mAdaptiloClient.send(new Message(MessageType.REGISTER_CONTROLLER, new RegisterControllerRequest(
-                mEngineConfig.getServerUri().getPath(),
+                mEngineConfig.getGameName(),
                 mEngineConfig.getGameRoom(),
                 mEngineConfig.getUserRole()
         )));

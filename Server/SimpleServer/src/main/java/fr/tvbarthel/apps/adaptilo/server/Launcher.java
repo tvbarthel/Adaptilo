@@ -18,7 +18,7 @@ public class Launcher {
         roles.add("field");
 
         //create server
-        final SingleGameServer server = new SingleGameServer(new InetSocketAddress(8887), "/testGame", roles);
+        final SingleGameServer server = new SingleGameServer(new InetSocketAddress(8887), "testGame", roles);
 
         server.start();
         BufferedReader sysin = new BufferedReader(new InputStreamReader(System.in));
