@@ -1,5 +1,6 @@
 package fr.tvbarthel.apps.adaptilo.fragments;
 
+import android.app.AlertDialog;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,15 +11,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import fr.tvbarthel.apps.adaptilo.R;
-import fr.tvbarthel.apps.adaptilo.activities.BasicControllerCaptureActivity;
 import fr.tvbarthel.apps.adaptilo.exceptions.QrCodeException;
-import fr.tvbarthel.apps.adaptilo.helpers.QrCodeHelper;
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
-import fr.tvbarthel.apps.adaptilo.models.io.Message;
 import fr.tvbarthel.apps.adaptilo.models.UserEvent;
 import fr.tvbarthel.apps.adaptilo.models.enums.EventAction;
 import fr.tvbarthel.apps.adaptilo.models.enums.EventType;
 import fr.tvbarthel.apps.adaptilo.models.enums.MessageType;
+import fr.tvbarthel.apps.adaptilo.models.io.Message;
 
 public class BasicControllerFragment extends AdaptiloControllerFragment {
 
@@ -72,6 +71,12 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     }
 
     @Override
+    public AlertDialog onStartDialogNeeded() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        return builder.create();
+    }
+
+    @Override
     protected void onScannerCanceled() {
         // hide the on screen message that should be R.string.basic_controller_message_loading
         hideOnScreenMessage();
@@ -103,8 +108,7 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
      */
     public void startQrCodeScanner() {
         showOnScreenMessage(R.string.basic_controller_message_loading);
-        QrCodeHelper.initiateQrCodeScan(this, BasicControllerCaptureActivity.class,
-                getString(R.string.qr_code_scanner_prompt));
+        start();
     }
 
     /**

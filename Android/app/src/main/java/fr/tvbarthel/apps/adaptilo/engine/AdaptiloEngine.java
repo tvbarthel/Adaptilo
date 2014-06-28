@@ -287,6 +287,15 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
     }
 
     /**
+     * Use to know if engine is ready to communicate with server.
+     *
+     * @return true if connected to a game server.
+     */
+    public boolean isReadToCommunicate() {
+        return mReadyToCommunicate;
+    }
+
+    /**
      * handle message from server regarding sensor
      *
      * @param content
