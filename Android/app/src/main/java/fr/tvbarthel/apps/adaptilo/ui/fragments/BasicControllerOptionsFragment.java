@@ -45,7 +45,6 @@ public class BasicControllerOptionsFragment extends AdaptiloSelectDialogFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setCancelable(false);
     }
 
     @Override

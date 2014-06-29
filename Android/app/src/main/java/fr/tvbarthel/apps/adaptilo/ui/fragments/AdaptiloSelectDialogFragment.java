@@ -86,6 +86,7 @@ public abstract class AdaptiloSelectDialogFragment extends DialogFragment {
         mCallbacks.onSelectDialogClose(mOptionsSaved);
     }
 
+
     @Override
     public void onDetach() {
         super.onDetach();
