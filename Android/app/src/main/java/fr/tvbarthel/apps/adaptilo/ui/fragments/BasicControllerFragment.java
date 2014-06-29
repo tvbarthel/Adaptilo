@@ -43,12 +43,6 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     }
 
     @Override
-    public void onDetach() {
-        mAdaptiloEngine.stop();
-        super.onDetach();
-    }
-
-    @Override
     protected int getSelectButtonId() {
         return R.id.basic_controller_btn_select;
     }
@@ -78,6 +72,19 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     @Override
     protected AdaptiloStartDialogFragment getStartDialogFragment() {
         return new BasicControllerStartDialogFragment();
+    }
+
+    @Override
+    public void onGameStart() {
+        showOnScreenMessage(mAdaptiloEngine.getEngineConfig().getGameName());
+    }
+
+    @Override
+    public void onGameServerUnreachable() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.basic_controller_network_unreachable_alert_title);
+        builder.setMessage(R.string.basic_controller_network_unreachable_alert_content);
+        builder.create().show();
     }
 
     @Override
@@ -127,19 +134,6 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     protected void onScannerSuccess(EngineConfig config) {
         super.onScannerSuccess(config);
         showOnScreenMessage(config.getGameName());
-    }
-
-    @Override
-    public void onGameStart() {
-        showOnScreenMessage(mAdaptiloEngine.getEngineConfig().getGameName());
-    }
-
-    @Override
-    public void onGameServerUnreachable() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.basic_controller_network_unreachable_alert_title);
-        builder.setMessage(R.string.basic_controller_network_unreachable_alert_content);
-        builder.create().show();
     }
 
 

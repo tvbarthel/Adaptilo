@@ -171,6 +171,13 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
 
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mAdaptiloEngine.resume();
+    }
+
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -199,22 +206,21 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mCallbacks = sDummyCallbacks;
-        mAdaptiloEngine.stop();
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
         mAdaptiloEngine.pause();
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        mAdaptiloEngine.resume();
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = sDummyCallbacks;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mAdaptiloEngine.stop();
     }
 
     @Override
