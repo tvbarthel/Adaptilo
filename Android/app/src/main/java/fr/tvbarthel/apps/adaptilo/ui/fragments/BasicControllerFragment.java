@@ -1,6 +1,5 @@
 package fr.tvbarthel.apps.adaptilo.ui.fragments;
 
-import android.app.AlertDialog;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -77,28 +76,37 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     }
 
     @Override
-    public AlertDialog onStartDialogNeeded() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        return builder.create();
-    }
-
-    @Override
     protected int getSelectButtonId() {
         return R.id.basic_controller_btn_select;
     }
 
     @Override
+    protected int getStartButtonId() {
+        return R.id.basic_controller_btn_start;
+    }
+
+    @Override
     protected AdaptiloSelectDialogFragment getSelectDialogFragment() {
-        return new BasicControllerOptionsFragment();
+        return new BasicControllerSelectDialogFragment();
+    }
+
+    @Override
+    protected AdaptiloStartDialogFragment getStartDialogFragment() {
+        return new BasicControllerStartDialogFragment();
     }
 
 
     @Override
     public void onSelectDialogClosed(boolean optionSaved) {
+        super.onSelectDialogClosed(optionSaved);
         Log.d(TAG, "onSelectDialogClosed : " + optionSaved);
-        mAdaptiloEngine.resume();
     }
 
+    @Override
+    public void onStartDialogClosed(int which) {
+        super.onStartDialogClosed(which);
+        Log.d(TAG, "onStartDialogClosed : " + which);
+    }
 
     @Override
     protected void onScannerCanceled() {
@@ -127,13 +135,6 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
         });
     }
 
-    /**
-     * start QrCode scanner to load a game config.
-     */
-    public void startQrCodeScanner() {
-        showOnScreenMessage(R.string.basic_controller_message_loading);
-        start();
-    }
 
     /**
      * Init the start button.
@@ -143,12 +144,6 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     protected void initStartButton(View fragmentView) {
         Button startButton = (Button) fragmentView.findViewById(R.id.basic_controller_btn_start);
         startButton.setTypeface(mCustomTypeFace);
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startQrCodeScanner();
-            }
-        });
     }
 
     /**

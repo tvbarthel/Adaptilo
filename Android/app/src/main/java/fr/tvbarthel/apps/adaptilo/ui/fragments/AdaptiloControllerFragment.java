@@ -1,7 +1,6 @@
 package fr.tvbarthel.apps.adaptilo.ui.fragments;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,12 +21,13 @@ import fr.tvbarthel.apps.adaptilo.ui.activities.BasicControllerCaptureActivity;
  * <p/>
  * The controller can send messages to a callback and can receive messages.
  * <p/>
- * All controller must at least display a select button for consistency in basic features
+ * All controller must at least display select and start buttons for consistency in basic features
  * <p/>
- * This abstract controller encapsulate select startPressed button behavior. Implementations only
+ * This abstract controller encapsulate select and start button behavior. Implementations only
  * handle visual callback and dialog customization. Therefor any implementation of
  * {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloControllerFragment} must provide an
  * implementation of its {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloSelectDialogFragment}
+ * and {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloStartDialogFragment}
  */
 abstract public class AdaptiloControllerFragment extends Fragment implements AdaptiloEngine.Callbacks {
 
