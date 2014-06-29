@@ -453,6 +453,8 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
     public interface Callbacks {
         /**
          * Engine received message for the controller
+         * <p/>
+         * Any visual callback linked to a given message must be run on the ui thread.
          *
          * @param message
          */
@@ -460,6 +462,8 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
 
         /**
          * Called when engine an error.
+         * <p/>
+         * Any visual callback linked to a given error must be run on the ui thread.
          *
          * @param ex error exception
          */

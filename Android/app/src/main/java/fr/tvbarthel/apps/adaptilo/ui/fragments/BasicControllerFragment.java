@@ -68,15 +68,6 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     }
 
     @Override
-    public void onMessage(Message messageToHandle) {
-        // TODO handle the message
-        MessageType messageType = messageToHandle.getType();
-        if (MessageType.ENGINE_READY.equals(messageType)) {
-            handleEngineReadyMessage(messageToHandle);
-        }
-    }
-
-    @Override
     protected int getSelectButtonId() {
         return R.id.basic_controller_btn_select;
     }
@@ -95,7 +86,6 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     protected AdaptiloStartDialogFragment getStartDialogFragment() {
         return new BasicControllerStartDialogFragment();
     }
-
 
     @Override
     public void onSelectDialogClosed(boolean optionSaved) {
@@ -133,22 +123,17 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     }
 
     @Override
+    public void onGameStart() {
+        showOnScreenMessage(mAdaptiloEngine.getEngineConfig().getGameName());
+    }
+
+    @Override
     public void onGameServerUnreachable() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.basic_controller_network_unreachable_alert_title);
         builder.setMessage(R.string.basic_controller_network_unreachable_alert_content);
         builder.create().show();
     }
-
-    private void handleEngineReadyMessage(Message message) {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                showOnScreenMessage(mAdaptiloEngine.getEngineConfig().getGameName());
-            }
-        });
-    }
-
 
     /**
      * Init the start button.

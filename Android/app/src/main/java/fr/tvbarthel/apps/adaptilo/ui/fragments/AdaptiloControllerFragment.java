@@ -19,7 +19,8 @@ import fr.tvbarthel.apps.adaptilo.ui.activities.BasicControllerCaptureActivity;
 /**
  * A simple {@link android.support.v4.app.Fragment} that represents a controller.
  * <p/>
- * The controller can send messages to a callback and can receive messages.
+ * The controller encapsulate all basics message processing such as game_start,
+ * gamer_server_unreachable.
  * <p/>
  * All controller must at least display select and start buttons for consistency in basic features
  * <p/>
@@ -57,18 +58,18 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
     };
 
     /**
-     * catch and process messages send to your controller
-     *
-     * @param messageToHandle messages send from the server
-     */
-    abstract public void onMessage(Message messageToHandle);
-
-    /**
      * Called when game server is unreachable.
      * <p/>
      * Should be used to warn user.
      */
     abstract public void onGameServerUnreachable();
+
+    /**
+     * Called when the controller is connected to the game server.
+     * <p/>
+     * Should be used to inform user that he can start to play.
+     */
+    abstract public void onGameStart();
 
     /**
      * Used to retrieve and initialize select button in controller implementation.
@@ -171,7 +172,16 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
 
     @Override
     public void onMessageReceived(Message message) {
-        this.onMessage(message);
+        switch (message.getType()) {
+            case ENGINE_READY:
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        onGameStart();
+                    }
+                });
+                break;
+        }
     }
 
     @Override
