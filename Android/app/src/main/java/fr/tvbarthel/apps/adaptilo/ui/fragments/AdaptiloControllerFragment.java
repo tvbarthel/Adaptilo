@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.util.SparseArray;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 
@@ -13,6 +15,10 @@ import fr.tvbarthel.apps.adaptilo.engine.AdaptiloEngine;
 import fr.tvbarthel.apps.adaptilo.exceptions.QrCodeException;
 import fr.tvbarthel.apps.adaptilo.helpers.QrCodeHelper;
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
+import fr.tvbarthel.apps.adaptilo.models.UserEvent;
+import fr.tvbarthel.apps.adaptilo.models.enums.EventAction;
+import fr.tvbarthel.apps.adaptilo.models.enums.EventType;
+import fr.tvbarthel.apps.adaptilo.models.enums.MessageType;
 import fr.tvbarthel.apps.adaptilo.models.io.Message;
 import fr.tvbarthel.apps.adaptilo.ui.activities.BasicControllerCaptureActivity;
 
@@ -29,6 +35,9 @@ import fr.tvbarthel.apps.adaptilo.ui.activities.BasicControllerCaptureActivity;
  * {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloControllerFragment} must provide an
  * implementation of its {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloSelectDialogFragment}
  * and {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloStartDialogFragment}
+ * <p/>
+ * In addition, this abstract controller encapsulate the behavior for all buttons of your controller.
+ * Simply implements {@link #getControllerKeys()} to map your button ids with the wished EventType.
  */
 abstract public class AdaptiloControllerFragment extends Fragment implements AdaptiloEngine.Callbacks {
 
@@ -58,18 +67,24 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
     };
 
     /**
-     * Called when game server is unreachable.
-     * <p/>
-     * Should be used to warn user.
+     * Sparse array used to map buttonId and EventType for each buttons on the controller.
      */
-    abstract protected void onGameServerUnreachable();
+    private final SparseArray<EventType> mKeys = getControllerKeys();
 
     /**
-     * Called when the controller is connected to the game server.
+     * Used to map your button ids with the wished EventType.
      * <p/>
-     * Should be used to inform user that he can start to play.
+     * Basically, you should put all EventType as value with button res id as key.
+     * <p/>
+     * For instance : put(R.id.basic_controller_btn_a,EventType.KEY_A)
+     * <p/>
+     * Before define your own EventType, please refer to
+     * {@link fr.tvbarthel.apps.adaptilo.models.enums.EventType} to check if the event you are
+     * trying to define isn't already listed.
+     *
+     * @return an array of EventType with associated button res id as key.
      */
-    abstract protected void onGameStart();
+    abstract protected SparseArray<EventType> getControllerKeys();
 
     /**
      * Used to retrieve and initialize select button in controller implementation.
@@ -102,6 +117,20 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
      * @return Start dialog fragment.
      */
     abstract protected AdaptiloStartDialogFragment getStartDialogFragment();
+
+    /**
+     * Called when game server is unreachable.
+     * <p/>
+     * Should be used to warn user.
+     */
+    abstract protected void onGameServerUnreachable();
+
+    /**
+     * Called when the controller is connected to the game server.
+     * <p/>
+     * Should be used to inform user that he can start to play.
+     */
+    abstract protected void onGameStart();
 
     /**
      * Called when the select dialog is displayed.
@@ -165,6 +194,8 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
                 onStartDialogShown();
             }
         });
+
+        initKeyButtons(view);
     }
 
     @Override
@@ -343,6 +374,82 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
     private void loadNewGame() {
         disconnect();
         loadGame();
+    }
+
+    /**
+     * Init the key buttons.
+     *
+     * @param controllerView the {@link android.view.View} for the controller's UI.
+     */
+    private void initKeyButtons(View controllerView) {
+        final View.OnTouchListener keyListener = new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final UserEvent userEvent = extractUserEvent(v, event);
+                if (userEvent != null) {
+                    mAdaptiloEngine.sendUserInput(new Message(MessageType.USER_INPUT, userEvent));
+                }
+                return false;
+            }
+        };
+
+        //iterate through all button ids set in getControllerKeys() to attached the keyListener
+        for (int i = 0; i < mKeys.size(); i++) {
+            final Button button = (Button) controllerView.findViewById(mKeys.keyAt(i));
+            button.setOnTouchListener(keyListener);
+        }
+    }
+
+    /**
+     * Extract a {@link fr.tvbarthel.apps.adaptilo.models.UserEvent}
+     *
+     * @param view        the {@link android.view.View} the touch event has been dispatched to.
+     * @param motionEvent The MotionEvent object containing full information about the event.
+     * @return
+     */
+    private UserEvent extractUserEvent(View view, MotionEvent motionEvent) {
+        final EventAction eventAction = extractEventAction(motionEvent);
+        if (eventAction == null) return null;
+        final EventType eventType = extractEventType(view);
+        if (eventType == null) return null;
+        return new UserEvent(eventType, eventAction);
+    }
+
+    /**
+     * Extract the {@link fr.tvbarthel.apps.adaptilo.models.enums.EventAction} from a {@link android.view.MotionEvent}.
+     *
+     * @param motionEvent the {@link android.view.MotionEvent} from which the {@link fr.tvbarthel.apps.adaptilo.models.enums.EventAction} will be extracted.
+     * @return the extracted {@link fr.tvbarthel.apps.adaptilo.models.enums.EventAction}
+     */
+    private EventAction extractEventAction(MotionEvent motionEvent) {
+        final int motionAction = motionEvent.getActionMasked();
+        EventAction eventAction = null;
+        if (motionAction == MotionEvent.ACTION_DOWN) {
+            eventAction = EventAction.ACTION_KEY_DOWN;
+        } else if (motionAction == MotionEvent.ACTION_UP) {
+            eventAction = EventAction.ACTION_KEY_UP;
+        }
+        return eventAction;
+    }
+
+    /**
+     * Extract the {@link fr.tvbarthel.apps.adaptilo.models.enums.EventType} associated with a {@link android.view.View}.
+     *
+     * @param view the {@link android.view.View} the event has been dispatched to.
+     * @return the extracted {@link fr.tvbarthel.apps.adaptilo.models.enums.EventType}
+     */
+    protected EventType extractEventType(View view) {
+        final int viewId = view.getId();
+
+        //iterate through buttons res id to find which button was pressed.
+        for (int i = 0; i < mKeys.size(); i++) {
+            if (viewId == mKeys.keyAt(i)) {
+
+                //return event linked to the button, as defined by getControllerKeys();
+                return mKeys.valueAt(i);
+            }
+        }
+        return null;
     }
 
 
