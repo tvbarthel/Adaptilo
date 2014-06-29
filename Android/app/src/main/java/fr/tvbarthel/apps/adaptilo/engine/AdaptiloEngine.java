@@ -9,8 +9,6 @@ import android.util.Log;
 
 import java.net.URI;
 
-import fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloControllerFragment;
-import fr.tvbarthel.apps.adaptilo.ui.fragments.BasicControllerFragment;
 import fr.tvbarthel.apps.adaptilo.helpers.SensorListenerHelper;
 import fr.tvbarthel.apps.adaptilo.helpers.SharedPreferencesHelper;
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
@@ -24,6 +22,8 @@ import fr.tvbarthel.apps.adaptilo.models.io.ClosingError;
 import fr.tvbarthel.apps.adaptilo.models.io.Message;
 import fr.tvbarthel.apps.adaptilo.models.io.RegisterControllerRequest;
 import fr.tvbarthel.apps.adaptilo.network.AdaptiloClient;
+import fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloControllerFragment;
+import fr.tvbarthel.apps.adaptilo.ui.fragments.BasicControllerFragment;
 
 /**
  * Adaptilo engine used to handle interaction between the controller and the server
@@ -284,6 +284,15 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
      */
     public void setEngineConfig(EngineConfig config) {
         mEngineConfig = config;
+    }
+
+    /**
+     * Retrieve loaded engine config.
+     *
+     * @return current game config or null if no game has been loaded successfully.
+     */
+    public EngineConfig getEngineConfig() {
+        return mEngineConfig;
     }
 
     /**

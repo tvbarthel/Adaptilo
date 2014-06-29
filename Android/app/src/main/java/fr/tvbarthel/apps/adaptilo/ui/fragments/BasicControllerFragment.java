@@ -105,6 +105,11 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     @Override
     public void onStartDialogClosed(int which) {
         super.onStartDialogClosed(which);
+        switch (which) {
+            case AdaptiloStartDialogFragment.BUTTON_DISCONNECT:
+                showOnScreenMessage(R.string.basic_controller_message_disconnected);
+                break;
+        }
         Log.d(TAG, "onStartDialogClosed : " + which);
     }
 
@@ -123,14 +128,14 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     @Override
     protected void onScannerSuccess(EngineConfig config) {
         super.onScannerSuccess(config);
-        mAdaptiloEngine.start();
+        showOnScreenMessage(config.getGameName());
     }
 
     private void handleEngineReadyMessage(Message message) {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                showOnScreenMessage(R.string.basic_controller_message_playing);
+                showOnScreenMessage(mAdaptiloEngine.getEngineConfig().getGameName());
             }
         });
     }
@@ -188,6 +193,16 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     protected void showOnScreenMessage(int resourceId) {
         mOnScreenMessage.setVisibility(View.VISIBLE);
         mOnScreenMessage.setText(resourceId);
+    }
+
+    /**
+     * Show an on screen message.
+     *
+     * @param message The string to be shown.
+     */
+    protected void showOnScreenMessage(String message) {
+        mOnScreenMessage.setVisibility(View.VISIBLE);
+        mOnScreenMessage.setText(message);
     }
 
     /**

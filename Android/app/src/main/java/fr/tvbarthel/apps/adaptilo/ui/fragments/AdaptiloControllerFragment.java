@@ -217,6 +217,7 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
      */
     protected void onScannerSuccess(EngineConfig config) {
         mAdaptiloEngine.setEngineConfig(config);
+        mAdaptiloEngine.start();
         Log.d(TAG, "onScannerSuccess : " + config.toString());
     }
 
