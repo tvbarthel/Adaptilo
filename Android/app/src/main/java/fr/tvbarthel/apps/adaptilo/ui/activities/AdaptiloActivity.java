@@ -1,5 +1,6 @@
 package fr.tvbarthel.apps.adaptilo.ui.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
@@ -7,6 +8,7 @@ import fr.tvbarthel.apps.adaptilo.R;
 import fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloControllerFragment;
 import fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloSelectDialogFragment;
 import fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloStartDialogFragment;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Activity which can handle {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloControllerFragment}
@@ -33,6 +35,11 @@ public abstract class AdaptiloActivity extends FragmentActivity implements
      * @return first controller to be displayed
      */
     abstract AdaptiloControllerFragment getDefaultController();
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(new CalligraphyContextWrapper(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

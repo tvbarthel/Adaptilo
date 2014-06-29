@@ -70,31 +70,13 @@ public class BasicControllerSelectDialogFragment extends AdaptiloSelectDialogFra
         final LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View dialogView = inflater.inflate(R.layout.dialog_fragment_basic_controller_select, null);
 
-        final Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Minecraftia.ttf");
-        ((TextView) dialogView.findViewById(R.id.fragment_basic_controller_options_title)).setTypeface(typeface);
-        ((TextView) dialogView.findViewById(R.id.fragment_basic_controller_options_key_label)).setTypeface(typeface);
-        ((TextView) dialogView.findViewById(R.id.fragment_basic_controller_options_server_label)).setTypeface(typeface);
-
         mKeyVibrationToggleButton = (ToggleButton) dialogView.findViewById(R.id.fragment_basic_controller_options_key_toggle);
-        mKeyVibrationToggleButton.setTypeface(typeface);
         mKeyVibrationToggleButton.setChecked(mCurrentUserVibrationKeyPolicy);
 
         mServerVibrationToggleButton = (ToggleButton) dialogView.findViewById(R.id.fragment_basic_controller_options_server_toggle);
-        mServerVibrationToggleButton.setTypeface(typeface);
         mServerVibrationToggleButton.setChecked(mCurrentUserVibrationServerPolicy);
 
         alertDialog.setView(dialogView);
-
-        //custom alert button
-        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                Button negativeButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_NEGATIVE);
-                negativeButton.setTypeface(typeface);
-                Button positiveButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
-                positiveButton.setTypeface(typeface);
-            }
-        });
 
         return alertDialog;
     }

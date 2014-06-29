@@ -1,7 +1,6 @@
 package fr.tvbarthel.apps.adaptilo.ui.fragments;
 
 import android.app.AlertDialog;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -18,6 +17,7 @@ import fr.tvbarthel.apps.adaptilo.models.enums.EventAction;
 import fr.tvbarthel.apps.adaptilo.models.enums.EventType;
 import fr.tvbarthel.apps.adaptilo.models.enums.MessageType;
 import fr.tvbarthel.apps.adaptilo.models.io.Message;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 public class BasicControllerFragment extends AdaptiloControllerFragment {
 
@@ -42,20 +42,19 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
      */
     protected TextView mOnScreenMessage;
 
-    protected Typeface mCustomTypeFace;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        CalligraphyConfig.initDefault("fonts/Minecraftia.ttf");
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_basic_controller, container, false);
 
-        mCustomTypeFace = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Minecraftia.ttf");
-        ((TextView) fragmentView.findViewById(R.id.basic_controller_game_name)).setTypeface(mCustomTypeFace);
         mOnScreenMessage = (TextView) fragmentView.findViewById(R.id.basic_controller_on_screen_message);
-        mOnScreenMessage.setTypeface(mCustomTypeFace);
 
         initKeyButtons(fragmentView);
-        initStartButton(fragmentView);
-        initSelectButton(fragmentView);
 
         return fragmentView;
     }
@@ -149,26 +148,6 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     }
 
     /**
-     * Init the start button.
-     *
-     * @param fragmentView the {@link android.view.View} for the fragment's UI.
-     */
-    protected void initStartButton(View fragmentView) {
-        Button startButton = (Button) fragmentView.findViewById(R.id.basic_controller_btn_start);
-        startButton.setTypeface(mCustomTypeFace);
-    }
-
-    /**
-     * Change typo of select button
-     *
-     * @param fragmentView the {@link android.view.View} for the fragment's UI.
-     */
-    protected void initSelectButton(View fragmentView) {
-        Button selectButton = (Button) fragmentView.findViewById(R.id.basic_controller_btn_select);
-        selectButton.setTypeface(mCustomTypeFace);
-    }
-
-    /**
      * Init the key buttons.
      *
      * @param fragmentView the {@link android.view.View} for the fragment's UI.
@@ -188,7 +167,6 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
         for (int buttonId : keys) {
             final Button button = (Button) fragmentView.findViewById(buttonId);
             button.setOnTouchListener(keyListener);
-            button.setTypeface(mCustomTypeFace);
         }
     }
 
