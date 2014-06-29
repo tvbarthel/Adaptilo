@@ -234,6 +234,7 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
         if (mAdaptiloClient != null) {
             mAdaptiloClient.close();
             mAdaptiloClient = null;
+            mEngineConfig = null;
         }
     }
 

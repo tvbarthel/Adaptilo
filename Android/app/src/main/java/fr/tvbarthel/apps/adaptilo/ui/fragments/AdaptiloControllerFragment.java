@@ -62,14 +62,14 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
      * <p/>
      * Should be used to warn user.
      */
-    abstract public void onGameServerUnreachable();
+    abstract protected void onGameServerUnreachable();
 
     /**
      * Called when the controller is connected to the game server.
      * <p/>
      * Should be used to inform user that he can start to play.
      */
-    abstract public void onGameStart();
+    abstract protected void onGameStart();
 
     /**
      * Used to retrieve and initialize select button in controller implementation.
@@ -102,6 +102,20 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
      * @return Start dialog fragment.
      */
     abstract protected AdaptiloStartDialogFragment getStartDialogFragment();
+
+    /**
+     * Called when the select dialog is displayed.
+     * <p/>
+     * Could be used to perform any visual callback.
+     */
+    abstract protected void onSelectDialogShown();
+
+    /**
+     * Called when the start dialog is displayed.
+     * <p/>
+     * Could be used to perform any visual callback.
+     */
+    abstract protected void onStartDialogShown();
 
     /**
      * QrCode scanner has been canceled.
@@ -138,6 +152,7 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
             public void onClick(View v) {
                 mAdaptiloEngine.pause();
                 getSelectDialogFragment().show(getFragmentManager(), "select_dialog_fragment");
+                onSelectDialogShown();
             }
         });
 
@@ -147,6 +162,7 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
             @Override
             public void onClick(View v) {
                 startPressed();
+                onStartDialogShown();
             }
         });
     }

@@ -3,7 +3,6 @@ package fr.tvbarthel.apps.adaptilo.ui.fragments;
 import android.app.AlertDialog;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -88,9 +87,20 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     }
 
     @Override
+    protected void onSelectDialogShown() {
+        showOnScreenMessage(R.string.basic_controller_btn_select);
+    }
+
+    @Override
+    protected void onStartDialogShown() {
+        showOnScreenMessage(R.string.basic_controller_btn_start);
+    }
+
+    @Override
     public void onSelectDialogClosed(boolean optionSaved) {
         super.onSelectDialogClosed(optionSaved);
-        Log.d(TAG, "onSelectDialogClosed : " + optionSaved);
+        EngineConfig config = mAdaptiloEngine.getEngineConfig();
+        showOnScreenMessage(config != null ? config.getGameName() : "");
     }
 
     @Override
@@ -100,8 +110,11 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
             case AdaptiloStartDialogFragment.BUTTON_DISCONNECT:
                 showOnScreenMessage(R.string.basic_controller_message_disconnected);
                 break;
+            default:
+                EngineConfig config = mAdaptiloEngine.getEngineConfig();
+                showOnScreenMessage(config != null ? config.getGameName() : "");
+                break;
         }
-        Log.d(TAG, "onStartDialogClosed : " + which);
     }
 
     @Override
