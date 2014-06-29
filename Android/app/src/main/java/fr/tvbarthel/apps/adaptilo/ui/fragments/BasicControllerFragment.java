@@ -1,5 +1,6 @@
 package fr.tvbarthel.apps.adaptilo.ui.fragments;
 
+import android.app.AlertDialog;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -129,6 +130,14 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     protected void onScannerSuccess(EngineConfig config) {
         super.onScannerSuccess(config);
         showOnScreenMessage(config.getGameName());
+    }
+
+    @Override
+    public void onGameServerUnreachable() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.basic_controller_network_unreachable_alert_title);
+        builder.setMessage(R.string.basic_controller_network_unreachable_alert_content);
+        builder.create().show();
     }
 
     private void handleEngineReadyMessage(Message message) {
@@ -277,5 +286,4 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
         }
         return eventType;
     }
-
 }

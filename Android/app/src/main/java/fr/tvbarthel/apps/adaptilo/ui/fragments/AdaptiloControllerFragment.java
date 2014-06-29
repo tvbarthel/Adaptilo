@@ -64,6 +64,13 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
     abstract public void onMessage(Message messageToHandle);
 
     /**
+     * Called when game server is unreachable.
+     * <p/>
+     * Should be used to warn user.
+     */
+    abstract public void onGameServerUnreachable();
+
+    /**
      * Used to retrieve and initialize select button in controller implementation.
      *
      * @return select button id in controller implementation view.
@@ -165,6 +172,18 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
     @Override
     public void onMessageReceived(Message message) {
         this.onMessage(message);
+    }
+
+    @Override
+    public void onErrorReceived(Exception ex) {
+        if (ex.getMessage().contains("ENETUNREACH")) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    onGameServerUnreachable();
+                }
+            });
+        }
     }
 
     @Override

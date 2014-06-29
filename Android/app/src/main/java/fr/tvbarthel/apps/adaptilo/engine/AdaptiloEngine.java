@@ -183,7 +183,7 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
 
     @Override
     public void onError(Exception ex) {
-
+        mCallbacks.onErrorReceived(ex);
     }
 
     /**
@@ -457,6 +457,13 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
          * @param message
          */
         public void onMessageReceived(Message message);
+
+        /**
+         * Called when engine an error.
+         *
+         * @param ex error exception
+         */
+        public void onErrorReceived(Exception ex);
 
         /**
          * Engine received message to replace the current controller

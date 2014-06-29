@@ -14,6 +14,8 @@
     <string name="basic_controller_name">Basic Controller</string>
     <string name="basic_controller_message_disconnected">Disconnected</string>
     <string name="basic_controller_qrcode_scanner_error">Invalid QrCode</string>
+    <string name="basic_controller_network_unreachable_alert_title">Network is unreachable</string>
+    <string name="basic_controller_network_unreachable_alert_content">Fail to connect to the game server.\nPlease check your network access.</string>
 
     <!-- Default Start dialog !-->
     <string name="start_dialog_new_game">New Game</string>
