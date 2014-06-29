@@ -2,7 +2,6 @@ package fr.tvbarthel.apps.adaptilo.ui.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,7 +24,7 @@ import fr.tvbarthel.apps.adaptilo.ui.activities.BasicControllerCaptureActivity;
  * <p/>
  * All controller must at least display a select button for consistency in basic features
  * <p/>
- * This abstract controller encapsulate select start button behavior. Implementations only
+ * This abstract controller encapsulate select startPressed button behavior. Implementations only
  * handle visual callback and dialog customization. Therefor any implementation of
  * {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloControllerFragment} must provide an
  * implementation of its {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloSelectDialogFragment}
@@ -65,24 +64,18 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
     abstract public void onMessage(Message messageToHandle);
 
     /**
-     * Called when user want to start a new game while controller already connected to a
-     * previous one.
-     * <p/>
-     * This let controller implementation decides which behavior to adopt. Basically the controller
-     * should display a dailogBox to let the user choose between leaving the current game and
-     * starting the scanner or stay connected to the current game.
-     *
-     * @return true if the controller should stop the current game (disconnection) and load a
-     * new one.
-     */
-    abstract public AlertDialog onStartDialogNeeded();
-
-    /**
      * Used to retrieve and initialize select button in controller implementation.
      *
      * @return select button id in controller implementation view.
      */
     abstract protected int getSelectButtonId();
+
+    /**
+     * Used to retrieve and initialize startPressed button in controller implementation.
+     *
+     * @return startPressed button id in controller implementation view.
+     */
+    abstract protected int getStartButtonId();
 
     /**
      * Called to retrieve implementations of
@@ -94,12 +87,13 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
     abstract protected AdaptiloSelectDialogFragment getSelectDialogFragment();
 
     /**
-     * Called when matching select dialog as been closed by the user.
+     * Called to retrieve implementations of
+     * {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloStartDialogFragment} for the current
+     * {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloControllerFragment} implementation.
      *
-     * @param optionSaved true when options has been saved.
+     * @return Start dialog fragment.
      */
-    abstract public void onSelectDialogClosed(boolean optionSaved);
-
+    abstract protected AdaptiloStartDialogFragment getStartDialogFragment();
 
     /**
      * QrCode scanner has been canceled.
@@ -136,6 +130,15 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
             public void onClick(View v) {
                 mAdaptiloEngine.pause();
                 getSelectDialogFragment().show(getFragmentManager(), "select_dialog_fragment");
+            }
+        });
+
+        //initialize startPressed button with values matching implementation needs.
+        final Button startButton = (Button) view.findViewById(getStartButtonId());
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startPressed();
             }
         });
     }
@@ -179,29 +182,31 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
     }
 
     /**
-     * Used to start Qr code scanner in order to load a game into your controller.
-     * <p/>
-     * Or prompt a dialog : Cancel | Disconnect | New Game
-     * <p/>
-     * Should be called when "start button" is pressed
+     * Called when matching select dialog as been closed by the user.
+     *
+     * @param optionSaved true when options has been saved.
      */
-    protected void start() {
-        if (mAdaptiloEngine.isReadToCommunicate()) {
+    public void onSelectDialogClosed(boolean optionSaved) {
+        mAdaptiloEngine.resume();
+    }
 
-            //controller already running for a game. Let current controller implementation ask the
-            // to the user if he want to load a new game.
-            AlertDialog alert = onStartDialogNeeded();
-
-            //set up alertDialog to match wished behavior
-            setUpStartDialog(alert);
-
-            //display alert
-            alert.show();
-        } else {
-
-            //current controller isn't running, start scanner to load a game
-            QrCodeHelper.initiateQrCodeScan(this, BasicControllerCaptureActivity.class,
-                    getString(R.string.qr_code_scanner_prompt));
+    /**
+     * Called when matching startPressed dialog as been closed by the user.
+     *
+     * @param which identifier of clicked button
+     *              {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloStartDialogFragment#BUTTON_RESUME}
+     *              {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloStartDialogFragment#BUTTON_DISCONNECT}
+     *              {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloStartDialogFragment#BUTTON_NEW_GAME}
+     *              or 0 if dismissed or canceled.
+     */
+    public void onStartDialogClosed(int which) {
+        mAdaptiloEngine.resume();
+        switch (which) {
+            case AdaptiloStartDialogFragment.BUTTON_DISCONNECT:
+                disconnect();
+                break;
+            case AdaptiloStartDialogFragment.BUTTON_NEW_GAME:
+                loadNewGame();
         }
     }
 
@@ -249,49 +254,25 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
     }
 
     /**
-     * Configure start dialog to obtain wished behavior.
+     * Used to startPressed Qr code scanner in order to load a game into your controller.
+     * <p/>
+     * Or prompt a dialog : Resume | Disconnect | New Game
+     * <p/>
+     * Called when "startPressed button" is pressed
      */
-    private void setUpStartDialog(AlertDialog alert) {
+    private void startPressed() {
+        if (mAdaptiloEngine.isReadToCommunicate()) {
 
+            //controller already running for a game. Let current controller implementation ask the
+            // to the user if he want to load a new game, disconnect from the current one or resume.
+            getStartDialogFragment().show(getFragmentManager(), "start_dialog_fragment");
+            mAdaptiloEngine.pause();
 
-        DialogInterface.OnClickListener startDialogListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case AlertDialog.BUTTON_POSITIVE:
-                        //User decided to leave the current game and start a new one.
-                        loadNewGame();
-                        break;
-                    case AlertDialog.BUTTON_NEUTRAL:
-                        //User decided to leave the current game.
-                        disconnect();
-                }
-            }
-        };
+        } else {
 
-
-        //set up new game button
-        alert.setButton(
-                AlertDialog.BUTTON_POSITIVE,
-                getText(R.string.start_new_game_new_game),
-                startDialogListener
-        );
-
-
-        //set up disconnect button
-        alert.setButton(
-                AlertDialog.BUTTON_NEUTRAL,
-                getText(R.string.start_new_game_disconnect),
-                startDialogListener
-        );
-
-
-        //set up cancel
-        alert.setButton(
-                AlertDialog.BUTTON_NEGATIVE,
-                getText(R.string.start_new_game_cancel),
-                (android.os.Message) null
-        );
+            //current controller isn't running, startPressed scanner to load a game
+            loadGame();
+        }
     }
 
     /**
@@ -305,7 +286,7 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
      * Start load game flow.
      */
     private void loadGame() {
-        //start scanner to load the new game
+        //startPressed scanner to load the new game
         QrCodeHelper.initiateQrCodeScan(AdaptiloControllerFragment.this, BasicControllerCaptureActivity.class,
                 getString(R.string.qr_code_scanner_prompt));
     }

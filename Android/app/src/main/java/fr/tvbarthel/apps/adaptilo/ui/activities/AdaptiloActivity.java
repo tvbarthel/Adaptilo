@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import fr.tvbarthel.apps.adaptilo.R;
 import fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloControllerFragment;
 import fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloSelectDialogFragment;
+import fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloStartDialogFragment;
 
 /**
  * Activity which can handle {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloControllerFragment}
@@ -13,7 +14,8 @@ import fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloSelectDialogFragment;
  */
 public abstract class AdaptiloActivity extends FragmentActivity implements
         AdaptiloControllerFragment.Callbacks,
-        AdaptiloSelectDialogFragment.Callbacks {
+        AdaptiloSelectDialogFragment.Callbacks,
+        AdaptiloStartDialogFragment.Callbacks {
 
     /**
      * Logcat
@@ -50,6 +52,11 @@ public abstract class AdaptiloActivity extends FragmentActivity implements
     @Override
     public void onSelectDialogClose(boolean optionSaved) {
         mAdaptiloControllerFragment.onSelectDialogClosed(optionSaved);
+    }
+
+    @Override
+    public void onStartDialogClose(int which) {
+        mAdaptiloControllerFragment.onStartDialogClosed(which);
     }
 
     /**

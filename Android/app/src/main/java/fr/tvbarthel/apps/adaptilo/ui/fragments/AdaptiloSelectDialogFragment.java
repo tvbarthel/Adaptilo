@@ -14,6 +14,8 @@ import fr.tvbarthel.apps.adaptilo.R;
  * Each custom {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloControllerFragment}
  * should implement a {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloSelectDialogFragment}
  * or reuse a default one.
+ * <p/>
+ * {@link AdaptiloControllerFragment#getSelectDialogFragment()}
  */
 public abstract class AdaptiloSelectDialogFragment extends DialogFragment {
 

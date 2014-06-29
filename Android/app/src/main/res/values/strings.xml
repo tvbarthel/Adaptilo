@@ -17,9 +17,9 @@
     <string name="basic_controller_message_playing">Playing…</string>
 
     <!-- Default Start dialog !-->
-    <string name="start_new_game_new_game">New Game</string>
-    <string name="start_new_game_disconnect">Disconnect</string>
-    <string name="start_new_game_cancel">Cancel</string>
+    <string name="start_dialog_new_game">New Game</string>
+    <string name="start_dialog_disconnect">Disconnect</string>
+    <string name="start_dialog_resume">Resume</string>
 
     <!-- Default Select dialog !-->
     <string name="select_dialog_options_positive">Save and resume</string>
