@@ -18,9 +18,9 @@ import fr.tvbarthel.apps.adaptilo.R;
 import fr.tvbarthel.apps.adaptilo.helpers.SharedPreferencesHelper;
 
 /**
- * Dialog fragment for BasicController options
+ * Select dialog fragment for BasicController options
  */
-public class BasicControllerOptionsFragment extends AdaptiloSelectDialogFragment {
+public class BasicControllerSelectDialogFragment extends AdaptiloSelectDialogFragment {
 
     /**
      * shared preferences used for vibrator policy
@@ -39,7 +39,7 @@ public class BasicControllerOptionsFragment extends AdaptiloSelectDialogFragment
     /**
      * Empty constructor as needed (cf lint)
      */
-    public BasicControllerOptionsFragment() {
+    public BasicControllerSelectDialogFragment() {
     }
 
     @Override
@@ -68,7 +68,7 @@ public class BasicControllerOptionsFragment extends AdaptiloSelectDialogFragment
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog alertDialog = getAlertDialog();
         final LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View dialogView = inflater.inflate(R.layout.fragment_basic_controller_options, null);
+        final View dialogView = inflater.inflate(R.layout.dialog_fragment_basic_controller_select, null);
 
         final Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Minecraftia.ttf");
         ((TextView) dialogView.findViewById(R.id.fragment_basic_controller_options_title)).setTypeface(typeface);
