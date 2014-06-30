@@ -133,6 +133,14 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
     abstract protected void onGameStart();
 
     /**
+     * Callback when a user event is send. Used when a specific behavior should be processed for a
+     * given user event.
+     *
+     * @param userEvent user event send
+     */
+    abstract protected void onUserEventSend(UserEvent userEvent);
+
+    /**
      * Called when the select dialog is displayed.
      * <p/>
      * Could be used to perform any visual callback.
@@ -394,6 +402,7 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
                 final UserEvent userEvent = extractUserEvent(v, event);
                 if (userEvent != null) {
                     mAdaptiloEngine.sendUserInput(new Message(MessageType.USER_INPUT, userEvent));
+                    onUserEventSend(userEvent);
                 }
                 return false;
             }

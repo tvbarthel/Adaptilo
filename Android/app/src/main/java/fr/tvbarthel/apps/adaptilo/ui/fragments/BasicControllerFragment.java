@@ -11,6 +11,7 @@ import android.widget.TextView;
 import fr.tvbarthel.apps.adaptilo.R;
 import fr.tvbarthel.apps.adaptilo.exceptions.QrCodeException;
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
+import fr.tvbarthel.apps.adaptilo.models.UserEvent;
 import fr.tvbarthel.apps.adaptilo.models.enums.EventType;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
@@ -77,6 +78,37 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     @Override
     public void onGameStart() {
         showOnScreenMessage(mAdaptiloEngine.getEngineConfig().getGameName());
+    }
+
+    @Override
+    protected void onUserEventSend(UserEvent userEvent) {
+        /**
+         * Process a specific behavior for a given eventType and eventAction.
+         *
+         * Use {@link fr.tvbarthel.apps.adaptilo.models.UserEvent#getEventAction()}
+         * with values {@link fr.tvbarthel.apps.adaptilo.models.enums.EventAction}
+         *
+         * As well as {@link fr.tvbarthel.apps.adaptilo.models.UserEvent#getEventType()}
+         * with values {@link fr.tvbarthel.apps.adaptilo.models.enums.EventType}
+         *
+         * For instance :
+         *
+         * {@code
+         *  if (userEvent.getEventAction() == EventAction.ACTION_KEY_DOWN) {
+         *      switch (userEvent.getEventType()) {
+         *          case KEY_A:
+         *              showOnScreenMessage("KEY_A pressed");
+         *              break;
+         *          case KEY_B:
+         *              showOnScreenMessage("KEY_B pressed");
+         *              break;
+         *          default:
+         *              showOnScreenMessage("key pressed");
+         *              break;
+         *      }
+         *  }
+         * }
+         */
     }
 
     @Override
