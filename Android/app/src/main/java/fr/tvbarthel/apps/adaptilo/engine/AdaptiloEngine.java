@@ -114,7 +114,7 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
     @Override
     public void onConfigRequested() {
         //send the current loaded config
-        mAdaptiloClient.send(new Message(MessageType.REGISTER_CONTROLLER, new RegisterControllerRequest(
+        mAdaptiloClient.send(new Message(MessageType.REGISTER_CONTROLLER_REQUEST, new RegisterControllerRequest(
                 mEngineConfig.getGameName(),
                 mEngineConfig.getGameRoom(),
                 mEngineConfig.getUserRole()
@@ -232,7 +232,16 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
      */
     public void stop() {
         if (mAdaptiloClient != null) {
-            mAdaptiloClient.close();
+            RegisterControllerRequest registerControllerRequest = new RegisterControllerRequest();
+            registerControllerRequest.setGameRole(mEngineConfig.getUserRole());
+            registerControllerRequest.setGameRoom(mEngineConfig.getGameRoom());
+            registerControllerRequest.setGameName(mEngineConfig.getGameName());
+
+            mAdaptiloClient.send(
+                    new Message(MessageType.UNREGISTER_CONTROLLER_REQUEST,
+                            registerControllerRequest)
+            );
+
             mAdaptiloClient = null;
             mEngineConfig = null;
         }

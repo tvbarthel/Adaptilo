@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import fr.tvbarthel.apps.adaptilo.server.helpers.MessageDeserializerHelper;
 import fr.tvbarthel.apps.adaptilo.server.models.Event;
 import fr.tvbarthel.apps.adaptilo.server.models.Role;
+import fr.tvbarthel.apps.adaptilo.server.models.Room;
 import fr.tvbarthel.apps.adaptilo.server.models.enums.EventAction;
 import fr.tvbarthel.apps.adaptilo.server.models.enums.EventType;
 import fr.tvbarthel.apps.adaptilo.server.models.enums.MessageType;
@@ -38,13 +39,23 @@ public abstract class AdaptiloServer extends WebSocketServer {
     /**
      * handle role registration
      *
-     * @param gameName name og the game
+     * @param gameName name of the game
      * @param role     role to register
      * @param roomId   room id in which role request registration
      * @return should return 0 if registration succeeds, else an
      *         {@link fr.tvbarthel.apps.adaptilo.server.models.io.ClosingError} matching a registration code.
      */
     protected abstract int registerRoleInRoom(String gameName, Role role, String roomId);
+
+    /**
+     * Handle controller disconnection.
+     *
+     * @param gameName   name of the game
+     * @param externalId controller if given during the registration process
+     * @param roomId     id of the room in which the given controller is playing
+     * @return closing code send back to the controller through onClose
+     */
+    protected abstract int unregisterController(String gameName, String externalId, String roomId);
 
     public AdaptiloServer(InetSocketAddress address) {
         super(address);
@@ -55,10 +66,6 @@ public abstract class AdaptiloServer extends WebSocketServer {
     @Override
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
         System.out.println(TAG + " onOpen - " + conn.toString() + ", " + handshake.toString());
-        // Fake a completed connection.
-//        final int connectionId = new Random().nextInt();
-//        System.out.println(TAG + " give ID -> " + connectionId);
-//        conn.send("{type:'CONNECTION_COMPLETED', content:" + connectionId + "}");
     }
 
     @Override
@@ -78,10 +85,19 @@ public abstract class AdaptiloServer extends WebSocketServer {
 
         //process each message type
         switch (messageContent.getType()) {
-            case REGISTER_CONTROLLER:
+            case REGISTER_CONTROLLER_REQUEST:
                 final RegisterControllerRequest request = (RegisterControllerRequest) messageContent.getContent();
                 answer = registerController(conn, request);
                 break;
+            case UNREGISTER_CONTROLLER_REQUEST:
+                final RegisterControllerRequest unregisterRequest
+                        = (RegisterControllerRequest) messageContent.getContent();
+                final int closingCode = unregisterController(
+                        unregisterRequest.getGameName(),
+                        connectionId,
+                        unregisterRequest.getGameRoom()
+                );
+                conn.close(closingCode);
         }
 
         if (answer != null) {
@@ -129,6 +145,21 @@ public abstract class AdaptiloServer extends WebSocketServer {
         final EventAction action = enable ? EventAction.ACTION_ENABLE : EventAction.ACTION_DISABLE;
         final Event enableShaker = new Event(EventType.SHAKER, action);
         sendToAll(mParser.toJson(new Message(MessageType.SENSOR, enableShaker)));
+    }
+
+    /**
+     * Used to send a message to any roles in a given room except the sender.
+     *
+     * @param room    room in which message should be broadcast.
+     * @param sender  source of the broadcast.
+     * @param message message to send
+     */
+    protected void broadcastMessage(Room room, Role sender, Message message) {
+        for (Role role : room.getRoles()) {
+            if (role != sender) {
+                role.getConnection().send(mParser.toJson(message));
+            }
+        }
     }
 
     /**

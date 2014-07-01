@@ -45,7 +45,7 @@ public class RegisterControllerRequest {
         return mGameName;
     }
 
-    public void setmameName(String mGameName) {
+    public void setGameName(String mGameName) {
         this.mGameName = mGameName;
     }
 

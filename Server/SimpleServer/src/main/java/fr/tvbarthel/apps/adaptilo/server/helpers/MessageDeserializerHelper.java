@@ -77,9 +77,14 @@ public class MessageDeserializerHelper implements JsonDeserializer<Message> {
                 message.setContent(pattern);
                 break;
 
-            case REGISTER_CONTROLLER:
+            case REGISTER_CONTROLLER_REQUEST:
                 RegisterControllerRequest registrationRequest = context.deserialize(content, RegisterControllerRequest.class);
                 message.setContent(registrationRequest);
+                break;
+
+            case UNREGISTER_CONTROLLER_REQUEST:
+                RegisterControllerRequest unregisterControllerRequest = context.deserialize(content, RegisterControllerRequest.class);
+                message.setContent(unregisterControllerRequest);
                 break;
 
             case SENSOR:

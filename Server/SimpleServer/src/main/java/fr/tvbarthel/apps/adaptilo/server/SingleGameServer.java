@@ -2,7 +2,10 @@ package fr.tvbarthel.apps.adaptilo.server;
 
 import fr.tvbarthel.apps.adaptilo.server.models.Role;
 import fr.tvbarthel.apps.adaptilo.server.models.Room;
+import fr.tvbarthel.apps.adaptilo.server.models.enums.MessageType;
 import fr.tvbarthel.apps.adaptilo.server.models.io.ClosingError;
+import fr.tvbarthel.apps.adaptilo.server.models.io.Message;
+import org.java_websocket.framing.CloseFrame;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -51,7 +54,7 @@ public class SingleGameServer extends AdaptiloServer {
 
         //TODO only for test purpose, should implement room creation
         //simulate room creation
-        Room virtualRoom = new Room("virtual", 1);
+        Room virtualRoom = new Room("virtual", 2);
         virtualRoom.setAvailableRoles(mAllowedRoles);
         mGameRooms.add(virtualRoom);
     }
@@ -93,7 +96,34 @@ public class SingleGameServer extends AdaptiloServer {
             return ClosingError.REGISTRATION_REQUESTED_ROOM_UNKNOW;
         }
 
-        //TODO always replace for test purpose
-        return requestedRoom.registerRole(role, true);
+        //TODO hard coded replace value, only for test purpose
+        //TODO use replacement behavior from role definition for the given game.
+        return requestedRoom.registerRole(role, false);
     }
+
+    @Override
+    protected int unregisterController(String gameName, String externalId, String roomId) {
+        Room controllerRoom = null;
+
+        for (Room room : mGameRooms) {
+            if (room.getRoomId().equals(roomId)) {
+                //current controller room found
+                controllerRoom = room;
+                break;
+            }
+        }
+
+        if (controllerRoom != null) {
+            final Role controllerRole = controllerRoom.unregisterRole(externalId);
+
+            //broadcast the role of the unregistered controller
+            broadcastMessage(
+                    controllerRoom,
+                    controllerRole,
+                    new Message(MessageType.ON_CONTROLLER_UNREGISTERED, controllerRole.getName())
+            );
+        }
+        return CloseFrame.NORMAL;
+    }
+
 }
