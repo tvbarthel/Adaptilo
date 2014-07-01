@@ -1,6 +1,7 @@
 package fr.tvbarthel.apps.adaptilo.server.models;
 
 import fr.tvbarthel.apps.adaptilo.server.models.io.ClosingError;
+import fr.tvbarthel.apps.adaptilo.server.models.io.Message;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +62,9 @@ public class Room {
 
     /**
      * find a role by user external id. Useful when you have to identify a request from the network.
+     * <p/>
+     * since a role can be played by several controller at the same time, need to find role with the unique identifier
+     * given during the registration process.
      *
      * @param id external id send with each network message
      * @return matching role or null if not found
@@ -106,6 +110,22 @@ public class Room {
 
         mRoles.add(role);
         return 0;
+    }
+
+    /**
+     * Unregister a role with a given externalId.
+     *
+     * @param externalId external id used to identify each role
+     * @return unregistered role or null if not found.
+     */
+    public Role unregisterRole(String externalId) {
+        Role unregisteredRole = findRoleById(externalId);
+
+        if (unregisteredRole != null) {
+            mRoles.remove(unregisteredRole);
+        }
+
+        return unregisteredRole;
     }
 
     /**
