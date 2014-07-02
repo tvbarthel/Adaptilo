@@ -39,7 +39,7 @@ import fr.tvbarthel.apps.adaptilo.ui.activities.BasicControllerCaptureActivity;
  * In addition, this abstract controller encapsulate the behavior for all buttons of your controller.
  * Simply implements {@link #getControllerKeys()} to map your button ids with the wished EventType.
  */
-abstract public class AdaptiloControllerFragment extends Fragment implements AdaptiloEngine.Callbacks {
+abstract public class AdaptiloControllerFragment extends Fragment {
 
     /**
      * Logcat
@@ -65,6 +65,13 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
 
         }
     };
+
+    /**
+     * Don't implement callbacks directly in order to hide them from real controller implementation
+     * since view can't directly be modified in the engine callbacks. Indeed, engine callbacks aren't
+     * called in the ui thread.
+     */
+    private AdaptiloEngine.Callbacks mEngineCallbacks;
 
     /**
      * Sparse array used to map buttonId and EventType for each buttons on the controller.
@@ -137,7 +144,7 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
      *
      * @param reason closing code in order to adapt visual callback if needed.
      */
-    abstract protected void onConnectionClose(int reason);
+    abstract protected void onConnectionClosed(int reason);
 
     /**
      * Callback when a user event is send. Used when a specific behavior should be processed for a
@@ -168,7 +175,8 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
 
 
     public AdaptiloControllerFragment() {
-        mAdaptiloEngine = new AdaptiloEngine(this);
+        initEngineCallbacks();
+        mAdaptiloEngine = new AdaptiloEngine(mEngineCallbacks);
     }
 
     @Override
@@ -236,47 +244,6 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
     public void onDestroy() {
         super.onDestroy();
         mAdaptiloEngine.stop();
-    }
-
-    @Override
-    public void onMessageReceived(Message message) {
-        switch (message.getType()) {
-            case ENGINE_READY:
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        onGameStart();
-                    }
-                });
-                break;
-        }
-    }
-
-    @Override
-    public void onErrorReceived(Exception ex) {
-        if (ex.getMessage().contains("ENETUNREACH")) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    onGameServerUnreachable();
-                }
-            });
-        }
-    }
-
-    @Override
-    public void onConnectionClosed(final int closeCode) {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                onConnectionClose(closeCode);
-            }
-        });
-    }
-
-    @Override
-    public void onReplaceControllerRequest(AdaptiloControllerFragment adaptiloControllerFragment) {
-        mCallbacks.onReplaceControllerRequest(adaptiloControllerFragment);
     }
 
     @Override
@@ -359,6 +326,75 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
                 }
             }
         }
+    }
+
+    /**
+     * Initialized engine callbacks. The abstract controller encapsulate all runOnUiThread in order
+     * to allow safe ui modification in controller implementation.
+     */
+    private void initEngineCallbacks() {
+        mEngineCallbacks = new AdaptiloEngine.Callbacks() {
+
+            @Override
+            public void onMessageReceived(final Message message) {
+                switch (message.getType()) {
+                    case ENGINE_READY:
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                onGameStart();
+                            }
+                        });
+                        break;
+                    default:
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                onMessageReceived(message);
+                            }
+                        });
+                }
+            }
+
+            @Override
+            public void onErrorReceived(final Exception ex) {
+                if (ex.getMessage().contains("ENETUNREACH")) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            onGameServerUnreachable();
+                        }
+                    });
+                } else {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            onErrorReceived(ex);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onConnectionClosed(final int closeCode) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        AdaptiloControllerFragment.this.onConnectionClosed(closeCode);
+                    }
+                });
+            }
+
+            @Override
+            public void onReplaceControllerRequest(final AdaptiloControllerFragment adaptiloControllerFragment) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mCallbacks.onReplaceControllerRequest(adaptiloControllerFragment);
+                    }
+                });
+            }
+        };
     }
 
     /**

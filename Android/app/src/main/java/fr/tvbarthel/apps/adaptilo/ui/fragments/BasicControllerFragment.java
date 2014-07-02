@@ -171,7 +171,7 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
 
 
     @Override
-    protected void onConnectionClose(int reason) {
+    protected void onConnectionClosed(int reason) {
         switch (reason) {
             case (ClosingError.REGISTRATION_REQUESTED_ROOM_IS_FULL):
                 showOnScreenMessage(R.string.basic_controller_room_full);
