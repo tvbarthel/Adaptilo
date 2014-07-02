@@ -45,11 +45,11 @@ p{
 }
 
 .card_button:hover{
-    background-color        :   rgba(255, 136, 0, 0.2);
+    background-color        :   #dcedc8;    
 }
 
 .card_button:active{
-    background-color        :   rgba(255, 136, 0, 0.6);
+    background-color        :   #8bc34a;
 }
 
 #connection_card{
@@ -68,7 +68,7 @@ p{
 
 #fixed_header {
     padding-top             :   100px;
-    background-color        :   #FF8800;
+    background-color        :   #607d8b;
     padding-bottom          :   12px;
     position                :   absolute;
     width                   :   100%
