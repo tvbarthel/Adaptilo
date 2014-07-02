@@ -1,0 +1,107 @@
+html,body{
+    height                  :   100%;
+}
+
+body{
+    background-color        :   #E2E2E2; 
+    color                   :   #222;
+    font                    :   16px/19px Roboto, sans-serif;
+    font-weight             :   400;   
+}
+
+p{
+    word-wrap               :   break-word;
+}
+
+
+.card{
+    display                 :   block;
+    background-color        :   #FFFFFF;
+    moz-border-radius       :   2px;
+    -webkit-border-radius   :   2px;
+    border-radius           :   2px;
+    -moz-box-shadow         :   0 2px 4px rgba(0,0,0,0.5);
+    -ms-box-shadow          :   0 2px 4px rgba(0,0,0,0.5);
+    -webkit-box-shadow      :   0 2px 4px rgba(0,0,0,0.5);
+    box-shadow              :   0 2px 4px rgba(0,0,0,0.5);
+}
+
+.card_content{
+    padding                 :   16px;
+}
+
+.card_button{
+    display                 :   inline-block;
+    border                  :   none;
+    margin                  :   0px;
+    padding                 :   16px;    
+    background-color        :   #FFFFFF;
+    color                   :   #222;
+    font                    :   16px/19px Roboto;
+    border-radius           :   0 0 2px 0;
+}
+
+.card_button:focus{
+    outline                 :   0 !important;
+}
+
+.card_button:hover{
+    background-color        :   #dcedc8;    
+}
+
+.card_button:active{
+    background-color        :   #8bc34a;
+}
+
+#connection_card{
+    width                   :   300px;
+    text-align              :   right;
+}
+
+#connection_settings{
+    margin                  :   0 auto;
+    margin-top              :   10px;
+}
+
+#connection_settings td {
+    padding                 :   8px;
+}
+
+#fixed_header {
+    padding-top             :   100px;
+    background-color        :   #607d8b;
+    padding-bottom          :   12px;
+    position                :   absolute;
+    width                   :   100%
+}
+
+#fixed_header h1{
+    color                   :   #FFFFFF;
+    font                    :   30px/35px Roboto;    
+    font-weight             :   bold;
+    padding-left            :   60px;
+}
+
+/* http://css-tricks.com/centering-in-the-unknown/ */
+
+/* This parent can be any width and height */
+.block {
+    text-align              :   center;
+    height                  :   100%
+}
+ 
+/* The ghost, nudged to maintain perfect centering */
+.block:before {
+    content                 :   '';
+    display                 :   inline-block;
+    height                  :   100%;
+    vertical-align          :   middle;
+    margin-right            :   -0.25em; /* Adjusts for spacing */
+}
+
+/* The element to be centered, can
+   also be of any width and height */ 
+.centered {
+    display                 :   inline-block;
+    vertical-align          :   middle;
+}
