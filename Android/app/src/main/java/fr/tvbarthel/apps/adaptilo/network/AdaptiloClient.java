@@ -13,12 +13,12 @@ import java.net.URI;
 import java.util.Map;
 
 import fr.tvbarthel.apps.adaptilo.helpers.MessageDeserializerHelper;
-import fr.tvbarthel.apps.adaptilo.models.Message;
-import fr.tvbarthel.apps.adaptilo.models.NetworkMessage;
+import fr.tvbarthel.apps.adaptilo.models.io.Message;
+import fr.tvbarthel.apps.adaptilo.models.io.ServerRequest;
 
 /**
  * Simple {@link org.java_websocket.client.WebSocketClient} used communicate with the server
- * through{@link fr.tvbarthel.apps.adaptilo.models.Message}
+ * through{@link fr.tvbarthel.apps.adaptilo.models.io.Message}
  */
 public class AdaptiloClient extends WebSocketClient {
 
@@ -66,8 +66,8 @@ public class AdaptiloClient extends WebSocketClient {
      * @param message
      */
     public void send(Message message) {
-        final NetworkMessage networkMessage = new NetworkMessage(mConnectionId, message);
-        this.send(mGsonParser.toJson(networkMessage));
+        final ServerRequest serverRequest = new ServerRequest(mConnectionId, message);
+        this.send(mGsonParser.toJson(serverRequest));
     }
 
     /**
@@ -109,8 +109,8 @@ public class AdaptiloClient extends WebSocketClient {
 
     @Override
     public void onClose(int code, String reason, boolean remote) {
-        Log.d(TAG, "onClose : " + reason);
-        mCallbacks.onClose();
+        Log.d(TAG, "onClose : " + code + " remote : " + remote);
+        mCallbacks.onClose(code);
     }
 
     @Override
@@ -143,8 +143,10 @@ public class AdaptiloClient extends WebSocketClient {
 
         /**
          * Client disconnected
+         *
+         * @param code error code to adapt behavior to each closing reason if needed
          */
-        public void onClose();
+        public void onClose(int code);
 
         /**
          * Client error

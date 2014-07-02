@@ -1,5 +1,7 @@
 package fr.tvbarthel.apps.adaptilo.server.models;
 
+import fr.tvbarthel.apps.adaptilo.server.models.io.ClosingError;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +9,11 @@ import java.util.List;
  * Encapsulate data linked to a room (same concept as chat room)
  */
 public class Room {
+
+    /**
+     * More readable log.
+     */
+    private static final String TAG = Room.class.getCanonicalName();
 
     /**
      * external id used to identify current room. Should be unique.
@@ -53,9 +60,9 @@ public class Room {
     }
 
     /**
-     * find a role by its id. Useful when you have to identify a request from the network.
+     * find a role by user external id. Useful when you have to identify a request from the network.
      *
-     * @param id role id send with each network message
+     * @param id external id send with each network message
      * @return matching role or null if not found
      */
     public Role findRoleById(String id) {
@@ -74,29 +81,31 @@ public class Room {
      *
      * @param role          role to register
      * @param shouldReplace true if replacement is requested, set false if many client can play the same role
-     * @return
+     * @return 0 if registration succeed or an
+     *         {@link fr.tvbarthel.apps.adaptilo.server.models.io.ClosingError}
      */
-    public boolean registerRole(Role role, boolean shouldReplace) {
+    public int registerRole(Role role, boolean shouldReplace) {
         if (!mAvailableRoles.isEmpty()) {
             //check if given role is allowed
             if (!mAvailableRoles.contains(role.getName())) {
-                return false;
+                return ClosingError.REGISTRATION_REQUESTED_ROLE_UNKNOWN;
             }
         }
 
         //check room size
-        final int remainingSlot = shouldReplace ? mMaxRoles - 1 : mMaxRoles;
-        if (mRoles.size() > remainingSlot) {
-            return false;
+        final int remainingSlot = shouldReplace ? mRoles.size() - 1 : mRoles.size();
+        if (mMaxRoles < remainingSlot) {
+            return ClosingError.REGISTRATION_REQUESTED_ROOM_IS_EMPTY;
         }
 
-        //delete current registered role if replace if requested
+        //delete current registered role if replace is requested
         if (shouldReplace) {
             mRoles.remove(findRoleByName(role.getName()));
+            System.out.println(TAG + " role " + role.getName() + " replaced in room  " + this.getRoomId());
         }
 
         mRoles.add(role);
-        return true;
+        return 0;
     }
 
     /**

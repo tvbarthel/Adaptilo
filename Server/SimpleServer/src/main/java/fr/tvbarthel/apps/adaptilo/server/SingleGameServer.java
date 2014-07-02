@@ -2,6 +2,7 @@ package fr.tvbarthel.apps.adaptilo.server;
 
 import fr.tvbarthel.apps.adaptilo.server.models.Role;
 import fr.tvbarthel.apps.adaptilo.server.models.Room;
+import fr.tvbarthel.apps.adaptilo.server.models.io.ClosingError;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -11,6 +12,11 @@ import java.util.List;
  * Server that handle one game with multiple room
  */
 public class SingleGameServer extends AdaptiloServer {
+
+    /**
+     * Used to log in console.
+     */
+    private static final String TAG = SingleGameServer.class.getCanonicalName();
 
     /**
      * name fo the game
@@ -52,17 +58,25 @@ public class SingleGameServer extends AdaptiloServer {
 
 
     @Override
-    protected boolean registerRoleInRoom(Role role, String roomId) {
+    protected int registerRoleInRoom(String gameName, Role role, String roomId) {
         Room requestedRoom = null;
+
+        if (!mGameName.equals(gameName)) {
+            //current game name doesn't match requested one
+            System.out.println(TAG + " current game name " + mGameName + " doesn't match requested one : " + gameName);
+            return ClosingError.REGISTRATION_REQUESTED_GAME_NAME_UNKNOWN;
+        }
 
         if (mGameRooms.isEmpty()) {
             //create room first
-            return false;
+            System.out.println(TAG + " No created rooms for this game, need to create one first.");
+            return ClosingError.REGISTRATION_NO_ROOM_CREATED;
         }
 
         if (!mAllowedRoles.contains(role.getName())) {
             //role not allowed for this game
-            return false;
+            System.out.println(TAG + " Role : " + role.getName() + " doesn't allowed in this game.");
+            return ClosingError.REGISTRATION_REQUESTED_ROLE_UNKNOWN;
         }
 
         for (Room room : mGameRooms) {
@@ -75,7 +89,8 @@ public class SingleGameServer extends AdaptiloServer {
 
         if (requestedRoom == null) {
             //request room not found
-            return false;
+            System.out.println(TAG + " Room with id : " + roomId + " doesn't exist.");
+            return ClosingError.REGISTRATION_REQUESTED_ROOM_UNKNOW;
         }
 
         //TODO always replace for test purpose

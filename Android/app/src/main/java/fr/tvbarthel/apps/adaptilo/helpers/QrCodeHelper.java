@@ -91,7 +91,7 @@ public final class QrCodeHelper {
         final String scheme = scannedUri.getScheme();
         final int port = scannedUri.getPort();
         final String host = scannedUri.getHost();
-        final String gameName = scannedUri.getPath();
+        final String gameName = scannedUri.getPath().substring(1);
 
         if (!URI_SCHEME.equals(scheme)) {
             Log.e(TAG, "QrCode uri scheme must correspond to adaptilo");
@@ -127,6 +127,7 @@ public final class QrCodeHelper {
         config.setUserRole(role);
         config.setGameRoom(room);
         config.setServerPort(port);
+        config.setGameName(gameName);
         return config;
     }
 

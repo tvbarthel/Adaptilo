@@ -5,23 +5,25 @@ import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Vibrator;
+import android.util.Log;
 
 import java.net.URI;
 
-import fr.tvbarthel.apps.adaptilo.fragments.AdaptiloControllerFragment;
-import fr.tvbarthel.apps.adaptilo.fragments.BasicControllerFragment;
 import fr.tvbarthel.apps.adaptilo.helpers.SensorListenerHelper;
 import fr.tvbarthel.apps.adaptilo.helpers.SharedPreferencesHelper;
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
 import fr.tvbarthel.apps.adaptilo.models.Event;
-import fr.tvbarthel.apps.adaptilo.models.Message;
-import fr.tvbarthel.apps.adaptilo.models.RegisterControllerRequest;
 import fr.tvbarthel.apps.adaptilo.models.SensorEvent;
 import fr.tvbarthel.apps.adaptilo.models.UserEvent;
 import fr.tvbarthel.apps.adaptilo.models.enums.EventAction;
 import fr.tvbarthel.apps.adaptilo.models.enums.EventType;
 import fr.tvbarthel.apps.adaptilo.models.enums.MessageType;
+import fr.tvbarthel.apps.adaptilo.models.io.ClosingError;
+import fr.tvbarthel.apps.adaptilo.models.io.Message;
+import fr.tvbarthel.apps.adaptilo.models.io.RegisterControllerRequest;
 import fr.tvbarthel.apps.adaptilo.network.AdaptiloClient;
+import fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloControllerFragment;
+import fr.tvbarthel.apps.adaptilo.ui.fragments.BasicControllerFragment;
 
 /**
  * Adaptilo engine used to handle interaction between the controller and the server
@@ -113,7 +115,7 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
     public void onConfigRequested() {
         //send the current loaded config
         mAdaptiloClient.send(new Message(MessageType.REGISTER_CONTROLLER, new RegisterControllerRequest(
-                mEngineConfig.getServerUri().getPath(),
+                mEngineConfig.getGameName(),
                 mEngineConfig.getGameRoom(),
                 mEngineConfig.getUserRole()
         )));
@@ -153,19 +155,40 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
     }
 
     @Override
-    public void onClose() {
+    public void onClose(int code) {
         mReadyToCommunicate = false;
+
+        switch (code) {
+            case ClosingError.REGISTRATION_REQUESTED_GAME_NAME_UNKNOWN:
+                Log.e(TAG, "Connection closed : " + "REGISTRATION_REQUESTED_GAME_NAME_UNKNOWN");
+                break;
+            case ClosingError.REGISTRATION_NO_ROOM_CREATED:
+                Log.e(TAG, "Connection closed : " + "REGISTRATION_NO_ROOM_CREATED");
+                break;
+            case ClosingError.REGISTRATION_REQUESTED_ROOM_UNKNOW:
+                Log.e(TAG, "Connection closed : " + "REGISTRATION_REQUESTED_ROOM_UNKNOW");
+                break;
+            case ClosingError.REGISTRATION_REQUESTED_ROLE_UNKNOWN:
+                Log.e(TAG, "Connection closed : " + "REGISTRATION_REQUESTED_ROLE_UNKNOWN");
+                break;
+            case ClosingError.REGISTRATION_REQUESTED_ROOM_IS_EMPTY:
+                Log.e(TAG, "Connection closed : " + "REGISTRATION_REQUESTED_ROOM_IS_EMPTY");
+                break;
+            default:
+                Log.e(TAG, "Connection closed : " + "Error code unknown.");
+                break;
+        }
     }
 
 
     @Override
     public void onError(Exception ex) {
-
+        mCallbacks.onErrorReceived(ex);
     }
 
     /**
      * Initialize engine features which need context. Should be called directly since it's already
-     * managed by the {@link fr.tvbarthel.apps.adaptilo.fragments.AdaptiloControllerFragment}
+     * managed by the {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloControllerFragment}
      *
      * @param context
      */
@@ -211,6 +234,7 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
         if (mAdaptiloClient != null) {
             mAdaptiloClient.close();
             mAdaptiloClient = null;
+            mEngineConfig = null;
         }
     }
 
@@ -261,6 +285,24 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
      */
     public void setEngineConfig(EngineConfig config) {
         mEngineConfig = config;
+    }
+
+    /**
+     * Retrieve loaded engine config.
+     *
+     * @return current game config or null if no game has been loaded successfully.
+     */
+    public EngineConfig getEngineConfig() {
+        return mEngineConfig;
+    }
+
+    /**
+     * Use to know if engine is ready to communicate with server.
+     *
+     * @return true if connected to a game server.
+     */
+    public boolean isReadToCommunicate() {
+        return mReadyToCommunicate;
     }
 
     /**
@@ -412,10 +454,21 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
     public interface Callbacks {
         /**
          * Engine received message for the controller
+         * <p/>
+         * Any visual callback linked to a given message must be run on the ui thread.
          *
          * @param message
          */
         public void onMessageReceived(Message message);
+
+        /**
+         * Called when engine an error.
+         * <p/>
+         * Any visual callback linked to a given error must be run on the ui thread.
+         *
+         * @param ex error exception
+         */
+        public void onErrorReceived(Exception ex);
 
         /**
          * Engine received message to replace the current controller

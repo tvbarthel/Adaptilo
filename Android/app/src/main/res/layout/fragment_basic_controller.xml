@@ -39,7 +39,7 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <fr.tvbarthel.apps.adaptilo.ui.TextPressedButton
+        <fr.tvbarthel.apps.adaptilo.ui.custom.TextPressedButton
             android:id="@+id/basic_controller_btn_select"
             android:layout_width="@dimen/btn_rect_width"
             android:layout_height="@dimen/btn_rect_height"
@@ -50,7 +50,7 @@
             android:textSize="@dimen/btn_rect_text_size"
             custom:textSizePressed="@dimen/btn_rect_text_size_pressed"/>
 
-        <fr.tvbarthel.apps.adaptilo.ui.TextPressedButton
+        <fr.tvbarthel.apps.adaptilo.ui.custom.TextPressedButton
             android:id="@+id/basic_controller_btn_start"
             android:layout_width="@dimen/btn_rect_width"
             android:layout_height="@dimen/btn_rect_height"
@@ -136,7 +136,7 @@
                 android:layout_height="0dp"
                 android:layout_centerInParent="true"/>
 
-            <fr.tvbarthel.apps.adaptilo.ui.TextPressedButton
+            <fr.tvbarthel.apps.adaptilo.ui.custom.TextPressedButton
                 android:id="@+id/basic_controller_btn_a"
                 android:layout_width="@dimen/btn_circle_size"
                 android:layout_height="@dimen/btn_circle_size"
@@ -149,7 +149,7 @@
                 android:textSize="@dimen/btn_circle_text_size"
                 custom:textSizePressed="@dimen/btn_circle_text_size_pressed"/>
 
-            <fr.tvbarthel.apps.adaptilo.ui.TextPressedButton
+            <fr.tvbarthel.apps.adaptilo.ui.custom.TextPressedButton
                 android:id="@+id/basic_controller_btn_b"
                 android:layout_width="@dimen/btn_circle_size"
                 android:layout_height="@dimen/btn_circle_size"

@@ -1,4 +1,4 @@
-package fr.tvbarthel.apps.adaptilo.activities;
+package fr.tvbarthel.apps.adaptilo.ui.activities;
 
 import android.graphics.Typeface;
 import android.os.Bundle;

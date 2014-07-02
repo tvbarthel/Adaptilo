@@ -2,9 +2,9 @@ package fr.tvbarthel.apps.adaptilo.server.helpers;
 
 import com.google.gson.*;
 import fr.tvbarthel.apps.adaptilo.server.models.Event;
-import fr.tvbarthel.apps.adaptilo.server.models.Message;
 import fr.tvbarthel.apps.adaptilo.server.models.enums.MessageType;
-import fr.tvbarthel.apps.adaptilo.server.models.RegisterControllerRequest;
+import fr.tvbarthel.apps.adaptilo.server.models.io.Message;
+import fr.tvbarthel.apps.adaptilo.server.models.io.RegisterControllerRequest;
 
 import java.lang.reflect.Type;
 
@@ -15,6 +15,16 @@ import java.lang.reflect.Type;
 public class MessageDeserializerHelper implements JsonDeserializer<Message> {
 
     /**
+     * json node key for external id
+     */
+    public static final String NODE_EXTERNAL_ID = "externalId";
+
+    /**
+     * json node key for message
+     */
+    public static final String NODE_MESSAGE = "message";
+
+    /**
      * json node key for message type
      */
     public static final String NODE_TYPE = "type";
@@ -23,6 +33,21 @@ public class MessageDeserializerHelper implements JsonDeserializer<Message> {
      * json node key for message content
      */
     public static final String NODE_CONTENT = "content";
+
+    /**
+     * json node key for game name
+     */
+    public static final String NODE_GAME_NAME = "gameName";
+
+    /**
+     * json node key for game room
+     */
+    public static final String NODE_GAME_ROOM = "gameRoom";
+
+    /**
+     * json node key for game role
+     */
+    public static final String NODE_GAME_ROLE = "gameRole";
 
     @Override
     public Message deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

@@ -3,10 +3,14 @@ package fr.tvbarthel.apps.adaptilo.server;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import fr.tvbarthel.apps.adaptilo.server.helpers.MessageDeserializerHelper;
-import fr.tvbarthel.apps.adaptilo.server.models.*;
+import fr.tvbarthel.apps.adaptilo.server.models.Event;
+import fr.tvbarthel.apps.adaptilo.server.models.Role;
 import fr.tvbarthel.apps.adaptilo.server.models.enums.EventAction;
 import fr.tvbarthel.apps.adaptilo.server.models.enums.EventType;
 import fr.tvbarthel.apps.adaptilo.server.models.enums.MessageType;
+import fr.tvbarthel.apps.adaptilo.server.models.io.Message;
+import fr.tvbarthel.apps.adaptilo.server.models.io.RegisterControllerRequest;
+import fr.tvbarthel.apps.adaptilo.server.models.io.ServerRequest;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -34,11 +38,13 @@ public abstract class AdaptiloServer extends WebSocketServer {
     /**
      * handle role registration
      *
-     * @param role
-     * @param roomId
-     * @return should return true if registration succeeds
+     * @param gameName name og the game
+     * @param role     role to register
+     * @param roomId   room id in which role request registration
+     * @return should return 0 if registration succeeds, else an
+     *         {@link fr.tvbarthel.apps.adaptilo.server.models.io.ClosingError} matching a registration code.
      */
-    protected abstract boolean registerRoleInRoom(Role role, String roomId);
+    protected abstract int registerRoleInRoom(String gameName, Role role, String roomId);
 
     public AdaptiloServer(InetSocketAddress address) {
         super(address);
@@ -65,9 +71,9 @@ public abstract class AdaptiloServer extends WebSocketServer {
 
         //extract basic info for all message
         System.out.println(TAG + " onMessage - " + conn.toString() + ", " + message);
-        final NetworkMessage messageReceived = mParser.fromJson(message, NetworkMessage.class);
+        final ServerRequest messageReceived = mParser.fromJson(message, ServerRequest.class);
         final Message messageContent = messageReceived.getMessage();
-        final String connectionId = messageReceived.getConnectionId();
+        final String connectionId = messageReceived.getExternalId();
         Message answer = null;
 
         //process each message type
@@ -137,15 +143,21 @@ public abstract class AdaptiloServer extends WebSocketServer {
         final Role roleToRegister = new Role(request.getGameRole(), conn, givenId);
         Message answer = null;
 
-        if (registerRoleInRoom(roleToRegister, request.getGameRoom())) {
-            //registration completed, prepare server answer
-            System.out.println(TAG + " registration completed, game :  " + request.getGameName() + " room : " + request.getGameRole() + " role : " + request.getGameRole() + " id : " + givenId);
-            answer = new Message(MessageType.CONNECTION_COMPLETED, givenId);
-        } else {
-            //registration request mal formed, close connection
-            conn.close();
-        }
+        final int registrationCode = registerRoleInRoom(request.getGameName(), roleToRegister, request.getGameRoom());
 
+        switch (registrationCode) {
+            case 0:
+                //registration completed, prepare server answer
+                System.out.println(TAG + " registration completed, game :  " + request.getGameName()
+                        + " room : " + request.getGameRole() + " role : " + request.getGameRole() + " id : " + givenId);
+
+                //build answer to send to the requester
+                answer = new Message(MessageType.CONNECTION_COMPLETED, givenId);
+                break;
+            default:
+                //registration fail, close connection and send registration error code
+                conn.close(registrationCode);
+        }
         return answer;
     }
 
