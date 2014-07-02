@@ -98,6 +98,8 @@ public abstract class AdaptiloServer extends WebSocketServer {
                         unregisterRequest.getGameRoom()
                 );
                 conn.close(closingCode);
+                System.out.println(TAG + " connection closed :" + conn.toString());
+                break;
         }
 
         if (answer != null) {

@@ -7,6 +7,8 @@ import android.hardware.SensorManager;
 import android.os.Vibrator;
 import android.util.Log;
 
+import org.java_websocket.framing.CloseFrame;
+
 import java.net.URI;
 
 import fr.tvbarthel.apps.adaptilo.helpers.SensorListenerHelper;
@@ -157,7 +159,6 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
     @Override
     public void onClose(int code) {
         mReadyToCommunicate = false;
-
         switch (code) {
             case ClosingError.REGISTRATION_REQUESTED_GAME_NAME_UNKNOWN:
                 Log.e(TAG, "Connection closed : " + "REGISTRATION_REQUESTED_GAME_NAME_UNKNOWN");
@@ -171,13 +172,20 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
             case ClosingError.REGISTRATION_REQUESTED_ROLE_UNKNOWN:
                 Log.e(TAG, "Connection closed : " + "REGISTRATION_REQUESTED_ROLE_UNKNOWN");
                 break;
-            case ClosingError.REGISTRATION_REQUESTED_ROOM_IS_EMPTY:
-                Log.e(TAG, "Connection closed : " + "REGISTRATION_REQUESTED_ROOM_IS_EMPTY");
+            case ClosingError.REGISTRATION_REQUESTED_ROOM_IS_FULL:
+                Log.e(TAG, "Connection closed : " + "REGISTRATION_REQUESTED_ROOM_IS_FULL");
+                break;
+            case CloseFrame.NORMAL:
+                Log.e(TAG, "Connection closed : " + "CloseFrame.NORMAL");
                 break;
             default:
                 Log.e(TAG, "Connection closed : " + "Error code unknown.");
                 break;
         }
+
+        //send close event to the controller. Visual callbacks should be display to warn the user.
+
+        mCallbacks.onConnectionClosed(code);
     }
 
 
@@ -478,6 +486,14 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
          * @param ex error exception
          */
         public void onErrorReceived(Exception ex);
+
+        /**
+         * Called when the connection is closed by the remote server.
+         *
+         * @param closeCode code which identify the closing reason
+         *                  {@link fr.tvbarthel.apps.adaptilo.models.io.ClosingError}
+         */
+        public void onConnectionClosed(int closeCode);
 
         /**
          * Engine received message to replace the current controller

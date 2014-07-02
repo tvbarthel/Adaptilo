@@ -46,9 +46,8 @@ public final class ClosingError {
     public static final int REGISTRATION_REQUESTED_ROLE_UNKNOWN = 2004;
 
     /**
-     * Requested room is empty.
+     * Requested room is full.
      */
-    public static final int REGISTRATION_REQUESTED_ROOM_IS_EMPTY = 2005;
-
+    public static final int REGISTRATION_REQUESTED_ROOM_IS_FULL = 2005;
 
 }

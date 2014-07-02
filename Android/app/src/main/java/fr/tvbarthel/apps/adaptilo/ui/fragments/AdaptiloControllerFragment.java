@@ -133,6 +133,13 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
     abstract protected void onGameStart();
 
     /**
+     * Called when connection was closed by the remote server.
+     *
+     * @param reason closing code in order to adapt visual callback if needed.
+     */
+    abstract protected void onConnectionClose(int reason);
+
+    /**
      * Callback when a user event is send. Used when a specific behavior should be processed for a
      * given user event.
      *
@@ -255,6 +262,16 @@ abstract public class AdaptiloControllerFragment extends Fragment implements Ada
                 }
             });
         }
+    }
+
+    @Override
+    public void onConnectionClosed(final int closeCode) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                onConnectionClose(closeCode);
+            }
+        });
     }
 
     @Override

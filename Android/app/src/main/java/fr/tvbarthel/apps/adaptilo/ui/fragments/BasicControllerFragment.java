@@ -13,6 +13,7 @@ import fr.tvbarthel.apps.adaptilo.exceptions.QrCodeException;
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
 import fr.tvbarthel.apps.adaptilo.models.UserEvent;
 import fr.tvbarthel.apps.adaptilo.models.enums.EventType;
+import fr.tvbarthel.apps.adaptilo.models.io.ClosingError;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 public class BasicControllerFragment extends AdaptiloControllerFragment {
@@ -169,6 +170,15 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     }
 
 
+    @Override
+    protected void onConnectionClose(int reason) {
+        switch (reason) {
+            case (ClosingError.REGISTRATION_REQUESTED_ROOM_IS_FULL):
+                showOnScreenMessage(R.string.basic_controller_room_full);
+                break;
+        }
+    }
+
     /**
      * Show an on screen message.
      *
@@ -195,5 +205,4 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     protected void hideOnScreenMessage() {
         mOnScreenMessage.setVisibility(View.INVISIBLE);
     }
-
 }
