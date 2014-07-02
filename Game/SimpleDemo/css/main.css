@@ -38,6 +38,7 @@ p{
     background-color        :   #FFFFFF;
     color                   :   #222;
     font                    :   16px/19px Roboto;
+    border-radius           :   0 0 2px 0;
 }
 
 .card_button:focus{
