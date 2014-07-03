@@ -1,4 +1,4 @@
-package fr.tvbarthel.apps.adaptilo.ui.custom;
+package fr.tvbarthel.apps.adaptilo.ui;
 
 import android.content.Context;
 import android.content.res.TypedArray;

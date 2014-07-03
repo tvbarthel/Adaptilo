@@ -24,8 +24,8 @@ import fr.tvbarthel.apps.adaptilo.models.io.ClosingError;
 import fr.tvbarthel.apps.adaptilo.models.io.Message;
 import fr.tvbarthel.apps.adaptilo.models.io.RegisterControllerRequest;
 import fr.tvbarthel.apps.adaptilo.network.AdaptiloClient;
-import fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloControllerFragment;
-import fr.tvbarthel.apps.adaptilo.ui.fragments.BasicControllerFragment;
+import fr.tvbarthel.apps.adaptilo.fragments.AdaptiloControllerFragment;
+import fr.tvbarthel.apps.adaptilo.fragments.BasicControllerFragment;
 
 /**
  * Adaptilo engine used to handle interaction between the controller and the server
@@ -196,7 +196,7 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
 
     /**
      * Initialize engine features which need context. Should be called directly since it's already
-     * managed by the {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloControllerFragment}
+     * managed by the {@link fr.tvbarthel.apps.adaptilo.fragments.AdaptiloControllerFragment}
      *
      * @param context
      */

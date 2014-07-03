@@ -1,4 +1,4 @@
-package fr.tvbarthel.apps.adaptilo.ui.fragments;
+package fr.tvbarthel.apps.adaptilo.fragments;
 
 
 import android.app.Activity;
@@ -12,8 +12,8 @@ import fr.tvbarthel.apps.adaptilo.R;
 /**
  * Encapsulate common select dialog behavior for an Adaptilo controller.
  * <p/>
- * Each custom {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloControllerFragment}
- * should implement a {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloStartDialogFragment}
+ * Each custom {@link fr.tvbarthel.apps.adaptilo.fragments.AdaptiloControllerFragment}
+ * should implement a {@link fr.tvbarthel.apps.adaptilo.fragments.AdaptiloStartDialogFragment}
  * or reuse a default one.
  * <p/>
  * {@link AdaptiloControllerFragment#getStartDialogFragment()}

@@ -1,4 +1,4 @@
-package fr.tvbarthel.apps.adaptilo.ui.fragments;
+package fr.tvbarthel.apps.adaptilo.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -20,7 +20,7 @@ import fr.tvbarthel.apps.adaptilo.models.enums.EventAction;
 import fr.tvbarthel.apps.adaptilo.models.enums.EventType;
 import fr.tvbarthel.apps.adaptilo.models.enums.MessageType;
 import fr.tvbarthel.apps.adaptilo.models.io.Message;
-import fr.tvbarthel.apps.adaptilo.ui.activities.BasicControllerCaptureActivity;
+import fr.tvbarthel.apps.adaptilo.activities.BasicControllerCaptureActivity;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} that represents a controller.
@@ -32,9 +32,9 @@ import fr.tvbarthel.apps.adaptilo.ui.activities.BasicControllerCaptureActivity;
  * <p/>
  * This abstract controller encapsulate select and start button behavior. Implementations only
  * handle visual callback and dialog customization. Therefor any implementation of
- * {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloControllerFragment} must provide an
- * implementation of its {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloSelectDialogFragment}
- * and {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloStartDialogFragment}
+ * {@link fr.tvbarthel.apps.adaptilo.fragments.AdaptiloControllerFragment} must provide an
+ * implementation of its {@link fr.tvbarthel.apps.adaptilo.fragments.AdaptiloSelectDialogFragment}
+ * and {@link fr.tvbarthel.apps.adaptilo.fragments.AdaptiloStartDialogFragment}
  * <p/>
  * In addition, this abstract controller encapsulate the behavior for all buttons of your controller.
  * Simply implements {@link #getControllerKeys()} to map your button ids with the wished EventType.
@@ -109,8 +109,8 @@ abstract public class AdaptiloControllerFragment extends Fragment {
 
     /**
      * Called to retrieve implementations of
-     * {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloSelectDialogFragment} for the current
-     * {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloControllerFragment} implementation.
+     * {@link fr.tvbarthel.apps.adaptilo.fragments.AdaptiloSelectDialogFragment} for the current
+     * {@link fr.tvbarthel.apps.adaptilo.fragments.AdaptiloControllerFragment} implementation.
      *
      * @return Select dialog fragment.
      */
@@ -118,8 +118,8 @@ abstract public class AdaptiloControllerFragment extends Fragment {
 
     /**
      * Called to retrieve implementations of
-     * {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloStartDialogFragment} for the current
-     * {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloControllerFragment} implementation.
+     * {@link fr.tvbarthel.apps.adaptilo.fragments.AdaptiloStartDialogFragment} for the current
+     * {@link fr.tvbarthel.apps.adaptilo.fragments.AdaptiloControllerFragment} implementation.
      *
      * @return Start dialog fragment.
      */
@@ -287,9 +287,9 @@ abstract public class AdaptiloControllerFragment extends Fragment {
      * Called when matching startPressed dialog as been closed by the user.
      *
      * @param which identifier of clicked button
-     *              {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloStartDialogFragment#BUTTON_RESUME}
-     *              {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloStartDialogFragment#BUTTON_DISCONNECT}
-     *              {@link fr.tvbarthel.apps.adaptilo.ui.fragments.AdaptiloStartDialogFragment#BUTTON_NEW_GAME}
+     *              {@link fr.tvbarthel.apps.adaptilo.fragments.AdaptiloStartDialogFragment#BUTTON_RESUME}
+     *              {@link fr.tvbarthel.apps.adaptilo.fragments.AdaptiloStartDialogFragment#BUTTON_DISCONNECT}
+     *              {@link fr.tvbarthel.apps.adaptilo.fragments.AdaptiloStartDialogFragment#BUTTON_NEW_GAME}
      *              or 0 if dismissed or canceled.
      */
     public void onStartDialogClosed(int which) {
