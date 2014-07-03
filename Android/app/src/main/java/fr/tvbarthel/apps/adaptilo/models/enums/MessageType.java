@@ -48,6 +48,11 @@ public enum MessageType {
     REGISTER_CONTROLLER_REQUEST,
 
     /**
+     * broadcast send by the server when a controller join a room
+     */
+    ON_CONTROLLER_REGISTERED,
+
+    /**
      * send by the {@link fr.tvbarthel.apps.adaptilo.engine.AdaptiloEngine} when user want to disconnect
      */
     UNREGISTER_CONTROLLER_REQUEST,

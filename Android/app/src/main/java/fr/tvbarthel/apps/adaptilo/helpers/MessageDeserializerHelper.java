@@ -84,6 +84,16 @@ public class MessageDeserializerHelper implements JsonDeserializer<Message> {
                 Event event = context.deserialize(content, Event.class);
                 message.setContent(event);
                 break;
+
+            case ON_CONTROLLER_UNREGISTERED:
+                String unregisteredRole = context.deserialize(content, String.class);
+                message.setContent(unregisteredRole);
+                break;
+
+            case ON_CONTROLLER_REGISTERED:
+                String registeredRole = context.deserialize(content, String.class);
+                message.setContent(registeredRole);
+                break;
         }
         return message;
     }
