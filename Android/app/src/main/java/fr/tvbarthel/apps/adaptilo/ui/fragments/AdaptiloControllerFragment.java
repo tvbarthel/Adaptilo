@@ -140,6 +140,25 @@ abstract public class AdaptiloControllerFragment extends Fragment {
     abstract protected void onGameStart();
 
     /**
+     * Called when the controller received a message from the remote server.
+     * <p/>
+     * Allow controller implementation to define any specific behavior for each message event.
+     *
+     * @param message event send by the server
+     */
+    abstract protected void onMessageReceived(Message message);
+
+    /**
+     * Called when the controller received an error from the remote server.
+     * <p/>
+     * Allow controller implementation to define any specific behavior/visual callback for each
+     * error received.
+     *
+     * @param ex error data send by the remote server.
+     */
+    abstract protected void onErrorReceived(Exception ex);
+
+    /**
      * Called when connection was closed by the remote server.
      *
      * @param reason closing code in order to adapt visual callback if needed.
@@ -350,15 +369,16 @@ abstract public class AdaptiloControllerFragment extends Fragment {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                onMessageReceived(message);
+                                AdaptiloControllerFragment.this.onMessageReceived(message);
                             }
                         });
+                        break;
                 }
             }
 
             @Override
             public void onErrorReceived(final Exception ex) {
-                if (ex.getMessage().contains("ENETUNREACH")) {
+                if (ex.getMessage() != null && ex.getMessage().contains("ENETUNREACH")) {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -369,7 +389,7 @@ abstract public class AdaptiloControllerFragment extends Fragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            onErrorReceived(ex);
+                            AdaptiloControllerFragment.this.onErrorReceived(ex);
                         }
                     });
                 }

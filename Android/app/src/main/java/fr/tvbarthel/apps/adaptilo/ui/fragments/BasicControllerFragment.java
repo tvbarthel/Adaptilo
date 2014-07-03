@@ -8,12 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 import fr.tvbarthel.apps.adaptilo.R;
 import fr.tvbarthel.apps.adaptilo.exceptions.QrCodeException;
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
 import fr.tvbarthel.apps.adaptilo.models.UserEvent;
 import fr.tvbarthel.apps.adaptilo.models.enums.EventType;
 import fr.tvbarthel.apps.adaptilo.models.io.ClosingError;
+import fr.tvbarthel.apps.adaptilo.models.io.Message;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 public class BasicControllerFragment extends AdaptiloControllerFragment {
@@ -79,6 +82,38 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     @Override
     public void onGameStart() {
         showOnScreenMessage(mAdaptiloEngine.getEngineConfig().getGameName());
+    }
+
+    @Override
+    protected void onMessageReceived(Message message) {
+        switch (message.getType()) {
+            case ON_CONTROLLER_UNREGISTERED:
+
+                //TODO, crouton only for test purpose
+                String role = (String) message.getContent();
+                Crouton.makeText(getActivity(), "Role : " + role + " leaves the room.", Style.ALERT).show();
+                break;
+            case ON_CONTROLLER_REGISTERED:
+
+                //TODO, crouton only for test purpose
+                String joiningRole = (String) message.getContent();
+                Crouton.makeText(getActivity(), "Role : " + joiningRole + " joins the room.", Style.CONFIRM).show();
+                break;
+        }
+    }
+
+    @Override
+    protected void onErrorReceived(Exception ex) {
+
+    }
+
+    @Override
+    protected void onConnectionClosed(int reason) {
+        switch (reason) {
+            case (ClosingError.REGISTRATION_REQUESTED_ROOM_IS_FULL):
+                showOnScreenMessage(R.string.basic_controller_room_full);
+                break;
+        }
     }
 
     @Override
@@ -169,15 +204,6 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
         showOnScreenMessage(config.getGameName());
     }
 
-
-    @Override
-    protected void onConnectionClosed(int reason) {
-        switch (reason) {
-            case (ClosingError.REGISTRATION_REQUESTED_ROOM_IS_FULL):
-                showOnScreenMessage(R.string.basic_controller_room_full);
-                break;
-        }
-    }
 
     /**
      * Show an on screen message.

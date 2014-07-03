@@ -93,7 +93,6 @@ public class AdaptiloClient extends WebSocketClient {
 
     @Override
     public void onMessage(String message) {
-        Log.d(TAG, "onMessage : " + message);
         final Message messageReceived = mGsonParser.fromJson(message, Message.class);
         switch (messageReceived.getType()) {
             case CONNECTION_COMPLETED:
@@ -102,6 +101,7 @@ public class AdaptiloClient extends WebSocketClient {
                 mCallbacks.onOpen();
                 break;
             default:
+                Log.d(TAG, "onMessage : " + message);
                 mCallbacks.onMessage(messageReceived);
                 break;
         }
