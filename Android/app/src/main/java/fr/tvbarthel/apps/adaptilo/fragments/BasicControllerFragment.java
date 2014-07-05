@@ -39,6 +39,13 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //cancel all scheduled Croutons
+        Crouton.cancelAllCroutons();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_basic_controller, container, false);
 
