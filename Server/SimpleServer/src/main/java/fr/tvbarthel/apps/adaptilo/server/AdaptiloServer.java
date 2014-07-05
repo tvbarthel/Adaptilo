@@ -18,7 +18,6 @@ import org.java_websocket.server.WebSocketServer;
 
 import java.net.InetSocketAddress;
 import java.util.Collection;
-import java.util.Random;
 
 /**
  * Abstract server used to communicate with Adaptilo App.
@@ -203,7 +202,7 @@ public abstract class AdaptiloServer extends WebSocketServer {
      * @return external id generated
      */
     private String generateExternalId(String game, String room, String role) {
-        final int seed = new Random().nextInt();
+        final long seed = System.currentTimeMillis();
         return game + room + role + seed;
     }
 
