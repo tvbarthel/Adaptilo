@@ -88,6 +88,7 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
 
     @Override
     public void onGameStart() {
+        //display game name
         showOnScreenMessage(mAdaptiloEngine.getEngineConfig().getGameName());
     }
 
@@ -208,7 +209,6 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     @Override
     protected void onScannerSuccess(EngineConfig config) {
         super.onScannerSuccess(config);
-        showOnScreenMessage(config.getGameName());
     }
 
 
