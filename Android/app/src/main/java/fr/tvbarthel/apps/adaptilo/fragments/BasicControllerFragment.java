@@ -118,11 +118,14 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     @Override
     protected void onConnectionClosed(int reason) {
         switch (reason) {
-            case (ClosingError.REGISTRATION_REQUESTED_ROOM_IS_FULL):
+            case ClosingError.REGISTRATION_REQUESTED_ROOM_IS_FULL:
                 showOnScreenMessage(R.string.basic_controller_room_full);
                 break;
-            case (ClosingError.DISCONNECTION_DUE_TO_ROLE_REPLACEMENT):
+            case ClosingError.DISCONNECTION_DUE_TO_ROLE_REPLACEMENT:
                 showOnScreenMessage(R.string.basic_controller_message_disconnected);
+                break;
+            case ClosingError.REGISTRATION_REQUESTED_ROOM_UNKNOW:
+                showOnScreenMessage(R.string.basic_controller_room_unknown);
                 break;
         }
     }

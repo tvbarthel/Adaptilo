@@ -25,6 +25,7 @@ import fr.tvbarthel.apps.adaptilo.models.enums.MessageType;
 import fr.tvbarthel.apps.adaptilo.models.io.ClosingError;
 import fr.tvbarthel.apps.adaptilo.models.io.Message;
 import fr.tvbarthel.apps.adaptilo.models.io.RegisterRoleRequest;
+import fr.tvbarthel.apps.adaptilo.models.io.UnRegisterRoleRequest;
 import fr.tvbarthel.apps.adaptilo.network.AdaptiloClient;
 
 /**
@@ -120,7 +121,8 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
                 mEngineConfig.getGameName(),
                 mEngineConfig.getGameRoom(),
                 mEngineConfig.getUserRole(),
-                mEngineConfig.shouldReplace()
+                mEngineConfig.shouldReplace(),
+                mEngineConfig.shouldCreate()
         )));
     }
 
@@ -244,7 +246,7 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
      */
     public void stop() {
         if (mAdaptiloClient != null) {
-            RegisterRoleRequest registerControllerRequest = new RegisterRoleRequest();
+            UnRegisterRoleRequest registerControllerRequest = new UnRegisterRoleRequest();
             registerControllerRequest.setGameRole(mEngineConfig.getUserRole());
             registerControllerRequest.setGameRoom(mEngineConfig.getGameRoom());
             registerControllerRequest.setGameName(mEngineConfig.getGameName());

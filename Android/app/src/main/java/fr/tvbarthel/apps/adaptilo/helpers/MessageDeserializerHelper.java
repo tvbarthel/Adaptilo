@@ -57,6 +57,11 @@ public class MessageDeserializerHelper implements JsonDeserializer<Message> {
      */
     public static final String NODE_SHOULD_REPLACE = "replace";
 
+    /**
+     * json node key for room creation policy
+     */
+    public static final String NODE_SHOULD_CREATE = "create";
+
     @Override
     public Message deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 

@@ -49,6 +49,11 @@ public final class QrCodeHelper {
     private static final String URI_QUERY_PARAM_SHOULD_REPLACE = "replace";
 
     /**
+     * Param key to know if the room should be created when it doesn't exist yet.
+     */
+    private static final String URI_QUERY_PARAM_SHOULD_CREATE = "create";
+
+    /**
      * Start an activity for scanning a QrCode.
      *
      * @param fragment             the {@link android.support.v4.app.Fragment} calling startActivityForResult.
@@ -94,11 +99,13 @@ public final class QrCodeHelper {
         final String room = scannedUri.getQueryParameter(URI_QUERY_PARAM_ROOM);
         final String role = scannedUri.getQueryParameter(URI_QUERY_PARAM_ROLE);
         final String replace = scannedUri.getQueryParameter(URI_QUERY_PARAM_SHOULD_REPLACE);
+        final String create = scannedUri.getQueryParameter(URI_QUERY_PARAM_SHOULD_CREATE);
         final String scheme = scannedUri.getScheme();
         final int port = scannedUri.getPort();
         final String host = scannedUri.getHost();
         final String gameName = scannedUri.getPath().substring(1);
         boolean shouldReplace = false;
+        boolean shouldCreate = false;
 
         if (!URI_SCHEME.equals(scheme)) {
             Log.e(TAG, "QrCode uri scheme must correspond to adaptilo");
@@ -134,12 +141,17 @@ public final class QrCodeHelper {
             shouldReplace = true;
         }
 
+        if (replace != null && Boolean.valueOf(create)) {
+            shouldCreate = true;
+        }
+
         config.setServerUri(scannedUri);
         config.setUserRole(role);
         config.setGameRoom(room);
         config.setServerPort(port);
         config.setGameName(gameName);
         config.setShouldReplace(shouldReplace);
+        config.setShouldCreate(shouldCreate);
         return config;
     }
 

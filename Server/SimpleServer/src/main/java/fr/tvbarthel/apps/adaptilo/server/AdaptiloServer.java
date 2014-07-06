@@ -12,6 +12,7 @@ import fr.tvbarthel.apps.adaptilo.server.models.enums.MessageType;
 import fr.tvbarthel.apps.adaptilo.server.models.io.Message;
 import fr.tvbarthel.apps.adaptilo.server.models.io.RegisterRoleRequest;
 import fr.tvbarthel.apps.adaptilo.server.models.io.ServerRequest;
+import fr.tvbarthel.apps.adaptilo.server.models.io.UnRegisterRoleRequest;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -42,10 +43,11 @@ public abstract class AdaptiloServer extends WebSocketServer {
      * @param role          role to register
      * @param roomId        room id in which role request registration
      * @param shouldReplace replacement policy when role is already registered
+     * @param shouldCreate  creation  policy when room doesn't exist
      * @return should return 0 if registration succeeds, else an
      *         {@link fr.tvbarthel.apps.adaptilo.server.models.io.ClosingError} matching a registration code.
      */
-    protected abstract int registerRoleInRoom(String gameName, Role role, String roomId, boolean shouldReplace);
+    protected abstract int registerRoleInRoom(String gameName, Role role, String roomId, boolean shouldReplace, boolean shouldCreate);
 
     /**
      * Handle role disconnection.
@@ -90,8 +92,8 @@ public abstract class AdaptiloServer extends WebSocketServer {
                 answer = processRoleRegistration(conn, request);
                 break;
             case UNREGISTER_ROLE_REQUEST:
-                final RegisterRoleRequest unregisterRequest
-                        = (RegisterRoleRequest) messageContent.getContent();
+                final UnRegisterRoleRequest unregisterRequest
+                        = (UnRegisterRoleRequest) messageContent.getContent();
                 final int closingCode = unregisterRoleInRoom(
                         unregisterRequest.getGameName(),
                         connectionId,
@@ -180,7 +182,8 @@ public abstract class AdaptiloServer extends WebSocketServer {
                 request.getGameName(),
                 roleToRegister,
                 request.getGameRoom(),
-                request.shouldReplace()
+                request.shouldReplace(),
+                request.shouldCreate()
         );
 
         switch (registrationCode) {

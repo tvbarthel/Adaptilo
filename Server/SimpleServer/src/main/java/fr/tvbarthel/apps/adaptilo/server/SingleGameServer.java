@@ -61,7 +61,7 @@ public class SingleGameServer extends AdaptiloServer {
 
 
     @Override
-    protected int registerRoleInRoom(String gameName, Role role, String roomId, boolean replace) {
+    protected int registerRoleInRoom(String gameName, Role role, String roomId, boolean replace, boolean create) {
         Room requestedRoom = null;
 
         if (!mGameName.equals(gameName)) {
@@ -93,7 +93,18 @@ public class SingleGameServer extends AdaptiloServer {
         if (requestedRoom == null) {
             //request room not found
             System.out.println(TAG + " Room with id : " + roomId + " doesn't exist.");
-            return ClosingError.REGISTRATION_REQUESTED_ROOM_UNKNOW;
+
+            //check if creation policy
+            if (create) {
+                //create the room
+                requestedRoom = new Room(roomId, 2);
+                requestedRoom.setAvailableRoles(mAllowedRoles);
+                mGameRooms.add(requestedRoom);
+                System.out.println(TAG + " Room with id : " + roomId + " created.");
+            } else {
+                //room doesn't exist and creation policy to false
+                return ClosingError.REGISTRATION_REQUESTED_ROOM_UNKNOW;
+            }
         }
 
         int registeringCode = requestedRoom.registerRole(role, replace);
@@ -106,7 +117,6 @@ public class SingleGameServer extends AdaptiloServer {
                     new Message(MessageType.ON_ROLE_REGISTERED, role.getName())
             );
         }
-
         return registeringCode;
     }
 

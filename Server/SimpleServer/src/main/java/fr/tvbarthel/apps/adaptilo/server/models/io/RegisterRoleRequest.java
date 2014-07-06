@@ -17,15 +17,29 @@ public class RegisterRoleRequest {
     @SerializedName(MessageDeserializerHelper.NODE_SHOULD_REPLACE)
     private boolean mShouldReplace;
 
+    @SerializedName(MessageDeserializerHelper.NODE_SHOULD_CREATE)
+    private boolean mShouldCreate;
+
     public RegisterRoleRequest() {
 
     }
 
-    public RegisterRoleRequest(String name, String room, String role, boolean replace) {
+    /**
+     * Registration request.
+     *
+     * @param name    game identifier.
+     * @param room    room identifier.
+     * @param role    role identifier.
+     * @param replace replacement policy, true if role should be replaced when already taken.
+     * @param create  creation policy, true if the room should be created when it doesn't exist.
+     */
+    public RegisterRoleRequest(String name, String room, String role,
+                               boolean replace, boolean create) {
         mGameName = name;
         mGameRoom = room;
         mGameRole = role;
         mShouldReplace = replace;
+        mShouldCreate = create;
     }
 
     public String getGameRole() {
@@ -58,5 +72,13 @@ public class RegisterRoleRequest {
 
     public void setShouldReplace(boolean shouldReplace) {
         this.mShouldReplace = shouldReplace;
+    }
+
+    public boolean shouldCreate() {
+        return mShouldCreate;
+    }
+
+    public void setShouldCreate(boolean shouldCreate) {
+        this.mShouldCreate = shouldCreate;
     }
 }

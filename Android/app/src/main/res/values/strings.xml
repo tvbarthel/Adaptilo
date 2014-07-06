@@ -16,7 +16,8 @@
     <string name="basic_controller_qrcode_scanner_error">Invalid QrCode</string>
     <string name="basic_controller_network_unreachable_alert_title">Network is unreachable</string>
     <string name="basic_controller_network_unreachable_alert_content">Fail to connect to the game server.\nPlease check your network access.</string>
-    <string name="basic_controller_room_full">Room full.</string>
+    <string name="basic_controller_room_full">Room full</string>
+    <string name="basic_controller_room_unknown">Room unknown</string>
 
     <!-- Default Start dialog !-->
     <string name="start_dialog_new_game">New Game</string>
