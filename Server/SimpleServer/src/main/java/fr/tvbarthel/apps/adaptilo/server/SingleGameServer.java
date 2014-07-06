@@ -1,6 +1,7 @@
 package fr.tvbarthel.apps.adaptilo.server;
 
 import fr.tvbarthel.apps.adaptilo.server.models.Role;
+import fr.tvbarthel.apps.adaptilo.server.models.RoleConfiguration;
 import fr.tvbarthel.apps.adaptilo.server.models.Room;
 import fr.tvbarthel.apps.adaptilo.server.models.enums.MessageType;
 import fr.tvbarthel.apps.adaptilo.server.models.io.ClosingError;
@@ -27,6 +28,11 @@ public class SingleGameServer extends AdaptiloServer {
     private String mGameName;
 
     /**
+     * Max roles for the given game
+     */
+    private int mMaxRoles;
+
+    /**
      * game rooms
      */
     private List<Room> mGameRooms;
@@ -34,7 +40,7 @@ public class SingleGameServer extends AdaptiloServer {
     /**
      * roles allowed
      */
-    private List<String> mAllowedRoles;
+    private List<RoleConfiguration> mAllowedRoles;
 
 
     /**
@@ -44,11 +50,17 @@ public class SingleGameServer extends AdaptiloServer {
      * @param gameName    name of the game
      * @param allowedRole available roles
      */
-    public SingleGameServer(InetSocketAddress address, String gameName, List<String> allowedRole) {
+    public SingleGameServer(InetSocketAddress address, String gameName, List<RoleConfiguration> allowedRole) {
         super(address);
 
         mAllowedRoles = allowedRole;
         mGameName = gameName;
+
+        // Initialize max roles to the sum of max instance for each role.
+        mMaxRoles = 0;
+        for (RoleConfiguration roleConfig : mAllowedRoles) {
+            mMaxRoles += roleConfig.getMaxInstance();
+        }
 
         mGameRooms = new ArrayList<Room>();
 
@@ -76,7 +88,14 @@ public class SingleGameServer extends AdaptiloServer {
             return ClosingError.REGISTRATION_NO_ROOM_CREATED;
         }
 
-        if (!mAllowedRoles.contains(role.getName())) {
+        RoleConfiguration roleAllowed = null;
+        for (RoleConfiguration roleConfig : mAllowedRoles) {
+            if (roleConfig.getName().equals(role.getName())) {
+                roleAllowed = roleConfig;
+            }
+        }
+
+        if (roleAllowed == null) {
             //role not allowed for this game
             System.out.println(TAG + " Role : " + role.getName() + " doesn't allowed in this game.");
             return ClosingError.REGISTRATION_REQUESTED_ROLE_UNKNOWN;
@@ -94,20 +113,32 @@ public class SingleGameServer extends AdaptiloServer {
             //request room not found
             System.out.println(TAG + " Room with id : " + roomId + " doesn't exist.");
 
-            //check if creation policy
+            //check if creation is requested
             if (create) {
-                //create the room
-                requestedRoom = new Room(roomId, 2);
-                requestedRoom.setAvailableRoles(mAllowedRoles);
-                mGameRooms.add(requestedRoom);
-                System.out.println(TAG + " Room with id : " + roomId + " created.");
+
+                //check if role is allowed to create room
+                if (roleAllowed.canCreateRoom()) {
+
+                    //creation request and creation allowed for the given rol
+                    requestedRoom = new Room(roomId, mMaxRoles);
+                    requestedRoom.setAvailableRoles(mAllowedRoles);
+                    mGameRooms.add(requestedRoom);
+                    System.out.println(TAG + " Room with id : " + roomId + " created.");
+
+                } else {
+
+                    //creation requested but not allowed for the given role
+                    System.out.println(TAG + " Role : " + role.getName() + " not allowed to create a room.");
+                    return ClosingError.REGISTRATION_REQUESTED_ROOM_UNKNOW;
+                }
             } else {
+
                 //room doesn't exist and creation policy to false
                 return ClosingError.REGISTRATION_REQUESTED_ROOM_UNKNOW;
             }
         }
 
-        int registeringCode = requestedRoom.registerRole(role, replace);
+        int registeringCode = requestedRoom.registerRole(role, roleAllowed, replace);
 
         if (registeringCode == 0) {
             //registration succeed, broadcast an event to the roles registered in the same room.

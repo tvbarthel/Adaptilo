@@ -28,7 +28,7 @@ public class Room {
     /**
      * roles available for the room
      */
-    private List<String> mAvailableRoles;
+    private List<RoleConfiguration> mAvailableRoles;
 
     /**
      * current roles register to the room
@@ -38,7 +38,7 @@ public class Room {
     public Room(String rommId, int maxRoles) {
         mId = rommId;
         mRoles = new ArrayList<Role>();
-        mAvailableRoles = new ArrayList<String>();
+        mAvailableRoles = new ArrayList<RoleConfiguration>();
         mMaxRoles = maxRoles;
     }
 
@@ -82,26 +82,46 @@ public class Room {
     /**
      * register a Role is the rome
      *
-     * @param role          role to register
-     * @param shouldReplace true if replacement is requested, set false if many client can play the same role
+     * @param role              role to register
+     * @param roleConfiguration role configuration
+     * @param shouldReplace     true if replacement is requested, set false if many client can play the same role
      * @return 0 if registration succeed or an
      *         {@link fr.tvbarthel.apps.adaptilo.server.models.io.ClosingError}
      */
-    public int registerRole(Role role, boolean shouldReplace) {
+    public int registerRole(Role role, RoleConfiguration roleConfiguration, boolean shouldReplace) {
+
+        //replace only if requested and allowed for the given role
+        shouldReplace = shouldReplace && roleConfiguration.canBeReplaced();
+
         if (!mAvailableRoles.isEmpty()) {
             //check if given role is allowed
-            if (!mAvailableRoles.contains(role.getName())) {
+            if (!mAvailableRoles.contains(roleConfiguration)) {
                 return ClosingError.REGISTRATION_REQUESTED_ROLE_UNKNOWN;
             }
         }
 
-        //check room size
-        final int remainingSlot = shouldReplace ? mMaxRoles - mRoles.size() + 1 : mMaxRoles - mRoles.size();
+        //retrieve the number of same role instance
+        int instanceNumber = 0;
+        for (Role roleInstance : mRoles) {
+            if (roleInstance.getName().equals(roleConfiguration.getName())) {
+                instanceNumber++;
+            }
+        }
+
+        //process remainingSlot for the requested role
+        int remainingSlot = roleConfiguration.getMaxInstance() - instanceNumber;
+
+        //if role instance will be replaced add +1 to the remaining slot since an instance sill be replaced.
+        if (shouldReplace) {
+            remainingSlot++;
+        }
+
+        //check remaining slot
         if (0 >= remainingSlot) {
             return ClosingError.REGISTRATION_REQUESTED_ROOM_IS_FULL;
         }
 
-        //delete current registered role if replace is requested
+        //delete current registered role if replacement is requested and allowed for the given role
         if (shouldReplace) {
             final Role roleToRemove = findRoleByName(role.getName());
             if (roleToRemove != null) {
@@ -150,16 +170,16 @@ public class Room {
         return mMaxRoles;
     }
 
-    public void setMaxRoles(int mMaxRoles) {
-        this.mMaxRoles = mMaxRoles;
+    public void setMaxRoles(int maxRoles) {
+        this.mMaxRoles = maxRoles;
     }
 
-    public List<String> getAvailableRoles() {
+    public List<RoleConfiguration> getAvailableRoles() {
         return mAvailableRoles;
     }
 
-    public void setAvailableRoles(List<String> mAvailableRoles) {
-        this.mAvailableRoles = mAvailableRoles;
+    public void setAvailableRoles(List<RoleConfiguration> availableRoles) {
+        this.mAvailableRoles = availableRoles;
     }
 
     public List<Role> getRoles() {

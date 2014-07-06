@@ -1,6 +1,8 @@
 package fr.tvbarthel.apps.adaptilo.server;
 
 
+import fr.tvbarthel.apps.adaptilo.server.models.RoleConfiguration;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,9 +15,11 @@ public class Launcher {
         System.out.println("Simple Server Launcher");
 
         //create roles
-        final ArrayList<String> roles = new ArrayList<String>();
-        roles.add("controller");
-        roles.add("field");
+        final ArrayList<RoleConfiguration> roles = new ArrayList<RoleConfiguration>();
+        roles.add(new RoleConfiguration("a", true, true, 2));
+        roles.add(new RoleConfiguration("b", true, false, 1));
+        roles.add(new RoleConfiguration("c", false, false, 1));
+        roles.add(new RoleConfiguration("field", true, true, 1));
 
         //create server
         final SingleGameServer server = new SingleGameServer(new InetSocketAddress(8887), "testGame", roles);
