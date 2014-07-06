@@ -6,6 +6,7 @@ import fr.tvbarthel.apps.adaptilo.server.models.Room;
 import fr.tvbarthel.apps.adaptilo.server.models.enums.MessageType;
 import fr.tvbarthel.apps.adaptilo.server.models.io.ClosingError;
 import fr.tvbarthel.apps.adaptilo.server.models.io.Message;
+import fr.tvbarthel.apps.adaptilo.server.models.io.ServerRequest;
 import org.java_websocket.framing.CloseFrame;
 
 import java.net.InetSocketAddress;
@@ -70,7 +71,6 @@ public class SingleGameServer extends AdaptiloServer {
         virtualRoom.setAvailableRoles(mAllowedRoles);
         mGameRooms.add(virtualRoom);
     }
-
 
     @Override
     protected int registerRoleInRoom(String gameName, Role role, String roomId, boolean replace, boolean create) {
@@ -174,6 +174,30 @@ public class SingleGameServer extends AdaptiloServer {
             );
         }
         return CloseFrame.NORMAL;
+    }
+
+    @Override
+    protected Message onMessageReceived(ServerRequest message) {
+        //broadcast all messages in sender room.
+        final String senderRoomId = message.getRoom();
+        final String senderExtId = message.getExternalId();
+
+        //find sender room
+        Room room = null;
+        for (Room r : mGameRooms) {
+            if (r.getRoomId().equals(senderRoomId)) {
+                room = r;
+            }
+        }
+
+        if (room != null) {
+            Role role = room.findRoleById(senderExtId);
+            if (role != null) {
+                broadcastMessage(room, role, message.getMessage());
+            }
+        }
+
+        return null;  //by default no answer are send back to the sender
     }
 
 }

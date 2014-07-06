@@ -229,7 +229,12 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
         if (mEngineConfig != null) {
             // convert android.net.Uri to java.net.URI
             URI serverUri = URI.create(mEngineConfig.getServerUri().toString());
-            mAdaptiloClient = new AdaptiloClient(serverUri, this);
+            mAdaptiloClient = new AdaptiloClient(
+                    serverUri,
+                    mEngineConfig.getGameName(),
+                    mEngineConfig.getGameRoom(),
+                    this
+            );
             mAdaptiloClient.connect();
         }
     }

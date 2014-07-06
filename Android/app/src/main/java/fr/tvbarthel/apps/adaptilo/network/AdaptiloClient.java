@@ -42,9 +42,21 @@ public class AdaptiloClient extends WebSocketClient {
      */
     private String mConnectionId;
 
-    public AdaptiloClient(URI serverURI, Callbacks callbacks) {
+    /**
+     * Identify current playing game.
+     */
+    private String mGameName;
+
+    /**
+     * Identify current room.
+     */
+    private String mRoomId;
+
+    public AdaptiloClient(URI serverURI, String game, String room, Callbacks callbacks) {
         super(serverURI);
         mCallbacks = callbacks;
+        mGameName = game;
+        mRoomId = room;
         mGsonParser = initGsonParser();
     }
 
@@ -66,7 +78,12 @@ public class AdaptiloClient extends WebSocketClient {
      * @param message
      */
     public void send(Message message) {
-        final ServerRequest serverRequest = new ServerRequest(mConnectionId, message);
+        final ServerRequest serverRequest = new ServerRequest(
+                mConnectionId,
+                mGameName,
+                mRoomId,
+                message
+        );
         this.send(mGsonParser.toJson(serverRequest));
     }
 

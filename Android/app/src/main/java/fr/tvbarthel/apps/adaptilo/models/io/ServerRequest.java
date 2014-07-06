@@ -10,10 +10,22 @@ import fr.tvbarthel.apps.adaptilo.helpers.MessageDeserializerHelper;
 public class ServerRequest {
 
     /**
-     * connection id which identify the client on the server
+     * connection id used to identify each role instance
      */
     @SerializedName(MessageDeserializerHelper.NODE_EXTERNAL_ID)
     private String mExternalId;
+
+    /**
+     * Game name.
+     */
+    @SerializedName(MessageDeserializerHelper.NODE_GAME_NAME)
+    private String mGameName;
+
+    /**
+     * Room id.
+     */
+    @SerializedName(MessageDeserializerHelper.NODE_GAME_ROOM)
+    private String mRoom;
 
     /**
      * message to deliver
@@ -22,8 +34,10 @@ public class ServerRequest {
     private Message mMessage;
 
 
-    public ServerRequest(String connectionId, Message message) {
+    public ServerRequest(String connectionId, String game, String room, Message message) {
         mExternalId = connectionId;
+        mGameName = game;
+        mRoom = room;
         mMessage = message;
     }
 
@@ -31,7 +45,7 @@ public class ServerRequest {
      * GETTER AND SETTER
      */
 
-    public String getExternalIdId() {
+    public String getExternalId() {
         return mExternalId;
     }
 
@@ -46,4 +60,21 @@ public class ServerRequest {
     public void setMessage(Message mMessage) {
         this.mMessage = mMessage;
     }
+
+    public String getGameName() {
+        return mGameName;
+    }
+
+    public void setGameName(String gameName) {
+        this.mGameName = gameName;
+    }
+
+    public String getRoom() {
+        return mRoom;
+    }
+
+    public void setRoom(String room) {
+        this.mRoom = room;
+    }
 }
+

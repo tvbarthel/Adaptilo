@@ -59,6 +59,14 @@ public abstract class AdaptiloServer extends WebSocketServer {
      */
     protected abstract int unregisterRoleInRoom(String gameName, String externalId, String roomId);
 
+    /**
+     * Let server implementation decide how to proceed message which aren't handled by default.
+     *
+     * @param message message received.
+     * @return message for the sender or null if no answer should be send back
+     */
+    protected abstract Message onMessageReceived(ServerRequest message);
+
     public AdaptiloServer(InetSocketAddress address) {
         super(address);
         mParser = initGsonParser();
@@ -101,6 +109,9 @@ public abstract class AdaptiloServer extends WebSocketServer {
                 );
                 conn.close(closingCode);
                 System.out.println(TAG + " connection closed :" + conn.toString());
+                break;
+            default:
+                answer = onMessageReceived(messageReceived);
                 break;
         }
 
