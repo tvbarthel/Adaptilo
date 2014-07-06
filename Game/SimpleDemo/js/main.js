@@ -65,6 +65,10 @@ Adaptilo.platform = (function() {
             mWebSocket.onclose   = this.platformConfiguration.onSocketClose;
             mWebSocket.onmessage = this.platformConfiguration.onSocketMessage;
             mWebSocket.onerror   = this.platformConfiguration.onSocketError;
+        },
+        
+        setConfiguration : function(platformConfiguration) {
+            this.platformConfiguration = $.extend(true, {}, platformConfiguration);
         }
     };
 
