@@ -3,7 +3,7 @@ package fr.tvbarthel.apps.adaptilo.server.models.io;
 import com.google.gson.annotations.SerializedName;
 import fr.tvbarthel.apps.adaptilo.server.helpers.MessageDeserializerHelper;
 
-public class RegisterControllerRequest {
+public class RegisterRoleRequest {
 
     @SerializedName(MessageDeserializerHelper.NODE_GAME_NAME)
     private String mGameName;
@@ -14,11 +14,11 @@ public class RegisterControllerRequest {
     @SerializedName(MessageDeserializerHelper.NODE_GAME_ROLE)
     private String mGameRole;
 
-    public RegisterControllerRequest() {
+    public RegisterRoleRequest() {
 
     }
 
-    public RegisterControllerRequest(String name, String room, String role) {
+    public RegisterRoleRequest(String name, String room, String role) {
         mGameName = name;
         mGameRoom = room;
         mGameRole = role;

@@ -4,7 +4,7 @@ import com.google.gson.*;
 import fr.tvbarthel.apps.adaptilo.server.models.Event;
 import fr.tvbarthel.apps.adaptilo.server.models.enums.MessageType;
 import fr.tvbarthel.apps.adaptilo.server.models.io.Message;
-import fr.tvbarthel.apps.adaptilo.server.models.io.RegisterControllerRequest;
+import fr.tvbarthel.apps.adaptilo.server.models.io.RegisterRoleRequest;
 
 import java.lang.reflect.Type;
 
@@ -77,13 +77,13 @@ public class MessageDeserializerHelper implements JsonDeserializer<Message> {
                 message.setContent(pattern);
                 break;
 
-            case REGISTER_CONTROLLER_REQUEST:
-                RegisterControllerRequest registrationRequest = context.deserialize(content, RegisterControllerRequest.class);
+            case REGISTER_ROLE_REQUEST:
+                RegisterRoleRequest registrationRequest = context.deserialize(content, RegisterRoleRequest.class);
                 message.setContent(registrationRequest);
                 break;
 
-            case UNREGISTER_CONTROLLER_REQUEST:
-                RegisterControllerRequest unregisterControllerRequest = context.deserialize(content, RegisterControllerRequest.class);
+            case UNREGISTER_ROLE_REQUEST:
+                RegisterRoleRequest unregisterControllerRequest = context.deserialize(content, RegisterRoleRequest.class);
                 message.setContent(unregisterControllerRequest);
                 break;
 

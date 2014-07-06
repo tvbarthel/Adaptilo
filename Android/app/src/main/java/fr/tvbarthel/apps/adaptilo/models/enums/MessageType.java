@@ -45,22 +45,22 @@ public enum MessageType {
     /**
      * send by the {@link fr.tvbarthel.apps.adaptilo.engine.AdaptiloEngine} when a game has been loaded
      */
-    REGISTER_CONTROLLER_REQUEST,
+    REGISTER_ROLE_REQUEST,
 
     /**
-     * broadcast send by the server when a controller join a room
+     * broadcast send by the server when a role join a room
      */
-    ON_CONTROLLER_REGISTERED,
+    ON_ROLE_REGISTERED,
 
     /**
      * send by the {@link fr.tvbarthel.apps.adaptilo.engine.AdaptiloEngine} when user want to disconnect
      */
-    UNREGISTER_CONTROLLER_REQUEST,
+    UNREGISTER_ROLE_REQUEST,
 
     /**
-     * broadcast send by the sever when a controller leave a room.
+     * broadcast send by the sever when a role leave a room.
      */
-    ON_CONTROLLER_UNREGISTERED,
+    ON_ROLE_UNREGISTERED,
 
     /**
      * send by the {@link fr.tvbarthel.apps.adaptilo.engine.AdaptiloEngine} when sensor events are fired

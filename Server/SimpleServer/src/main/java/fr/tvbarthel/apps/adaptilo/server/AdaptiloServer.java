@@ -10,7 +10,7 @@ import fr.tvbarthel.apps.adaptilo.server.models.enums.EventAction;
 import fr.tvbarthel.apps.adaptilo.server.models.enums.EventType;
 import fr.tvbarthel.apps.adaptilo.server.models.enums.MessageType;
 import fr.tvbarthel.apps.adaptilo.server.models.io.Message;
-import fr.tvbarthel.apps.adaptilo.server.models.io.RegisterControllerRequest;
+import fr.tvbarthel.apps.adaptilo.server.models.io.RegisterRoleRequest;
 import fr.tvbarthel.apps.adaptilo.server.models.io.ServerRequest;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
@@ -47,14 +47,14 @@ public abstract class AdaptiloServer extends WebSocketServer {
     protected abstract int registerRoleInRoom(String gameName, Role role, String roomId);
 
     /**
-     * Handle controller disconnection.
+     * Handle role disconnection.
      *
      * @param gameName   name of the game
-     * @param externalId controller if given during the registration process
+     * @param externalId role id given during the registration process
      * @param roomId     id of the room in which the given controller is playing
      * @return closing code send back to the controller through onClose
      */
-    protected abstract int unregisterController(String gameName, String externalId, String roomId);
+    protected abstract int unregisterRoleInRoom(String gameName, String externalId, String roomId);
 
     public AdaptiloServer(InetSocketAddress address) {
         super(address);
@@ -84,14 +84,14 @@ public abstract class AdaptiloServer extends WebSocketServer {
 
         //process each message type
         switch (messageContent.getType()) {
-            case REGISTER_CONTROLLER_REQUEST:
-                final RegisterControllerRequest request = (RegisterControllerRequest) messageContent.getContent();
+            case REGISTER_ROLE_REQUEST:
+                final RegisterRoleRequest request = (RegisterRoleRequest) messageContent.getContent();
                 answer = registerController(conn, request);
                 break;
-            case UNREGISTER_CONTROLLER_REQUEST:
-                final RegisterControllerRequest unregisterRequest
-                        = (RegisterControllerRequest) messageContent.getContent();
-                final int closingCode = unregisterController(
+            case UNREGISTER_ROLE_REQUEST:
+                final RegisterRoleRequest unregisterRequest
+                        = (RegisterRoleRequest) messageContent.getContent();
+                final int closingCode = unregisterRoleInRoom(
                         unregisterRequest.getGameName(),
                         connectionId,
                         unregisterRequest.getGameRoom()
@@ -169,7 +169,7 @@ public abstract class AdaptiloServer extends WebSocketServer {
      * @param request registration request from network
      * @return answer which should be send back
      */
-    private Message registerController(WebSocket conn, RegisterControllerRequest request) {
+    private Message registerController(WebSocket conn, RegisterRoleRequest request) {
         //generate unique external identifier
         final String givenId = generateExternalId(request.getGameName(), request.getGameRoom(), request.getGameRole());
         final Role roleToRegister = new Role(request.getGameRole(), conn, givenId);

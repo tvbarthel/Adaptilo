@@ -95,13 +95,13 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     @Override
     protected void onMessageReceived(Message message) {
         switch (message.getType()) {
-            case ON_CONTROLLER_UNREGISTERED:
+            case ON_ROLE_UNREGISTERED:
 
                 //TODO, crouton only for test purpose
                 String role = (String) message.getContent();
                 Crouton.makeText(getActivity(), "Role : " + role + " leaves the room.", Style.ALERT).show();
                 break;
-            case ON_CONTROLLER_REGISTERED:
+            case ON_ROLE_REGISTERED:
 
                 //TODO, crouton only for test purpose
                 String joiningRole = (String) message.getContent();

@@ -105,7 +105,7 @@ public class SingleGameServer extends AdaptiloServer {
             broadcastMessage(
                     requestedRoom,
                     role,
-                    new Message(MessageType.ON_CONTROLLER_REGISTERED, role.getName())
+                    new Message(MessageType.ON_ROLE_REGISTERED, role.getName())
             );
         }
 
@@ -113,7 +113,7 @@ public class SingleGameServer extends AdaptiloServer {
     }
 
     @Override
-    protected int unregisterController(String gameName, String externalId, String roomId) {
+    protected int unregisterRoleInRoom(String gameName, String externalId, String roomId) {
         Room controllerRoom = null;
 
         for (Room room : mGameRooms) {
@@ -131,7 +131,7 @@ public class SingleGameServer extends AdaptiloServer {
             broadcastMessage(
                     controllerRoom,
                     controllerRole,
-                    new Message(MessageType.ON_CONTROLLER_UNREGISTERED, controllerRole.getName())
+                    new Message(MessageType.ON_ROLE_UNREGISTERED, controllerRole.getName())
             );
         }
         return CloseFrame.NORMAL;

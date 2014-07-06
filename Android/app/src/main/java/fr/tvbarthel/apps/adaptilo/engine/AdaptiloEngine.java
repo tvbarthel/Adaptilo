@@ -22,7 +22,7 @@ import fr.tvbarthel.apps.adaptilo.models.enums.EventType;
 import fr.tvbarthel.apps.adaptilo.models.enums.MessageType;
 import fr.tvbarthel.apps.adaptilo.models.io.ClosingError;
 import fr.tvbarthel.apps.adaptilo.models.io.Message;
-import fr.tvbarthel.apps.adaptilo.models.io.RegisterControllerRequest;
+import fr.tvbarthel.apps.adaptilo.models.io.RegisterRoleRequest;
 import fr.tvbarthel.apps.adaptilo.network.AdaptiloClient;
 import fr.tvbarthel.apps.adaptilo.fragments.AdaptiloControllerFragment;
 import fr.tvbarthel.apps.adaptilo.fragments.BasicControllerFragment;
@@ -116,7 +116,7 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
     @Override
     public void onConfigRequested() {
         //send the current loaded config
-        mAdaptiloClient.send(new Message(MessageType.REGISTER_CONTROLLER_REQUEST, new RegisterControllerRequest(
+        mAdaptiloClient.send(new Message(MessageType.REGISTER_ROLE_REQUEST, new RegisterRoleRequest(
                 mEngineConfig.getGameName(),
                 mEngineConfig.getGameRoom(),
                 mEngineConfig.getUserRole()
@@ -240,13 +240,13 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
      */
     public void stop() {
         if (mAdaptiloClient != null) {
-            RegisterControllerRequest registerControllerRequest = new RegisterControllerRequest();
+            RegisterRoleRequest registerControllerRequest = new RegisterRoleRequest();
             registerControllerRequest.setGameRole(mEngineConfig.getUserRole());
             registerControllerRequest.setGameRoom(mEngineConfig.getGameRoom());
             registerControllerRequest.setGameName(mEngineConfig.getGameName());
 
             mAdaptiloClient.send(
-                    new Message(MessageType.UNREGISTER_CONTROLLER_REQUEST,
+                    new Message(MessageType.UNREGISTER_ROLE_REQUEST,
                             registerControllerRequest)
             );
 
