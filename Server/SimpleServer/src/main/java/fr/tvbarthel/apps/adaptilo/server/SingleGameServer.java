@@ -183,12 +183,7 @@ public class SingleGameServer extends AdaptiloServer {
         final String senderExtId = message.getExternalId();
 
         //find sender room
-        Room room = null;
-        for (Room r : mGameRooms) {
-            if (r.getRoomId().equals(senderRoomId)) {
-                room = r;
-            }
-        }
+        Room room = findRoomById(senderRoomId);
 
         if (room != null) {
             Role role = room.findRoleById(senderExtId);
@@ -198,6 +193,34 @@ public class SingleGameServer extends AdaptiloServer {
         }
 
         return null;  //by default no answer are send back to the sender
+    }
+
+    @Override
+    protected List<String> onRolesRequested(String game) {
+        List<String> roles = new ArrayList<String>();
+
+        for (RoleConfiguration roleConfig : mAllowedRoles) {
+            roles.add(roleConfig.getName());
+        }
+        return roles;
+    }
+
+
+    /**
+     * Find a room.
+     *
+     * @param roomId room identifier
+     * @return room matching identifier or null
+     */
+    protected Room findRoomById(String roomId) {
+        Room room = null;
+        for (Room r : mGameRooms) {
+            if (r.getRoomId().equals(roomId)) {
+                room = r;
+            }
+        }
+
+        return room;
     }
 
 }

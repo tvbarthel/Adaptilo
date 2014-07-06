@@ -5,8 +5,11 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import fr.tvbarthel.apps.adaptilo.models.Event;
 import fr.tvbarthel.apps.adaptilo.models.enums.MessageType;
@@ -103,6 +106,14 @@ public class MessageDeserializerHelper implements JsonDeserializer<Message> {
             case ON_ROLE_REGISTERED:
                 String registeredRole = context.deserialize(content, String.class);
                 message.setContent(registeredRole);
+                break;
+
+            case ON_ROLES_RETRIEVED:
+                List<String> roles = context.deserialize(content,
+                        new TypeToken<ArrayList<String>>() {
+                        }.getType()
+                );
+                message.setContent(roles);
                 break;
         }
         return message;

@@ -65,7 +65,17 @@ public enum MessageType {
     /**
      * send by the client when sensor events are fired
      */
-    SENSOR
+    SENSOR,
+
+    /**
+     * send by the client to retrieve role names for its room.
+     */
+    ROLES_REQUEST,
+
+    /**
+     * send by the sever when role names where requested
+     */
+    ON_ROLES_RETRIEVED
 
 
 }

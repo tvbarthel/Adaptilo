@@ -19,6 +19,7 @@ import org.java_websocket.server.WebSocketServer;
 
 import java.net.InetSocketAddress;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Abstract server used to communicate with Adaptilo App.
@@ -67,10 +68,17 @@ public abstract class AdaptiloServer extends WebSocketServer {
      */
     protected abstract Message onMessageReceived(ServerRequest message);
 
+    /**
+     * A client request role names. Basically asked by the game field to display QrCodes.
+     *
+     * @param game requester game
+     * @return map of role : url
+     */
+    protected abstract List<String> onRolesRequested(String game);
+
     public AdaptiloServer(InetSocketAddress address) {
         super(address);
         mParser = initGsonParser();
-
     }
 
     @Override
@@ -96,10 +104,14 @@ public abstract class AdaptiloServer extends WebSocketServer {
         //process each message type
         switch (messageContent.getType()) {
             case REGISTER_ROLE_REQUEST:
+
+                //a role want to join a room
                 final RegisterRoleRequest request = (RegisterRoleRequest) messageContent.getContent();
                 answer = processRoleRegistration(conn, request);
                 break;
             case UNREGISTER_ROLE_REQUEST:
+
+                //a role want to leave a room
                 final UnRegisterRoleRequest unregisterRequest
                         = (UnRegisterRoleRequest) messageContent.getContent();
                 final int closingCode = unregisterRoleInRoom(
@@ -109,6 +121,13 @@ public abstract class AdaptiloServer extends WebSocketServer {
                 );
                 conn.close(closingCode);
                 System.out.println(TAG + " connection closed :" + conn.toString());
+                break;
+            case ROLES_REQUEST:
+
+                //a role request roles' urls for its room
+                List<String> rolesUrl
+                        = onRolesRequested(messageReceived.getGameName());
+                answer = new Message(MessageType.ON_ROLES_RETRIEVED, rolesUrl);
                 break;
             default:
                 answer = onMessageReceived(messageReceived);
