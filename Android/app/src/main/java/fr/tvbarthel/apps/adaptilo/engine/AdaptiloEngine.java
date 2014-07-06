@@ -11,6 +11,8 @@ import org.java_websocket.framing.CloseFrame;
 
 import java.net.URI;
 
+import fr.tvbarthel.apps.adaptilo.fragments.AdaptiloControllerFragment;
+import fr.tvbarthel.apps.adaptilo.fragments.BasicControllerFragment;
 import fr.tvbarthel.apps.adaptilo.helpers.SensorListenerHelper;
 import fr.tvbarthel.apps.adaptilo.helpers.SharedPreferencesHelper;
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
@@ -24,8 +26,6 @@ import fr.tvbarthel.apps.adaptilo.models.io.ClosingError;
 import fr.tvbarthel.apps.adaptilo.models.io.Message;
 import fr.tvbarthel.apps.adaptilo.models.io.RegisterRoleRequest;
 import fr.tvbarthel.apps.adaptilo.network.AdaptiloClient;
-import fr.tvbarthel.apps.adaptilo.fragments.AdaptiloControllerFragment;
-import fr.tvbarthel.apps.adaptilo.fragments.BasicControllerFragment;
 
 /**
  * Adaptilo engine used to handle interaction between the controller and the server
@@ -119,7 +119,8 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
         mAdaptiloClient.send(new Message(MessageType.REGISTER_ROLE_REQUEST, new RegisterRoleRequest(
                 mEngineConfig.getGameName(),
                 mEngineConfig.getGameRoom(),
-                mEngineConfig.getUserRole()
+                mEngineConfig.getUserRole(),
+                mEngineConfig.shouldReplace()
         )));
     }
 
@@ -174,6 +175,9 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
                 break;
             case ClosingError.REGISTRATION_REQUESTED_ROOM_IS_FULL:
                 Log.e(TAG, "Connection closed : " + "REGISTRATION_REQUESTED_ROOM_IS_FULL");
+                break;
+            case ClosingError.DISCONNECTION_DUE_TO_ROLE_REPLACEMENT:
+                Log.e(TAG, "Connection closed : " + "DISCONNECTION_DUE_TO_ROLE_REPLACEMENT");
                 break;
             case CloseFrame.NORMAL:
                 Log.e(TAG, "Connection closed : " + "CloseFrame.NORMAL");

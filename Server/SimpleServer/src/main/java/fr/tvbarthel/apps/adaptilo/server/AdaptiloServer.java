@@ -38,13 +38,14 @@ public abstract class AdaptiloServer extends WebSocketServer {
     /**
      * handle role registration
      *
-     * @param gameName name of the game
-     * @param role     role to register
-     * @param roomId   room id in which role request registration
+     * @param gameName      name of the game
+     * @param role          role to register
+     * @param roomId        room id in which role request registration
+     * @param shouldReplace replacement policy when role is already registered
      * @return should return 0 if registration succeeds, else an
      *         {@link fr.tvbarthel.apps.adaptilo.server.models.io.ClosingError} matching a registration code.
      */
-    protected abstract int registerRoleInRoom(String gameName, Role role, String roomId);
+    protected abstract int registerRoleInRoom(String gameName, Role role, String roomId, boolean shouldReplace);
 
     /**
      * Handle role disconnection.
@@ -86,7 +87,7 @@ public abstract class AdaptiloServer extends WebSocketServer {
         switch (messageContent.getType()) {
             case REGISTER_ROLE_REQUEST:
                 final RegisterRoleRequest request = (RegisterRoleRequest) messageContent.getContent();
-                answer = registerController(conn, request);
+                answer = processRoleRegistration(conn, request);
                 break;
             case UNREGISTER_ROLE_REQUEST:
                 final RegisterRoleRequest unregisterRequest
@@ -164,18 +165,23 @@ public abstract class AdaptiloServer extends WebSocketServer {
     }
 
     /**
-     * process to the registration of a controller
+     * process to the registration of a role
      *
      * @param request registration request from network
      * @return answer which should be send back
      */
-    private Message registerController(WebSocket conn, RegisterRoleRequest request) {
+    private Message processRoleRegistration(WebSocket conn, RegisterRoleRequest request) {
         //generate unique external identifier
         final String givenId = generateExternalId(request.getGameName(), request.getGameRoom(), request.getGameRole());
         final Role roleToRegister = new Role(request.getGameRole(), conn, givenId);
         Message answer = null;
 
-        final int registrationCode = registerRoleInRoom(request.getGameName(), roleToRegister, request.getGameRoom());
+        final int registrationCode = registerRoleInRoom(
+                request.getGameName(),
+                roleToRegister,
+                request.getGameRoom(),
+                request.shouldReplace()
+        );
 
         switch (registrationCode) {
             case 0:

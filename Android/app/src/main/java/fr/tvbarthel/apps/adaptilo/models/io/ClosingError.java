@@ -50,4 +50,8 @@ public final class ClosingError {
      */
     public static final int REGISTRATION_REQUESTED_ROOM_IS_FULL = 2005;
 
+    /**
+     * Closing code used when role as been replaced and send to the replaced user.
+     */
+    public static final int DISCONNECTION_DUE_TO_ROLE_REPLACEMENT = 2006;
 }

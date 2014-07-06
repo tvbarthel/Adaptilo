@@ -96,14 +96,18 @@ public class Room {
         }
 
         //check room size
-        final int remainingSlot = shouldReplace ? mMaxRoles - mRoles.size() - 1 : mMaxRoles - mRoles.size();
+        final int remainingSlot = shouldReplace ? mMaxRoles - mRoles.size() + 1 : mMaxRoles - mRoles.size();
         if (0 >= remainingSlot) {
             return ClosingError.REGISTRATION_REQUESTED_ROOM_IS_FULL;
         }
 
         //delete current registered role if replace is requested
         if (shouldReplace) {
-            mRoles.remove(findRoleByName(role.getName()));
+            final Role roleToRemove = findRoleByName(role.getName());
+            if (roleToRemove != null) {
+                roleToRemove.getConnection().close(ClosingError.DISCONNECTION_DUE_TO_ROLE_REPLACEMENT);
+                mRoles.remove(roleToRemove);
+            }
             System.out.println(TAG + " role " + role.getName() + " replaced in room  " + this.getRoomId() + " extId : " + role.getId());
         } else {
             System.out.println(TAG + " role " + role.getName() + " added in room  " + this.getRoomId() + " extId : " + role.getId());

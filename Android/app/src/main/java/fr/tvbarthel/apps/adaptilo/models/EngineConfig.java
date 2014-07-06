@@ -33,8 +33,15 @@ public class EngineConfig {
      */
     private String mGameName;
 
+    /**
+     * Boolean used to know if role must be replaced is already registered.
+     * Default value is false.
+     */
+    private boolean mShouldReplace;
+
     public String toString() {
-        return "serverUri : " + mServerUri + "| port : " + mServerPort + "| room : " + mGameRoom + "| role : " + mUserRole;
+        return "serverUri : " + mServerUri + "| port : " + mServerPort + "| room : "
+                + mGameRoom + "| role : " + mUserRole + "| replace : " + mShouldReplace;
     }
 
     /**
@@ -79,5 +86,13 @@ public class EngineConfig {
 
     public void setGameName(String mGameName) {
         this.mGameName = mGameName;
+    }
+
+    public boolean shouldReplace() {
+        return mShouldReplace;
+    }
+
+    public void setShouldReplace(boolean shouldReplace) {
+        this.mShouldReplace = shouldReplace;
     }
 }

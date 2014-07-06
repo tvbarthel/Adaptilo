@@ -44,6 +44,11 @@ public final class QrCodeHelper {
     private static final String URI_QUERY_PARAM_ROLE = "role";
 
     /**
+     * Param key to know if role should be replace if already registered.
+     */
+    private static final String URI_QUERY_PARAM_SHOULD_REPLACE = "replace";
+
+    /**
      * Start an activity for scanning a QrCode.
      *
      * @param fragment             the {@link android.support.v4.app.Fragment} calling startActivityForResult.
@@ -88,10 +93,12 @@ public final class QrCodeHelper {
 
         final String room = scannedUri.getQueryParameter(URI_QUERY_PARAM_ROOM);
         final String role = scannedUri.getQueryParameter(URI_QUERY_PARAM_ROLE);
+        final String replace = scannedUri.getQueryParameter(URI_QUERY_PARAM_SHOULD_REPLACE);
         final String scheme = scannedUri.getScheme();
         final int port = scannedUri.getPort();
         final String host = scannedUri.getHost();
         final String gameName = scannedUri.getPath().substring(1);
+        boolean shouldReplace = false;
 
         if (!URI_SCHEME.equals(scheme)) {
             Log.e(TAG, "QrCode uri scheme must correspond to adaptilo");
@@ -123,11 +130,16 @@ public final class QrCodeHelper {
             throw new QrCodeException("fail to decode path");
         }
 
+        if (replace != null && Boolean.valueOf(replace)) {
+            shouldReplace = true;
+        }
+
         config.setServerUri(scannedUri);
         config.setUserRole(role);
         config.setGameRoom(room);
         config.setServerPort(port);
         config.setGameName(gameName);
+        config.setShouldReplace(shouldReplace);
         return config;
     }
 

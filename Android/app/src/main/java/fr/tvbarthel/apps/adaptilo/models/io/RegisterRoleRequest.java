@@ -15,14 +15,18 @@ public class RegisterRoleRequest {
     @SerializedName(MessageDeserializerHelper.NODE_GAME_ROLE)
     private String mGameRole;
 
+    @SerializedName(MessageDeserializerHelper.NODE_SHOULD_REPLACE)
+    private boolean mShouldReplace;
+
     public RegisterRoleRequest() {
 
     }
 
-    public RegisterRoleRequest(String name, String room, String role) {
+    public RegisterRoleRequest(String name, String room, String role, boolean replace) {
         mGameName = name;
         mGameRoom = room;
         mGameRole = role;
+        mShouldReplace = replace;
     }
 
     public String getGameRole() {
@@ -49,5 +53,11 @@ public class RegisterRoleRequest {
         this.mGameName = mGameName;
     }
 
+    public boolean shouldReplace() {
+        return mShouldReplace;
+    }
 
+    public void setShouldReplace(boolean shouldReplace) {
+        this.mShouldReplace = shouldReplace;
+    }
 }

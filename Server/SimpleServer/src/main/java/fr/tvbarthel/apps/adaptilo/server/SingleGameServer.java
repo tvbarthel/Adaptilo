@@ -54,14 +54,14 @@ public class SingleGameServer extends AdaptiloServer {
 
         //TODO only for test purpose, should implement room creation
         //simulate room creation
-        Room virtualRoom = new Room("virtual", 2);
+        Room virtualRoom = new Room("virtual", 1);
         virtualRoom.setAvailableRoles(mAllowedRoles);
         mGameRooms.add(virtualRoom);
     }
 
 
     @Override
-    protected int registerRoleInRoom(String gameName, Role role, String roomId) {
+    protected int registerRoleInRoom(String gameName, Role role, String roomId, boolean replace) {
         Room requestedRoom = null;
 
         if (!mGameName.equals(gameName)) {
@@ -96,9 +96,7 @@ public class SingleGameServer extends AdaptiloServer {
             return ClosingError.REGISTRATION_REQUESTED_ROOM_UNKNOW;
         }
 
-        //TODO hard coded replace value, only for test purpose
-        //TODO use replacement behavior from role definition for the given game.
-        int registeringCode = requestedRoom.registerRole(role, false);
+        int registeringCode = requestedRoom.registerRole(role, replace);
 
         if (registeringCode == 0) {
             //registration succeed, broadcast an event to the roles registered in the same room.

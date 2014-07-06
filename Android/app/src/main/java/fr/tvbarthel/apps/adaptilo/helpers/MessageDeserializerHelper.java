@@ -52,6 +52,11 @@ public class MessageDeserializerHelper implements JsonDeserializer<Message> {
      */
     public static final String NODE_GAME_ROLE = "gameRole";
 
+    /**
+     * json node key for replacement policy
+     */
+    public static final String NODE_SHOULD_REPLACE = "replace";
+
     @Override
     public Message deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 
