@@ -26,7 +26,7 @@
                                 <label for="hostIp">Host Ip</label>
                             </td>
                             <td>
-                                <input id="server_ip" name="server_ip" value="">
+                                <input id="server_ip" name="server_ip" value="192.168.1.6">
                             </td>
                         </tr>
                         <tr>
@@ -34,19 +34,36 @@
                                 <label for="port">Port</label>
                             </td>
                             <td>
-                                <input id="server_port" name="server_port" value="">
+                                <input id="server_port" name="server_port" value="8887">
                             </td>
                         </tr>
                     </table> 
                 </div>
                 
-                <button type="button" class="card_button">Connection</button>            
+                <button id="connection_button" type="button" class="card_button">Connection</button>            
                 
             </div>
         </div>
     
         <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
         <script src="js/main.js"></script>
+        
+        <script type="text/javascript">
+            $(function() {
+                // the DOM is now fully loaded.                
+                var platformConfiguration = Adaptilo.defaultConfiguration.create();                
+                var platform = new Adaptilo.platform();
+                
+                $("#connection_button").bind("click", function() {
+                    var server_ip = $("#server_ip").val();
+                    var server_port = $("#server_port").val();
+                    platformConfiguration.server_ip = server_ip;
+                    platformConfiguration.server_port = server_port;
+                    platform.setConfiguration(platformConfiguration);
+                    platform.connect();
+                });
+            });            
+        </script>
     </boby>
     
 </html>
