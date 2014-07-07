@@ -15,7 +15,7 @@ import fr.tvbarthel.apps.adaptilo.exceptions.QrCodeException;
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
 import fr.tvbarthel.apps.adaptilo.models.UserEvent;
 import fr.tvbarthel.apps.adaptilo.models.enums.EventType;
-import fr.tvbarthel.apps.adaptilo.models.io.ClosingError;
+import fr.tvbarthel.apps.adaptilo.models.io.ClosingCode;
 import fr.tvbarthel.apps.adaptilo.models.io.Message;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
@@ -118,13 +118,13 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     @Override
     protected void onConnectionClosed(int reason) {
         switch (reason) {
-            case ClosingError.REGISTRATION_REQUESTED_ROOM_IS_FULL:
+            case ClosingCode.REGISTRATION_REQUESTED_ROOM_IS_FULL:
                 showOnScreenMessage(R.string.basic_controller_room_full);
                 break;
-            case ClosingError.DISCONNECTION_DUE_TO_ROLE_REPLACEMENT:
+            case ClosingCode.DISCONNECTION_DUE_TO_ROLE_REPLACEMENT:
                 showOnScreenMessage(R.string.basic_controller_message_disconnected);
                 break;
-            case ClosingError.REGISTRATION_REQUESTED_ROOM_UNKNOW:
+            case ClosingCode.REGISTRATION_REQUESTED_ROOM_UNKNOW:
                 showOnScreenMessage(R.string.basic_controller_room_unknown);
                 break;
         }

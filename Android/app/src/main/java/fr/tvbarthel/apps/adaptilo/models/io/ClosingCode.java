@@ -1,22 +1,22 @@
-package fr.tvbarthel.apps.adaptilo.server.models.io;
+package fr.tvbarthel.apps.adaptilo.models.io;
 
 /**
- * Fine here all closing error code.
+ * Fine here all closing code.
  * <p/>
- * We could used an enum, but since closing error are send through the network we wanted to reduce
+ * We could used an enum, but since closing code are send through the network we wanted to reduce
  * packet size in order to improve performances and to avoid consuming device network data.
  * <p/>
- * Be careful to not use any reserved code define in {@link org.java_websocket.framing.CloseFrame}
+ * Be carefull to not use any reserved code define in {@link org.java_websocket.framing.CloseFrame}
  * <p/>
  * Code must match following conditions : 1000 < error code < 4999
  * {@link org.java_websocket.framing.CloseFrameBuilder#initCloseCode()}
  */
-public final class ClosingError {
+public final class ClosingCode {
 
     /**
      * non instantiable class
      */
-    private ClosingError() {
+    private ClosingCode() {
 
     }
 
@@ -54,6 +54,4 @@ public final class ClosingError {
      * Closing code used when role as been replaced and send to the replaced user.
      */
     public static final int DISCONNECTION_DUE_TO_ROLE_REPLACEMENT = 2006;
-
-
 }

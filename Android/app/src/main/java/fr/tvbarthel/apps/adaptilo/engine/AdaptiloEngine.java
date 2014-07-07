@@ -22,7 +22,7 @@ import fr.tvbarthel.apps.adaptilo.models.UserEvent;
 import fr.tvbarthel.apps.adaptilo.models.enums.EventAction;
 import fr.tvbarthel.apps.adaptilo.models.enums.EventType;
 import fr.tvbarthel.apps.adaptilo.models.enums.MessageType;
-import fr.tvbarthel.apps.adaptilo.models.io.ClosingError;
+import fr.tvbarthel.apps.adaptilo.models.io.ClosingCode;
 import fr.tvbarthel.apps.adaptilo.models.io.Message;
 import fr.tvbarthel.apps.adaptilo.models.io.RegisterRoleRequest;
 import fr.tvbarthel.apps.adaptilo.models.io.UnRegisterRoleRequest;
@@ -163,22 +163,22 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
     public void onClose(int code) {
         mReadyToCommunicate = false;
         switch (code) {
-            case ClosingError.REGISTRATION_REQUESTED_GAME_NAME_UNKNOWN:
+            case ClosingCode.REGISTRATION_REQUESTED_GAME_NAME_UNKNOWN:
                 Log.e(TAG, "Connection closed : " + "REGISTRATION_REQUESTED_GAME_NAME_UNKNOWN");
                 break;
-            case ClosingError.REGISTRATION_NO_ROOM_CREATED:
+            case ClosingCode.REGISTRATION_NO_ROOM_CREATED:
                 Log.e(TAG, "Connection closed : " + "REGISTRATION_NO_ROOM_CREATED");
                 break;
-            case ClosingError.REGISTRATION_REQUESTED_ROOM_UNKNOW:
+            case ClosingCode.REGISTRATION_REQUESTED_ROOM_UNKNOW:
                 Log.e(TAG, "Connection closed : " + "REGISTRATION_REQUESTED_ROOM_UNKNOW");
                 break;
-            case ClosingError.REGISTRATION_REQUESTED_ROLE_UNKNOWN:
+            case ClosingCode.REGISTRATION_REQUESTED_ROLE_UNKNOWN:
                 Log.e(TAG, "Connection closed : " + "REGISTRATION_REQUESTED_ROLE_UNKNOWN");
                 break;
-            case ClosingError.REGISTRATION_REQUESTED_ROOM_IS_FULL:
+            case ClosingCode.REGISTRATION_REQUESTED_ROOM_IS_FULL:
                 Log.e(TAG, "Connection closed : " + "REGISTRATION_REQUESTED_ROOM_IS_FULL");
                 break;
-            case ClosingError.DISCONNECTION_DUE_TO_ROLE_REPLACEMENT:
+            case ClosingCode.DISCONNECTION_DUE_TO_ROLE_REPLACEMENT:
                 Log.e(TAG, "Connection closed : " + "DISCONNECTION_DUE_TO_ROLE_REPLACEMENT");
                 break;
             case CloseFrame.NORMAL:
@@ -502,7 +502,7 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
          * Called when the connection is closed by the remote server.
          *
          * @param closeCode code which identify the closing reason
-         *                  {@link fr.tvbarthel.apps.adaptilo.models.io.ClosingError}
+         *                  {@link fr.tvbarthel.apps.adaptilo.models.io.ClosingCode}
          */
         public void onConnectionClosed(int closeCode);
 
