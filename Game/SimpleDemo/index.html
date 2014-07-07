@@ -50,23 +50,8 @@
         
         <script type="text/javascript">
             $(function() {
-                // the DOM is now fully loaded.
-                
-                var platformConfiguration = {
-                    onSocketOpen        :   function(event) {
-                        console.log("[Web Socket] onSocketOpen -> " + event);
-                    },
-                    onSocketClose       :   function(event) {
-                        console.log("[Web Socket] onSocketClose -> " + event);
-                    },
-                    onSocketMessage     :   function(event) {
-                        console.log("[Web Socket] onSocketMessage -> " + event);
-                    },
-                    onSocketError       :   function(event) {
-                        console.log("[Web Socket] onSocketError -> " + event);
-                    }
-                };
-                
+                // the DOM is now fully loaded.                
+                var platformConfiguration = Adaptilo.defaultConfiguration.create();                
                 var platform = new Adaptilo.platform();
                 
                 $("#connection_button").bind("click", function() {
