@@ -12,8 +12,21 @@
  *  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
  *  <script src="js/main.js"></script>
  *   
- *  Create your own configuration or use Adaptilo.defaultConfiguration;
+ *  Create your own configuration
  *  var myConfiguration = Adaptilo.defaultConfiguration.create();
+ *
+ *  You can customize :
+ *
+ *          myConfiguration.serverIp -> the ip of the server.
+ *          myConfiguration.serverPort -> the port of the server.
+ *          myConfiguration.gameName -> the name of the game.
+ *          myConfiguration.gameRole -> the role to use.
+ *          myConfiguration.gameRoom -> the name of the room to join.
+ *          myConfiguration.createRoom -> true if the room should be created if it does not exist, false otherwise.
+ *          myConfiguration.replaceRoom -> true if the room should be replaces if it already exists, false otherwise.
+ *          myConfiguration.onConnected -> a function that is called when the platform is connected. This function takes no parameter.
+ *          myConfiguration.onMessege -> a function that is called when the platform receives a message. This function takes one parameter : the message received.
+ *          myConfiguration.onError -> a function that is called when the platform experiences an error. This function takes one parameter : the error that occurred. 
  *
  *  Instantiate a new platform.
  *  var myPlatform = Adaptilo.platform(myConfiguration);
