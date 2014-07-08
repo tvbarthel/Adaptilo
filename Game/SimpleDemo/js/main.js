@@ -12,10 +12,10 @@
  *  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
  *  <script src="js/main.js"></script>
  *   
- *  Create your own configuration
- *  var myConfiguration = Adaptilo.defaultConfiguration.create();
+ *  Create a default configuration
+ *  var myConfiguration = Adaptilo.Configuration.createDefault();
  *
- *  You can customize :
+ *  Customize your configuration. You can modify :
  *
  *          myConfiguration.serverIp -> the ip of the server.
  *          myConfiguration.serverPort -> the port of the server.
@@ -38,9 +38,9 @@
 
 var Adaptilo = Adaptilo || {};
 
-Adaptilo.DefaultConfiguration = (function() {
+Adaptilo.Configuration = (function() {
     "use strict";
-    return { create : function() {
+    return { createDefault : function() {
         return {
             serverIp            :   "192.168.0.1",
             serverPort          :   "8080",

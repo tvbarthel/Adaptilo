@@ -51,7 +51,7 @@
         <script type="text/javascript">
             $(function() {
                 // the DOM is now fully loaded.                
-                var platformConfiguration = Adaptilo.DefaultConfiguration.create();                
+                var platformConfiguration = Adaptilo.Configuration.createDefault();                
                 var platform = new Adaptilo.Platform();
                 
                 $("#connection_button").bind("click", function() {
