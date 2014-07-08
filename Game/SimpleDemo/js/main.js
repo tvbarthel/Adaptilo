@@ -36,12 +36,15 @@ Adaptilo.DefaultConfiguration = (function() {
             gameRoom            :   "defaultRoom",
             createRoom          :   true,
             replaceRoom         :   true,
-            onMessage     :   function(event) {
-                console.log("[Web Socket] onSocketMessage");
+            onConnected         :   function() {
+                console.log("onConnected");
+            },
+            onMessage           :   function(event) {
+                console.log("onMessage");
                 console.log(event);                
             },
-            onError       :   function(event) {
-                console.log("[Web Socket] onSocketError");
+            onError             :   function(event) {
+                console.log("onError");
                 console.log(event);                
             }        
         }
@@ -87,7 +90,15 @@ Adaptilo.Platform = (function() {
             };
             
             // Setup the onmessage behavior
-            mWebSocket.onmessage = this.platformConfiguration.onMessage;
+            mWebSocket.onmessage = function(event) {
+                var message = JSON.parse(event.data);
+                if (message.type === Adaptilo.Message.Type.CONNECTION_COMPLETED) {
+                    that.externalId = message.content;
+                    that.platformConfiguration.onConnected();
+                } else {
+                    that.platformConfiguration.onMessage(message);
+                }                
+            };
             
             // Setup the onerror behavior
             mWebSocket.onerror   = this.platformConfiguration.onError;
@@ -97,8 +108,8 @@ Adaptilo.Platform = (function() {
             this.platformConfiguration = $.extend(true, {}, platformConfiguration);
         },
         
-        sendMessage : function(message) {
-            var serverRequest = new Adaptilo.ServerRequest("invalidExternalId", message);            
+        sendMessage : function(message) {        
+            var serverRequest = new Adaptilo.ServerRequest(this.externalId, message);            
             mWebSocket.send(JSON.stringify(serverRequest));
         }
     };
@@ -133,5 +144,6 @@ Adaptilo.Message = (function() {
 Adaptilo.Message.Type = (function() {
     return {
         REGISTER_ROLE_REQUEST   :   "REGISTER_ROLE_REQUEST",
+        CONNECTION_COMPLETED    :   "CONNECTION_COMPLETED",
     }
 })();
