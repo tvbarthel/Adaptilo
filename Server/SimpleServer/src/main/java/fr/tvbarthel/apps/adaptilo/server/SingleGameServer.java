@@ -6,11 +6,11 @@ import fr.tvbarthel.apps.adaptilo.server.models.Room;
 import fr.tvbarthel.apps.adaptilo.server.models.enums.MessageType;
 import fr.tvbarthel.apps.adaptilo.server.models.io.ClosingCode;
 import fr.tvbarthel.apps.adaptilo.server.models.io.Message;
-import fr.tvbarthel.apps.adaptilo.server.models.io.ServerRequest;
 import org.java_websocket.framing.CloseFrame;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -34,9 +34,20 @@ public class SingleGameServer extends AdaptiloServer {
     private int mMaxRoles;
 
     /**
-     * game rooms
+     * Game rooms.
      */
     private List<Room> mGameRooms;
+
+    /**
+     * Hash map used to quickly retrieve room from external id.
+     */
+    private HashMap<String, Room> mRoomsHashMap;
+
+    /**
+     * Hash map used to quickly retrieve role from external id.
+     */
+    private HashMap<String, Role> mRolesHashMap;
+
 
     /**
      * roles allowed
@@ -64,6 +75,8 @@ public class SingleGameServer extends AdaptiloServer {
         }
 
         mGameRooms = new ArrayList<Room>();
+        mRoomsHashMap = new HashMap<String, Room>();
+        mRolesHashMap = new HashMap<String, Role>();
 
         //TODO only for test purpose, should implement room creation
         //simulate room creation
@@ -72,13 +85,14 @@ public class SingleGameServer extends AdaptiloServer {
         mGameRooms.add(virtualRoom);
     }
 
+
     @Override
-    protected int registerRoleInRoom(String gameName, Role role, String roomId, boolean replace, boolean create) {
+    protected int registerRole(String extId, String gameId, String roomId, Role role, boolean shouldReplace, boolean shouldCreate) {
         Room requestedRoom = null;
 
-        if (!mGameName.equals(gameName)) {
+        if (!mGameName.equals(gameId)) {
             //current game name doesn't match requested one
-            System.out.println(TAG + " current game name " + mGameName + " doesn't match requested one : " + gameName);
+            System.out.println(TAG + " current game name " + mGameName + " doesn't match requested one : " + gameId);
             return ClosingCode.REGISTRATION_REQUESTED_GAME_NAME_UNKNOWN;
         }
 
@@ -114,7 +128,7 @@ public class SingleGameServer extends AdaptiloServer {
             System.out.println(TAG + " Room with id : " + roomId + " doesn't exist.");
 
             //check if creation is requested
-            if (create) {
+            if (shouldCreate) {
 
                 //check if role is allowed to create room
                 if (roleAllowed.canCreateRoom()) {
@@ -138,10 +152,16 @@ public class SingleGameServer extends AdaptiloServer {
             }
         }
 
-        int registeringCode = requestedRoom.registerRole(role, roleAllowed, replace);
+        int registeringCode = requestedRoom.registerRole(role, roleAllowed, shouldReplace);
 
         if (registeringCode == 0) {
-            //registration succeed, broadcast an event to the roles registered in the same room.
+            //registration in room succeed
+
+            //add reference in HashMap for quick access
+            mRoomsHashMap.put(extId, requestedRoom);
+            mRolesHashMap.put(extId, role);
+
+            //broadcast an event to the roles registered in the same room.
             broadcastMessage(
                     requestedRoom,
                     role,
@@ -152,21 +172,25 @@ public class SingleGameServer extends AdaptiloServer {
     }
 
     @Override
-    protected int unregisterRoleInRoom(String gameName, String externalId, String roomId) {
-        Room controllerRoom = null;
+    protected int unregisterRole(String externalId) {
 
-        for (Room room : mGameRooms) {
-            if (room.getRoomId().equals(roomId)) {
-                //current controller room found
-                controllerRoom = room;
-                break;
+        //quickly retrieve matching Room and matching Role
+        Room controllerRoom = mRoomsHashMap.get(externalId);
+        Role controllerRole = mRolesHashMap.get(externalId);
+
+
+        if (controllerRoom != null && controllerRole != null) {
+            final boolean removed = controllerRoom.unregisterRole(controllerRole);
+
+            if (removed) {
+                //role instance well removed from its room
+
+                //removed reference in quick access HashMap
+                mRoomsHashMap.remove(externalId);
+                mRolesHashMap.remove(externalId);
             }
-        }
 
-        if (controllerRoom != null) {
-            final Role controllerRole = controllerRoom.unregisterRole(externalId);
-
-            //broadcast the role of the unregistered controller
+            //broadcast role disconnection
             broadcastMessage(
                     controllerRoom,
                     controllerRole,
@@ -177,31 +201,31 @@ public class SingleGameServer extends AdaptiloServer {
     }
 
     @Override
-    protected Message onMessageReceived(ServerRequest message) {
-        //broadcast all messages in sender room.
-        final String senderRoomId = message.getRoom();
-        final String senderExtId = message.getExternalId();
+    protected Message onMessageReceived(String externalId, Message message) {
 
-        //find sender room
-        Room room = findRoomById(senderRoomId);
+        //quickly retrieve matching role and matching room
+        Room senderRoom = mRoomsHashMap.get(externalId);
+        Role senderRole = mRolesHashMap.get(externalId);
 
-        if (room != null) {
-            Role role = room.findRoleById(senderExtId);
-            if (role != null) {
-                broadcastMessage(room, role, message.getMessage());
-            }
+
+        //simple broadcast all message to the whole sender's room
+        if (senderRoom != null && senderRole != null) {
+            broadcastMessage(senderRoom, senderRole, message);
         }
 
         return null;  //by default no answer are send back to the sender
     }
 
+
     @Override
-    protected List<String> onRolesRequested(String game) {
+    protected List<String> onRolesRequested(String extId) {
         List<String> roles = new ArrayList<String>();
 
+        //single game server has only one RoleConfigurationList
         for (RoleConfiguration roleConfig : mAllowedRoles) {
             roles.add(roleConfig.getName());
         }
+
         return roles;
     }
 

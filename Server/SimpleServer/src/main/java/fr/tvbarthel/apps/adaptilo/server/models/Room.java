@@ -140,18 +140,18 @@ public class Room {
     /**
      * Unregister a role with a given externalId.
      *
-     * @param externalId external id used to identify each role
+     * @param roleToRemove role to remove from the room
      * @return unregistered role or null if not found.
      */
-    public Role unregisterRole(String externalId) {
-        Role unregisteredRole = findRoleById(externalId);
+    public boolean unregisterRole(Role roleToRemove) {
 
-        if (unregisteredRole != null) {
-            mRoles.remove(unregisteredRole);
-            System.out.println(TAG + " role : " + unregisteredRole.getName() + " | removed in room  : " + this.getRoomId() + " | extId : " + unregisteredRole.getId());
+        final boolean removed = mRoles.remove(roleToRemove);
+
+        if (removed) {
+            System.out.println(TAG + " role : " + roleToRemove.getName() + " | removed in room  : " + this.getRoomId() + " | extId : " + roleToRemove.getId());
         }
 
-        return unregisteredRole;
+        return removed;
     }
 
     /**
