@@ -51,14 +51,19 @@
         <script type="text/javascript">
             $(function() {
                 // the DOM is now fully loaded.                
-                var platformConfiguration = Adaptilo.defaultConfiguration.create();                
-                var platform = new Adaptilo.platform();
+                var platformConfiguration = Adaptilo.Configuration.createDefault();                
+                var platform = new Adaptilo.Platform();
                 
                 $("#connection_button").bind("click", function() {
-                    var server_ip = $("#server_ip").val();
-                    var server_port = $("#server_port").val();
-                    platformConfiguration.server_ip = server_ip;
-                    platformConfiguration.server_port = server_port;
+                    // Get the server ip given by the user
+                    platformConfiguration.serverIp = $("#server_ip").val()
+                    // Get the server port given by the user
+                    platformConfiguration.serverPort = $("#server_port").val();
+                    // Set the game name used by the server
+                    platformConfiguration.gameName = "testGame";
+                    // Generate a room name
+                    platformConfiguration.roomName = "testRoom" + new Date().getTime();
+                    // Use the configuration for the connection
                     platform.setConfiguration(platformConfiguration);
                     platform.connect();
                 });

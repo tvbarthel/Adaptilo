@@ -12,8 +12,21 @@
  *  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
  *  <script src="js/main.js"></script>
  *   
- *  Create your own configuration or use Adaptilo.defaultConfiguration;
- *  var myConfiguration = Adaptilo.defaultConfiguration.create();
+ *  Create a default configuration
+ *  var myConfiguration = Adaptilo.Configuration.createDefault();
+ *
+ *  Customize your configuration. You can modify :
+ *
+ *          myConfiguration.serverIp -> the ip of the server.
+ *          myConfiguration.serverPort -> the port of the server.
+ *          myConfiguration.gameName -> the name of the game.
+ *          myConfiguration.gameRole -> the role to use.
+ *          myConfiguration.gameRoom -> the name of the room to join.
+ *          myConfiguration.createRoom -> true if the room should be created if it does not exist, false otherwise.
+ *          myConfiguration.replaceRoom -> true if the room should be replaces if it already exists, false otherwise.
+ *          myConfiguration.onConnected -> a function that is called when the platform is connected. This function takes no parameter.
+ *          myConfiguration.onMessege -> a function that is called when the platform receives a message. This function takes one parameter : the message received.
+ *          myConfiguration.onError -> a function that is called when the platform experiences an error. This function takes one parameter : the error that occurred. 
  *
  *  Instantiate a new platform.
  *  var myPlatform = Adaptilo.platform(myConfiguration);
@@ -25,29 +38,33 @@
 
 var Adaptilo = Adaptilo || {};
 
-Adaptilo.defaultConfiguration = (function() {
+Adaptilo.Configuration = (function() {
     "use strict";
-    return { create : function() {
+    return { createDefault : function() {
         return {
-            server_ip           :   "192.168.0.1",
-            server_port         :   "8080",
-            onSocketOpen        :   function(event) {
-                console.log("[Web Socket] onSocketOpen -> " + event);
+            serverIp            :   "192.168.0.1",
+            serverPort          :   "8080",
+            gameName            :   "defaultGameName",
+            gameRole            :   "field",
+            gameRoom            :   "defaultRoom",
+            createRoom          :   true,
+            replaceRoom         :   true,
+            onConnected         :   function() {
+                console.log("onConnected");
             },
-            onSocketClose       :   function(event) {
-                console.log("[Web Socket] onSocketClose -> " + event);
+            onMessage           :   function(event) {
+                console.log("onMessage");
+                console.log(event);                
             },
-            onSocketMessage     :   function(event) {
-                console.log("[Web Socket] onSocketMessage -> " + event);
-            },
-            onSocketError       :   function(event) {
-                console.log("[Web Socket] onSocketError -> " + event);
+            onError             :   function(event) {
+                console.log("onError");
+                console.log(event);                
             }        
         }
     }};
 })();
 
-Adaptilo.platform = (function() {
+Adaptilo.Platform = (function() {
     "use strict";
     
     //  private attributs
@@ -61,17 +78,85 @@ Adaptilo.platform = (function() {
     // Public API
     AdaptiloPlatform.prototype = {
         connect :   function() {
-            mWebSocket = new WebSocket('ws://'+this.platformConfiguration.server_ip+':'+this.platformConfiguration.server_port);
-            mWebSocket.onopen    = this.platformConfiguration.onSocketOpen;
-            mWebSocket.onclose   = this.platformConfiguration.onSocketClose;
-            mWebSocket.onmessage = this.platformConfiguration.onSocketMessage;
-            mWebSocket.onerror   = this.platformConfiguration.onSocketError;
+            var that = this;
+            mWebSocket = new WebSocket('ws://'+this.platformConfiguration.serverIp+':'+this.platformConfiguration.serverPort);
+            
+            // Setup the onopen behavior
+            mWebSocket.onopen    = function() {
+                // The web socket is now openned
+                // Send a registration request as field
+                var registerRoleMessage = new Adaptilo.Message(Adaptilo.Message.Type.REGISTER_ROLE_REQUEST, 
+                    {
+                        gameName : that.platformConfiguration.gameName,
+                        gameRole : that.platformConfiguration.gameRole,
+                        gameRoom : that.platformConfiguration.gameRoom,
+                        create   : that.platformConfiguration.createRoom,
+                        replace  : that.platformConfiguration.replaceRoom,
+                });                
+                that.sendMessage(registerRoleMessage);
+            };
+            
+            // Setup the onclose behavior
+            mWebSocket.onclose   = function(event) {
+                console.log("[Web Socket] onclose");
+                console.log(event); 
+            };
+            
+            // Setup the onmessage behavior
+            mWebSocket.onmessage = function(event) {
+                var message = JSON.parse(event.data);
+                if (message.type === Adaptilo.Message.Type.CONNECTION_COMPLETED) {
+                    that.externalId = message.content;
+                    that.platformConfiguration.onConnected();
+                } else {
+                    that.platformConfiguration.onMessage(message);
+                }                
+            };
+            
+            // Setup the onerror behavior
+            mWebSocket.onerror   = this.platformConfiguration.onError;
         },
         
         setConfiguration : function(platformConfiguration) {
             this.platformConfiguration = $.extend(true, {}, platformConfiguration);
+        },
+        
+        sendMessage : function(message) {        
+            var serverRequest = new Adaptilo.ServerRequest(this.externalId, message);            
+            mWebSocket.send(JSON.stringify(serverRequest));
         }
     };
 
     return AdaptiloPlatform;    
+})();
+
+Adaptilo.ServerRequest = (function() {
+    "use strict";
+    
+    // Constructor
+    var ServerRequest = function(externalId, message) {
+        this.externalId = externalId;
+        this.message = message;
+    };
+    
+    return ServerRequest;
+})();
+
+Adaptilo.Message = (function() {
+    "use strict";   
+    
+    // Constructor
+    var Message = function(type, content) {
+        this.type = type;
+        this.content = content;
+    };   
+    
+    return Message;    
+})();
+
+Adaptilo.Message.Type = (function() {
+    return {
+        REGISTER_ROLE_REQUEST   :   "REGISTER_ROLE_REQUEST",
+        CONNECTION_COMPLETED    :   "CONNECTION_COMPLETED",
+    }
 })();
