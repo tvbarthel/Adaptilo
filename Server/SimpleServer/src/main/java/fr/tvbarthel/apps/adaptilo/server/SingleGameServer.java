@@ -4,7 +4,7 @@ import fr.tvbarthel.apps.adaptilo.server.models.Role;
 import fr.tvbarthel.apps.adaptilo.server.models.RoleConfiguration;
 import fr.tvbarthel.apps.adaptilo.server.models.Room;
 import fr.tvbarthel.apps.adaptilo.server.models.enums.MessageType;
-import fr.tvbarthel.apps.adaptilo.server.models.io.ClosingError;
+import fr.tvbarthel.apps.adaptilo.server.models.io.ClosingCode;
 import fr.tvbarthel.apps.adaptilo.server.models.io.Message;
 import fr.tvbarthel.apps.adaptilo.server.models.io.ServerRequest;
 import org.java_websocket.framing.CloseFrame;
@@ -79,13 +79,13 @@ public class SingleGameServer extends AdaptiloServer {
         if (!mGameName.equals(gameName)) {
             //current game name doesn't match requested one
             System.out.println(TAG + " current game name " + mGameName + " doesn't match requested one : " + gameName);
-            return ClosingError.REGISTRATION_REQUESTED_GAME_NAME_UNKNOWN;
+            return ClosingCode.REGISTRATION_REQUESTED_GAME_NAME_UNKNOWN;
         }
 
         if (mGameRooms.isEmpty()) {
             //create room first
             System.out.println(TAG + " No created rooms for this game, need to create one first.");
-            return ClosingError.REGISTRATION_NO_ROOM_CREATED;
+            return ClosingCode.REGISTRATION_NO_ROOM_CREATED;
         }
 
         RoleConfiguration roleAllowed = null;
@@ -98,7 +98,7 @@ public class SingleGameServer extends AdaptiloServer {
         if (roleAllowed == null) {
             //role not allowed for this game
             System.out.println(TAG + " Role : " + role.getName() + " doesn't allowed in this game.");
-            return ClosingError.REGISTRATION_REQUESTED_ROLE_UNKNOWN;
+            return ClosingCode.REGISTRATION_REQUESTED_ROLE_UNKNOWN;
         }
 
         for (Room room : mGameRooms) {
@@ -129,12 +129,12 @@ public class SingleGameServer extends AdaptiloServer {
 
                     //creation requested but not allowed for the given role
                     System.out.println(TAG + " Role : " + role.getName() + " not allowed to create a room.");
-                    return ClosingError.REGISTRATION_REQUESTED_ROOM_UNKNOW;
+                    return ClosingCode.REGISTRATION_REQUESTED_ROOM_UNKNOW;
                 }
             } else {
 
                 //room doesn't exist and creation policy to false
-                return ClosingError.REGISTRATION_REQUESTED_ROOM_UNKNOW;
+                return ClosingCode.REGISTRATION_REQUESTED_ROOM_UNKNOW;
             }
         }
 

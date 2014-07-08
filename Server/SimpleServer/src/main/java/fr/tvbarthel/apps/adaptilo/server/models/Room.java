@@ -1,6 +1,6 @@
 package fr.tvbarthel.apps.adaptilo.server.models;
 
-import fr.tvbarthel.apps.adaptilo.server.models.io.ClosingError;
+import fr.tvbarthel.apps.adaptilo.server.models.io.ClosingCode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +86,7 @@ public class Room {
      * @param roleConfiguration role configuration
      * @param shouldReplace     true if replacement is requested, set false if many client can play the same role
      * @return 0 if registration succeed or an
-     *         {@link fr.tvbarthel.apps.adaptilo.server.models.io.ClosingError}
+     *         {@link fr.tvbarthel.apps.adaptilo.server.models.io.ClosingCode}
      */
     public int registerRole(Role role, RoleConfiguration roleConfiguration, boolean shouldReplace) {
 
@@ -96,7 +96,7 @@ public class Room {
         if (!mAvailableRoles.isEmpty()) {
             //check if given role is allowed
             if (!mAvailableRoles.contains(roleConfiguration)) {
-                return ClosingError.REGISTRATION_REQUESTED_ROLE_UNKNOWN;
+                return ClosingCode.REGISTRATION_REQUESTED_ROLE_UNKNOWN;
             }
         }
 
@@ -118,14 +118,14 @@ public class Room {
 
         //check remaining slot
         if (0 >= remainingSlot) {
-            return ClosingError.REGISTRATION_REQUESTED_ROOM_IS_FULL;
+            return ClosingCode.REGISTRATION_REQUESTED_ROOM_IS_FULL;
         }
 
         //delete current registered role if replacement is requested and allowed for the given role
         if (shouldReplace) {
             final Role roleToRemove = findRoleByName(role.getName());
             if (roleToRemove != null) {
-                roleToRemove.getConnection().close(ClosingError.DISCONNECTION_DUE_TO_ROLE_REPLACEMENT);
+                roleToRemove.getConnection().close(ClosingCode.DISCONNECTION_DUE_TO_ROLE_REPLACEMENT);
                 mRoles.remove(roleToRemove);
             }
             System.out.println(TAG + " role " + role.getName() + " replaced in room  " + this.getRoomId() + " extId : " + role.getId());

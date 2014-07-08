@@ -46,7 +46,7 @@ public abstract class AdaptiloServer extends WebSocketServer {
      * @param shouldReplace replacement policy when role is already registered
      * @param shouldCreate  creation  policy when room doesn't exist
      * @return should return 0 if registration succeeds, else an
-     *         {@link fr.tvbarthel.apps.adaptilo.server.models.io.ClosingError} matching a registration code.
+     *         {@link fr.tvbarthel.apps.adaptilo.server.models.io.ClosingCode} matching a registration code.
      */
     protected abstract int registerRoleInRoom(String gameName, Role role, String roomId, boolean shouldReplace, boolean shouldCreate);
 
