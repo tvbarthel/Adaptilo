@@ -40,41 +40,41 @@ public abstract class AdaptiloServer extends WebSocketServer {
     /**
      * handle role registration
      *
-     * @param gameName      name of the game
-     * @param role          role to register
+     * @param externalId    unique external id used to identify the role instance.
+     * @param gameId        id of the game
      * @param roomId        room id in which role request registration
+     * @param role          the role instance to register
      * @param shouldReplace replacement policy when role is already registered
      * @param shouldCreate  creation  policy when room doesn't exist
      * @return should return 0 if registration succeeds, else an
      *         {@link fr.tvbarthel.apps.adaptilo.server.models.io.ClosingCode} matching a registration code.
      */
-    protected abstract int registerRoleInRoom(String gameName, Role role, String roomId, boolean shouldReplace, boolean shouldCreate);
+    protected abstract int registerRole(String externalId, String gameId, String roomId, Role role, boolean shouldReplace, boolean shouldCreate);
 
     /**
      * Handle role disconnection.
      *
-     * @param gameName   name of the game
      * @param externalId role id given during the registration process
-     * @param roomId     id of the room in which the given controller is playing
      * @return closing code send back to the controller through onClose
      */
-    protected abstract int unregisterRoleInRoom(String gameName, String externalId, String roomId);
+    protected abstract int unregisterRole(String externalId);
 
     /**
      * Let server implementation decide how to proceed message which aren't handled by default.
      *
-     * @param message message received.
+     * @param externalId sender external id
+     * @param message    message received.
      * @return message for the sender or null if no answer should be send back
      */
-    protected abstract Message onMessageReceived(ServerRequest message);
+    protected abstract Message onMessageReceived(String externalId, Message message);
 
     /**
      * A client request role names. Basically asked by the game field to display QrCodes.
      *
-     * @param game requester game
+     * @param extId requester external id
      * @return map of role : url
      */
-    protected abstract List<String> onRolesRequested(String game);
+    protected abstract List<String> onRolesRequested(String extId);
 
     public AdaptiloServer(InetSocketAddress address) {
         super(address);
@@ -114,11 +114,7 @@ public abstract class AdaptiloServer extends WebSocketServer {
                 //a role want to leave a room
                 final UnRegisterRoleRequest unregisterRequest
                         = (UnRegisterRoleRequest) messageContent.getContent();
-                final int closingCode = unregisterRoleInRoom(
-                        unregisterRequest.getGameName(),
-                        connectionId,
-                        unregisterRequest.getGameRoom()
-                );
+                final int closingCode = unregisterRole(connectionId);
                 conn.close(closingCode);
                 System.out.println(TAG + " connection closed :" + conn.toString());
                 break;
@@ -126,11 +122,11 @@ public abstract class AdaptiloServer extends WebSocketServer {
 
                 //a role request roles' urls for its room
                 List<String> rolesUrl
-                        = onRolesRequested(messageReceived.getGameName());
+                        = onRolesRequested(messageReceived.getExternalId());
                 answer = new Message(MessageType.ON_ROLES_RETRIEVED, rolesUrl);
                 break;
             default:
-                answer = onMessageReceived(messageReceived);
+                answer = onMessageReceived(connectionId, messageContent);
                 break;
         }
 
@@ -208,10 +204,11 @@ public abstract class AdaptiloServer extends WebSocketServer {
         final Role roleToRegister = new Role(request.getGameRole(), conn, givenId);
         Message answer = null;
 
-        final int registrationCode = registerRoleInRoom(
+        final int registrationCode = registerRole(
+                givenId,
                 request.getGameName(),
-                roleToRegister,
                 request.getGameRoom(),
+                roleToRegister,
                 request.shouldReplace(),
                 request.shouldCreate()
         );

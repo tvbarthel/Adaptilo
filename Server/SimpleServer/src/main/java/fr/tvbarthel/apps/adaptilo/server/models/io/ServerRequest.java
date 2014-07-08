@@ -15,28 +15,14 @@ public class ServerRequest {
     private String mExternalId;
 
     /**
-     * Game name.
-     */
-    @SerializedName(MessageDeserializerHelper.NODE_GAME_NAME)
-    private String mGameName;
-
-    /**
-     * Room id.
-     */
-    @SerializedName(MessageDeserializerHelper.NODE_GAME_ROOM)
-    private String mRoom;
-
-    /**
      * message to deliver
      */
     @SerializedName(MessageDeserializerHelper.NODE_MESSAGE)
     private Message mMessage;
 
 
-    public ServerRequest(String connectionId, String game, String room, Message message) {
+    public ServerRequest(String connectionId, Message message) {
         mExternalId = connectionId;
-        mGameName = game;
-        mRoom = room;
         mMessage = message;
     }
 
@@ -58,21 +44,5 @@ public class ServerRequest {
 
     public void setMessage(Message mMessage) {
         this.mMessage = mMessage;
-    }
-
-    public String getGameName() {
-        return mGameName;
-    }
-
-    public void setGameName(String gameName) {
-        this.mGameName = gameName;
-    }
-
-    public String getRoom() {
-        return mRoom;
-    }
-
-    public void setRoom(String room) {
-        this.mRoom = room;
     }
 }

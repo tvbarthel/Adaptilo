@@ -231,8 +231,6 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
             URI serverUri = URI.create(mEngineConfig.getServerUri().toString());
             mAdaptiloClient = new AdaptiloClient(
                     serverUri,
-                    mEngineConfig.getGameName(),
-                    mEngineConfig.getGameRoom(),
                     this
             );
             mAdaptiloClient.connect();
