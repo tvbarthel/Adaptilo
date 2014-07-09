@@ -24,7 +24,7 @@
  *          myConfiguration.gameRoom -> the name of the room to join.
  *          myConfiguration.createRoom -> true if the room should be created if it does not exist, false otherwise.
  *          myConfiguration.replaceRoom -> true if the room should be replaces if it already exists, false otherwise.
- *          myConfiguration.onConnected -> a function that is called when the platform is connected. This function takes no parameter.
+ *          myConfiguration.onConnected -> a function that is called when the platform is connected. This function takes one parameter : an array of roles. Each role is a simple string.
  *          myConfiguration.onMessege -> a function that is called when the platform receives a message. This function takes one parameter : the message received.
  *          myConfiguration.onError -> a function that is called when the platform experiences an error. This function takes one parameter : the error that occurred. 
  *
@@ -49,8 +49,9 @@ Adaptilo.Configuration = (function() {
             gameRoom            :   "defaultRoom",
             createRoom          :   true,
             replaceRoom         :   true,
-            onConnected         :   function() {
+            onConnected         :   function(roles) {
                 console.log("onConnected");
+                console.log(roles);
             },
             onMessage           :   function(event) {
                 console.log("onMessage");
@@ -111,7 +112,7 @@ Adaptilo.Platform = (function() {
                     var rolesRequest = new Adaptilo.Message(Adaptilo.Message.Type.ROLE_REQUEST, {});
                     that.sendMessage(rolesRequest);
                 } else if (message.type === Adaptilo.Message.Type.ON_ROLE_RETRIEVED) {
-                    that.platformConfiguration.onConnected();
+                    that.platformConfiguration.onConnected(message.content);
                 } else {
                     that.platformConfiguration.onMessage(message);
                 }                
@@ -163,6 +164,6 @@ Adaptilo.Message.Type = (function() {
         REGISTER_ROLE_REQUEST   :   "REGISTER_ROLE_REQUEST",
         CONNECTION_COMPLETED    :   "CONNECTION_COMPLETED",
         ROLE_REQUEST            :   "ROLES_REQUEST",
-        ON_ROLE_RETRIEVED       :   "ON_ROLES_RETIEVED",
+        ON_ROLE_RETRIEVED       :   "ON_ROLES_RETRIEVED",
     }
 })();
