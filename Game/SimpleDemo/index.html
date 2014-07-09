@@ -37,6 +37,14 @@
                                 <input id="server_port" name="server_port" value="8887">
                             </td>
                         </tr>
+						<tr>
+                            <td>
+                                <label for="port">Join Room</label>
+                            </td>
+                            <td>
+                                <input id="join_room" name="server_port" value="">
+                            </td>
+                        </tr>
                     </table> 
                 </div>
                 
@@ -61,8 +69,10 @@
                     platformConfiguration.serverPort = $("#server_port").val();
                     // Set the game name used by the server
                     platformConfiguration.gameName = "testGame";
-                    // Generate a room name
-                    platformConfiguration.roomName = "testRoom" + new Date().getTime();
+                    // Set game room for joining an existed one
+					if($("#join_room").val()){
+						platformConfiguration.gameRoom = $("#join_room").val();
+					}
                     // Use the configuration for the connection
                     platform.setConfiguration(platformConfiguration);
                     platform.connect();

@@ -19,7 +19,7 @@ public class Launcher {
         roles.add(new RoleConfiguration("a", true, true, 2));
         roles.add(new RoleConfiguration("b", true, false, 1));
         roles.add(new RoleConfiguration("c", false, false, 1));
-        roles.add(new RoleConfiguration("field", true, true, 1));
+        roles.add(new RoleConfiguration("field", true, true, 2));
 
         //create server
         final SingleGameServer server = new SingleGameServer(new InetSocketAddress(8887), "testGame", roles);

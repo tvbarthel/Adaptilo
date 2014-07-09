@@ -46,9 +46,9 @@ Adaptilo.Configuration = (function() {
             serverPort          :   "8080",
             gameName            :   "defaultGameName",
             gameRole            :   "field",
-            gameRoom            :   "defaultRoom",
+            gameRoom            :   null,
             createRoom          :   true,
-            replaceRoom         :   true,
+            replaceRoom         :   false,
             onConnected         :   function(roles) {
                 console.log("onConnected");
                 console.log(roles);
@@ -90,6 +90,7 @@ Adaptilo.Platform = (function() {
                     {
                         gameName : that.platformConfiguration.gameName,
                         gameRole : that.platformConfiguration.gameRole,
+						gameRoom : that.platformConfiguration.gameRoom,
                         create   : that.platformConfiguration.createRoom,
                         replace  : that.platformConfiguration.replaceRoom,
                 });                
