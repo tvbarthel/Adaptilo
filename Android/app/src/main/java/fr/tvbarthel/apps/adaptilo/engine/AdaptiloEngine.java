@@ -121,8 +121,7 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
                 mEngineConfig.getGameName(),
                 mEngineConfig.getGameRoom(),
                 mEngineConfig.getUserRole(),
-                mEngineConfig.shouldReplace(),
-                mEngineConfig.shouldCreate()
+                mEngineConfig.shouldReplace()
         )));
     }
 

@@ -39,16 +39,10 @@ public class EngineConfig {
      */
     private boolean mShouldReplace;
 
-    /**
-     * Boolean used to know if the room must be created when it doesn't exist yet.
-     * Default value is false.
-     */
-    private boolean mShouldCreate;
 
     public String toString() {
         return "serverUri : " + mServerUri + "| port : " + mServerPort + "| room : "
-                + mGameRoom + "| role : " + mUserRole + "| replace : " + mShouldReplace
-                + "| create room : " + mShouldCreate;
+                + mGameRoom + "| role : " + mUserRole + "| replace : " + mShouldReplace;
     }
 
     /**
@@ -101,13 +95,5 @@ public class EngineConfig {
 
     public void setShouldReplace(boolean shouldReplace) {
         this.mShouldReplace = shouldReplace;
-    }
-
-    public boolean shouldCreate() {
-        return mShouldCreate;
-    }
-
-    public void setShouldCreate(boolean shouldCreate) {
-        this.mShouldCreate = shouldCreate;
     }
 }

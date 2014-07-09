@@ -87,7 +87,7 @@ public class SingleGameServer extends AdaptiloServer {
 
 
     @Override
-    protected int registerRole(String extId, String gameId, String roomId, Role role, boolean shouldReplace, boolean shouldCreate) {
+    protected int registerRole(String extId, String gameId, String roomId, Role role, boolean shouldReplace) {
         Room requestedRoom = null;
 
         if (!mGameName.equals(gameId)) {
@@ -127,27 +127,19 @@ public class SingleGameServer extends AdaptiloServer {
             //request room not found
             System.out.println(TAG + " Room with id : " + roomId + " doesn't exist.");
 
-            //check if creation is requested
-            if (shouldCreate) {
+            //check if role is allowed to create room
+            if (roleAllowed.canCreateRoom()) {
 
-                //check if role is allowed to create room
-                if (roleAllowed.canCreateRoom()) {
+                //creation request and creation allowed for the given rol
+                requestedRoom = new Room(roomId, mMaxRoles);
+                requestedRoom.setAvailableRoles(mAllowedRoles);
+                mGameRooms.add(requestedRoom);
+                System.out.println(TAG + " Room with id : " + roomId + " created.");
 
-                    //creation request and creation allowed for the given rol
-                    requestedRoom = new Room(roomId, mMaxRoles);
-                    requestedRoom.setAvailableRoles(mAllowedRoles);
-                    mGameRooms.add(requestedRoom);
-                    System.out.println(TAG + " Room with id : " + roomId + " created.");
-
-                } else {
-
-                    //creation requested but not allowed for the given role
-                    System.out.println(TAG + " Role : " + role.getName() + " not allowed to create a room.");
-                    return ClosingCode.REGISTRATION_REQUESTED_ROOM_UNKNOW;
-                }
             } else {
 
-                //room doesn't exist and creation policy to false
+                //creation requested but not allowed for the given role
+                System.out.println(TAG + " Role : " + role.getName() + " not allowed to create a room.");
                 return ClosingCode.REGISTRATION_REQUESTED_ROOM_UNKNOW;
             }
         }

@@ -105,7 +105,6 @@ public final class QrCodeHelper {
         final String host = scannedUri.getHost();
         final String gameName = scannedUri.getPath().substring(1);
         boolean shouldReplace = false;
-        boolean shouldCreate = false;
 
         if (!URI_SCHEME.equals(scheme)) {
             Log.e(TAG, "QrCode uri scheme must correspond to adaptilo");
@@ -140,17 +139,12 @@ public final class QrCodeHelper {
             shouldReplace = true;
         }
 
-        if (replace != null && Boolean.valueOf(create)) {
-            shouldCreate = true;
-        }
-
         config.setServerUri(scannedUri);
         config.setUserRole(role);
         config.setGameRoom(room);
         config.setServerPort(port);
         config.setGameName(gameName);
         config.setShouldReplace(shouldReplace);
-        config.setShouldCreate(shouldCreate);
         return config;
     }
 

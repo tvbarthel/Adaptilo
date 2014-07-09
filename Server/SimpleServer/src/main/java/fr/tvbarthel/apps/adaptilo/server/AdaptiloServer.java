@@ -42,11 +42,10 @@ public abstract class AdaptiloServer extends WebSocketServer {
      * @param roomId        room id in which role request registration
      * @param role          the role instance to register
      * @param shouldReplace replacement policy when role is already registered
-     * @param shouldCreate  creation  policy when room doesn't exist
      * @return should return 0 if registration succeeds, else an
      *         {@link fr.tvbarthel.apps.adaptilo.server.models.io.ClosingCode} matching a registration code.
      */
-    protected abstract int registerRole(String externalId, String gameId, String roomId, Role role, boolean shouldReplace, boolean shouldCreate);
+    protected abstract int registerRole(String externalId, String gameId, String roomId, Role role, boolean shouldReplace);
 
     /**
      * Handle role disconnection.
@@ -219,8 +218,7 @@ public abstract class AdaptiloServer extends WebSocketServer {
                 request.getGameName(),
                 roomId,
                 roleToRegister,
-                request.shouldReplace(),
-                request.shouldCreate()
+                request.shouldReplace()
         );
 
         switch (registrationCode) {

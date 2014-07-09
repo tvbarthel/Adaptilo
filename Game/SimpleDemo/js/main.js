@@ -47,7 +47,6 @@ Adaptilo.Configuration = (function() {
             gameName            :   "defaultGameName",
             gameRole            :   "field",
             gameRoom            :   null,
-            createRoom          :   true,
             replaceRoom         :   false,
             onConnected         :   function(roles) {
                 console.log("onConnected");
@@ -91,7 +90,6 @@ Adaptilo.Platform = (function() {
                         gameName : that.platformConfiguration.gameName,
                         gameRole : that.platformConfiguration.gameRole,
 						gameRoom : that.platformConfiguration.gameRoom,
-                        create   : that.platformConfiguration.createRoom,
                         replace  : that.platformConfiguration.replaceRoom,
                 });                
                 that.sendMessage(registerRoleMessage);
