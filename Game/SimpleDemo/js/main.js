@@ -107,6 +107,10 @@ Adaptilo.Platform = (function() {
                 var message = JSON.parse(event.data);
                 if (message.type === Adaptilo.Message.Type.CONNECTION_COMPLETED) {
                     that.externalId = message.content;
+                    // Send a message to get the available roles
+                    var rolesRequest = new Adaptilo.Message(Adaptilo.Message.Type.ROLE_REQUEST, {});
+                    that.sendMessage(rolesRequest);
+                } else if (message.type === Adaptilo.Message.Type.ON_ROLE_RETRIEVED) {
                     that.platformConfiguration.onConnected();
                 } else {
                     that.platformConfiguration.onMessage(message);
@@ -158,5 +162,7 @@ Adaptilo.Message.Type = (function() {
     return {
         REGISTER_ROLE_REQUEST   :   "REGISTER_ROLE_REQUEST",
         CONNECTION_COMPLETED    :   "CONNECTION_COMPLETED",
+        ROLE_REQUEST            :   "ROLES_REQUEST",
+        ON_ROLE_RETRIEVED       :   "ON_ROLES_RETIEVED",
     }
 })();
