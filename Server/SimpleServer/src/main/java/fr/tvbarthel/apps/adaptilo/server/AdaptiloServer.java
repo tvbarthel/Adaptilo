@@ -9,10 +9,7 @@ import fr.tvbarthel.apps.adaptilo.server.models.Room;
 import fr.tvbarthel.apps.adaptilo.server.models.enums.EventAction;
 import fr.tvbarthel.apps.adaptilo.server.models.enums.EventType;
 import fr.tvbarthel.apps.adaptilo.server.models.enums.MessageType;
-import fr.tvbarthel.apps.adaptilo.server.models.io.Message;
-import fr.tvbarthel.apps.adaptilo.server.models.io.RegisterRoleRequest;
-import fr.tvbarthel.apps.adaptilo.server.models.io.ServerRequest;
-import fr.tvbarthel.apps.adaptilo.server.models.io.UnRegisterRoleRequest;
+import fr.tvbarthel.apps.adaptilo.server.models.io.*;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -199,15 +196,28 @@ public abstract class AdaptiloServer extends WebSocketServer {
      * @return answer which should be send back
      */
     private Message processRoleRegistration(WebSocket conn, RegisterRoleRequest request) {
+
+        //check if registration is for a new room or for joining an existed one.
+        String roomId = request.getGameRoom();
+
+        //use roomId send for joining room registration or generate a new one for new registration
+        if (roomId == null) {
+            roomId = generateRoomId(request.getGameName());
+            System.out.println(TAG + " processRoleRegistration, new room :  " + roomId);
+        } else {
+            System.out.println(TAG + " processRoleRegistration, join room :  " + roomId);
+        }
+
         //generate unique external identifier
-        final String givenId = generateExternalId(request.getGameName(), request.getGameRoom(), request.getGameRole());
+        final String givenId = generateExternalId(request.getGameName(), roomId, request.getGameRole());
+
         final Role roleToRegister = new Role(request.getGameRole(), conn, givenId);
         Message answer = null;
 
         final int registrationCode = registerRole(
                 givenId,
                 request.getGameName(),
-                request.getGameRoom(),
+                roomId,
                 roleToRegister,
                 request.shouldReplace(),
                 request.shouldCreate()
@@ -220,7 +230,7 @@ public abstract class AdaptiloServer extends WebSocketServer {
                         + " room : " + request.getGameRole() + " role : " + request.getGameRole() + " id : " + givenId);
 
                 //build answer to send to the requester
-                answer = new Message(MessageType.CONNECTION_COMPLETED, givenId);
+                answer = new Message(MessageType.CONNECTION_COMPLETED, new RegisterRoleResponse(givenId, roomId));
                 break;
             default:
                 //registration fail, close connection and send registration error code
@@ -240,6 +250,17 @@ public abstract class AdaptiloServer extends WebSocketServer {
     private String generateExternalId(String game, String room, String role) {
         final long seed = System.currentTimeMillis();
         return game + room + role + seed;
+    }
+
+    /**
+     * Generate a room id.
+     *
+     * @param game name of the game
+     * @return unique room id
+     */
+    private String generateRoomId(String game) {
+        final long seed = System.currentTimeMillis();
+        return seed + game;
     }
 
     /**

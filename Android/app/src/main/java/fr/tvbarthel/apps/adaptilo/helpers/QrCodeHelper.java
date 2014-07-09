@@ -113,8 +113,7 @@ public final class QrCodeHelper {
         }
 
         if (room == null) {
-            Log.e(TAG, "room query param not found");
-            throw new QrCodeException("room query param not found");
+            Log.i(TAG, "Room query param not found, Qr_Code used to create a new room and not for joining a new one.");
         }
 
         if (role == null) {

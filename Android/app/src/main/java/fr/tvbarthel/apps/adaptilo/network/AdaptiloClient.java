@@ -14,6 +14,7 @@ import java.util.Map;
 
 import fr.tvbarthel.apps.adaptilo.helpers.MessageDeserializerHelper;
 import fr.tvbarthel.apps.adaptilo.models.io.Message;
+import fr.tvbarthel.apps.adaptilo.models.io.RegisterRoleResponse;
 import fr.tvbarthel.apps.adaptilo.models.io.ServerRequest;
 
 /**
@@ -99,8 +100,9 @@ public class AdaptiloClient extends WebSocketClient {
         final Message messageReceived = mGsonParser.fromJson(message, Message.class);
         switch (messageReceived.getType()) {
             case CONNECTION_COMPLETED:
-                mConnectionId = (String) messageReceived.getContent();
-                Log.d(TAG, "CONNECTION_COMPLETED : " + mConnectionId);
+                RegisterRoleResponse response = (RegisterRoleResponse) messageReceived.getContent();
+                mConnectionId = response.getExternalId();
+                Log.d(TAG, "CONNECTION_COMPLETED : " + mConnectionId + " in : " + response.getRoomId());
                 mCallbacks.onOpen();
                 break;
             default:

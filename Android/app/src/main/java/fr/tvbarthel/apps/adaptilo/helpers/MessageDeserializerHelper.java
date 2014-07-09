@@ -14,6 +14,7 @@ import java.util.List;
 import fr.tvbarthel.apps.adaptilo.models.Event;
 import fr.tvbarthel.apps.adaptilo.models.enums.MessageType;
 import fr.tvbarthel.apps.adaptilo.models.io.Message;
+import fr.tvbarthel.apps.adaptilo.models.io.RegisterRoleResponse;
 
 /**
  * Adapter for deserialization of {@link fr.tvbarthel.apps.adaptilo.models.io.Message}
@@ -79,8 +80,8 @@ public class MessageDeserializerHelper implements JsonDeserializer<Message> {
 
         switch (messageType) {
             case CONNECTION_COMPLETED:
-                String connectionId = context.deserialize(content, String.class);
-                message.setContent(connectionId);
+                RegisterRoleResponse connectionResponse = context.deserialize(content, RegisterRoleResponse.class);
+                message.setContent(connectionResponse);
                 break;
 
             case VIBRATOR:

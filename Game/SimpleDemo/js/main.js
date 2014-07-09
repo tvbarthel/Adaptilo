@@ -84,13 +84,12 @@ Adaptilo.Platform = (function() {
             
             // Setup the onopen behavior
             mWebSocket.onopen    = function() {
-                // The web socket is now openned
+                // The web socket is now opened
                 // Send a registration request as field
                 var registerRoleMessage = new Adaptilo.Message(Adaptilo.Message.Type.REGISTER_ROLE_REQUEST, 
                     {
                         gameName : that.platformConfiguration.gameName,
                         gameRole : that.platformConfiguration.gameRole,
-                        gameRoom : that.platformConfiguration.gameRoom,
                         create   : that.platformConfiguration.createRoom,
                         replace  : that.platformConfiguration.replaceRoom,
                 });                
@@ -107,7 +106,9 @@ Adaptilo.Platform = (function() {
             mWebSocket.onmessage = function(event) {
                 var message = JSON.parse(event.data);
                 if (message.type === Adaptilo.Message.Type.CONNECTION_COMPLETED) {
-                    that.externalId = message.content;
+					//store external id assigned by the server
+                    that.externalId = message.content.externalId;
+					console.log("Game room : "+message.content.gameRoom);
                     // Send a message to get the available roles
                     var rolesRequest = new Adaptilo.Message(Adaptilo.Message.Type.ROLE_REQUEST, {});
                     that.sendMessage(rolesRequest);
