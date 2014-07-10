@@ -108,8 +108,6 @@ public abstract class AdaptiloServer extends WebSocketServer {
             case UNREGISTER_ROLE_REQUEST:
 
                 //a role want to leave a room
-                final UnRegisterRoleRequest unregisterRequest
-                        = (UnRegisterRoleRequest) messageContent.getContent();
                 final int closingCode = unregisterRole(connectionId);
                 conn.close(closingCode);
                 System.out.println(TAG + " connection closed :" + conn.toString());

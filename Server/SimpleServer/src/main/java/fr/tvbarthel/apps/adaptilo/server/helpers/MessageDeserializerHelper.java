@@ -5,7 +5,6 @@ import fr.tvbarthel.apps.adaptilo.server.models.Event;
 import fr.tvbarthel.apps.adaptilo.server.models.enums.MessageType;
 import fr.tvbarthel.apps.adaptilo.server.models.io.Message;
 import fr.tvbarthel.apps.adaptilo.server.models.io.RegisterRoleRequest;
-import fr.tvbarthel.apps.adaptilo.server.models.io.UnRegisterRoleRequest;
 
 import java.lang.reflect.Type;
 
@@ -55,11 +54,6 @@ public class MessageDeserializerHelper implements JsonDeserializer<Message> {
      */
     public static final String NODE_SHOULD_REPLACE = "replace";
 
-    /**
-     * json node key for room creation policy
-     */
-    public static final String NODE_SHOULD_CREATE = "create";
-
     @Override
     public Message deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 
@@ -91,11 +85,6 @@ public class MessageDeserializerHelper implements JsonDeserializer<Message> {
             case REGISTER_ROLE_REQUEST:
                 RegisterRoleRequest registrationRequest = context.deserialize(content, RegisterRoleRequest.class);
                 message.setContent(registrationRequest);
-                break;
-
-            case UNREGISTER_ROLE_REQUEST:
-                UnRegisterRoleRequest unregisterControllerRequest = context.deserialize(content, UnRegisterRoleRequest.class);
-                message.setContent(unregisterControllerRequest);
                 break;
 
             case SENSOR:
