@@ -56,14 +56,14 @@ public final class QrCodeHelper {
     /**
      * Start an activity for scanning a QrCode.
      *
-     * @param fragment             the {@link android.support.v4.app.Fragment} calling startActivityForResult.
+     * @param activity             the {@link android.app.Activity} which will handle the result.
      * @param scannerActivityClass the activity that will be launched.
      * @param prompt               the text to be displayed on screen.
      */
-    public static void initiateQrCodeScan(Fragment fragment, Class<? extends CaptureActivity> scannerActivityClass, String prompt) {
-        Intent intent = IntentIntegrator.createScanIntent(fragment.getActivity(), IntentIntegrator.QR_CODE_TYPES, prompt);
-        intent.setClass(fragment.getActivity(), scannerActivityClass);
-        fragment.startActivityForResult(intent, REQUEST_CODE);
+    public static void initiateQrCodeScan(Activity activity, Class<? extends CaptureActivity> scannerActivityClass, String prompt) {
+        Intent intent = IntentIntegrator.createScanIntent(activity, IntentIntegrator.QR_CODE_TYPES, prompt);
+        intent.setClass(activity, scannerActivityClass);
+        activity.startActivityForResult(intent, REQUEST_CODE);
     }
 
     /**

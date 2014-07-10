@@ -26,11 +26,15 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
      */
     private static final String TAG = BasicControllerFragment.class.getName();
 
-
     /**
      * A {@link android.widget.TextView} used to show messages to the user.
      */
     protected TextView mOnScreenMessage;
+
+    /**
+     * Current game name
+     */
+    protected String mGameName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,13 +91,14 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     }
 
     @Override
-    public void onGameStart() {
+    public void onGameStart(String gameName) {
+        mGameName = gameName;
         //display game name
-        showOnScreenMessage(mAdaptiloEngine.getEngineConfig().getGameName());
+        showOnScreenMessage(mGameName);
     }
 
     @Override
-    protected void onMessageReceived(Message message) {
+    public void onMessageReceived(Message message) {
         switch (message.getType()) {
             case ON_ROLE_UNREGISTERED:
 
@@ -111,12 +116,12 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     }
 
     @Override
-    protected void onErrorReceived(Exception ex) {
+    public void onErrorReceived(Exception ex) {
 
     }
 
     @Override
-    protected void onConnectionClosed(int reason) {
+    public void onConnectionClosed(int reason) {
         switch (reason) {
             case ClosingCode.REGISTRATION_REQUESTED_ROOM_IS_FULL:
                 showOnScreenMessage(R.string.basic_controller_room_full);
@@ -181,40 +186,36 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
 
     @Override
     public void onSelectDialogClosed(boolean optionSaved) {
-        super.onSelectDialogClosed(optionSaved);
-        EngineConfig config = mAdaptiloEngine.getEngineConfig();
-        showOnScreenMessage(config != null ? config.getGameName() : "");
+        //display game name again once dialog is closed
+        showOnScreenMessage(mGameName != null ? mGameName : "");
     }
 
     @Override
     public void onStartDialogClosed(int which) {
-        super.onStartDialogClosed(which);
         switch (which) {
             case AdaptiloStartDialogFragment.BUTTON_DISCONNECT:
                 showOnScreenMessage(R.string.basic_controller_message_disconnected);
                 break;
             default:
-                EngineConfig config = mAdaptiloEngine.getEngineConfig();
-                showOnScreenMessage(config != null ? config.getGameName() : "");
+                //display game name again once dialog is closed
+                showOnScreenMessage(mGameName != null ? mGameName : "");
                 break;
         }
     }
 
     @Override
-    protected void onScannerCanceled() {
+    public void onScannerCanceled() {
         // hide the on screen message that should be R.string.basic_controller_message_loading
         hideOnScreenMessage();
     }
 
     @Override
-    protected void onScannerError(QrCodeException ex) {
-        super.onScannerError(ex);
+    public void onScannerError(QrCodeException ex) {
         showOnScreenMessage(R.string.basic_controller_qrcode_scanner_error);
     }
 
     @Override
-    protected void onScannerSuccess(EngineConfig config) {
-        super.onScannerSuccess(config);
+    public void onScannerSuccess(EngineConfig config) {
     }
 
 

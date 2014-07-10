@@ -90,12 +90,6 @@ public class SingleGameServer extends AdaptiloServer {
             return ClosingCode.REGISTRATION_REQUESTED_GAME_NAME_UNKNOWN;
         }
 
-        if (mGameRooms.isEmpty()) {
-            //create room first
-            System.out.println(TAG + " No created rooms for this game, need to create one first.");
-            return ClosingCode.REGISTRATION_NO_ROOM_CREATED;
-        }
-
         RoleConfiguration roleAllowed = null;
         for (RoleConfiguration roleConfig : mAllowedRoles) {
             if (roleConfig.getName().equals(role.getName())) {

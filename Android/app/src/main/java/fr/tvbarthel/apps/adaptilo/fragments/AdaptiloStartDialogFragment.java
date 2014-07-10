@@ -133,7 +133,11 @@ public abstract class AdaptiloStartDialogFragment extends DialogFragment
         /**
          * Called when start dialog closed.
          *
-         * @param which button id, 0 if dialog is simply dismissed or canceled.
+         * @param which identifier of clicked button
+         *              {@link fr.tvbarthel.apps.adaptilo.fragments.AdaptiloStartDialogFragment#BUTTON_RESUME}
+         *              {@link fr.tvbarthel.apps.adaptilo.fragments.AdaptiloStartDialogFragment#BUTTON_DISCONNECT}
+         *              {@link fr.tvbarthel.apps.adaptilo.fragments.AdaptiloStartDialogFragment#BUTTON_NEW_GAME}
+         *              or 0 if dismissed or canceled.
          */
         public void onStartDialogClose(int which);
     }

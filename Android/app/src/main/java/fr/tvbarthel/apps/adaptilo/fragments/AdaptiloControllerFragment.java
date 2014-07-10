@@ -1,26 +1,20 @@
 package fr.tvbarthel.apps.adaptilo.fragments;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 
-import fr.tvbarthel.apps.adaptilo.R;
-import fr.tvbarthel.apps.adaptilo.engine.AdaptiloEngine;
 import fr.tvbarthel.apps.adaptilo.exceptions.QrCodeException;
-import fr.tvbarthel.apps.adaptilo.helpers.QrCodeHelper;
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
 import fr.tvbarthel.apps.adaptilo.models.UserEvent;
 import fr.tvbarthel.apps.adaptilo.models.enums.EventAction;
 import fr.tvbarthel.apps.adaptilo.models.enums.EventType;
 import fr.tvbarthel.apps.adaptilo.models.enums.MessageType;
 import fr.tvbarthel.apps.adaptilo.models.io.Message;
-import fr.tvbarthel.apps.adaptilo.activities.BasicControllerCaptureActivity;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} that represents a controller.
@@ -46,10 +40,6 @@ abstract public class AdaptiloControllerFragment extends Fragment {
      */
     private static final String TAG = AdaptiloControllerFragment.class.getName();
 
-    /**
-     * Adaptilo core part
-     */
-    protected AdaptiloEngine mAdaptiloEngine;
 
     /**
      * The current callbacks object for controller event
@@ -60,18 +50,22 @@ abstract public class AdaptiloControllerFragment extends Fragment {
      * dummy callbacks use when fragment isn't attached
      */
     private static final Callbacks sDummyCallbacks = new Callbacks() {
+
         @Override
-        public void onReplaceControllerRequest(AdaptiloControllerFragment controllerFragment) {
+        public void onSendUserInputRequested(Message userInputMessage) {
+
+        }
+
+        @Override
+        public void onStartDialogRequest() {
+
+        }
+
+        @Override
+        public void onSelectDialogRequest() {
 
         }
     };
-
-    /**
-     * Don't implement callbacks directly in order to hide them from real controller implementation
-     * since view can't directly be modified in the engine callbacks. Indeed, engine callbacks aren't
-     * called in the ui thread.
-     */
-    private AdaptiloEngine.Callbacks mEngineCallbacks;
 
     /**
      * Sparse array used to map buttonId and EventType for each buttons on the controller.
@@ -130,14 +124,16 @@ abstract public class AdaptiloControllerFragment extends Fragment {
      * <p/>
      * Should be used to warn user.
      */
-    abstract protected void onGameServerUnreachable();
+    abstract public void onGameServerUnreachable();
 
     /**
      * Called when the controller is connected to the game server.
      * <p/>
      * Should be used to inform user that he can start to play.
+     *
+     * @param gameName name of the current game.
      */
-    abstract protected void onGameStart();
+    abstract public void onGameStart(String gameName);
 
     /**
      * Called when the controller received a message from the remote server.
@@ -146,7 +142,7 @@ abstract public class AdaptiloControllerFragment extends Fragment {
      *
      * @param message event send by the server
      */
-    abstract protected void onMessageReceived(Message message);
+    abstract public void onMessageReceived(Message message);
 
     /**
      * Called when the controller received an error from the remote server.
@@ -156,14 +152,14 @@ abstract public class AdaptiloControllerFragment extends Fragment {
      *
      * @param ex error data send by the remote server.
      */
-    abstract protected void onErrorReceived(Exception ex);
+    abstract public void onErrorReceived(Exception ex);
 
     /**
      * Called when connection was closed by the remote server.
      *
      * @param reason closing code in order to adapt visual callback if needed.
      */
-    abstract protected void onConnectionClosed(int reason);
+    abstract public void onConnectionClosed(int reason);
 
     /**
      * Callback when a user event is send. Used when a specific behavior should be processed for a
@@ -181,6 +177,13 @@ abstract public class AdaptiloControllerFragment extends Fragment {
     abstract protected void onSelectDialogShown();
 
     /**
+     * Called when matching select dialog as been closed by the user.
+     *
+     * @param optionSaved true when options has been saved.
+     */
+    public abstract void onSelectDialogClosed(boolean optionSaved);
+
+    /**
      * Called when the start dialog is displayed.
      * <p/>
      * Could be used to perform any visual callback.
@@ -188,14 +191,38 @@ abstract public class AdaptiloControllerFragment extends Fragment {
     abstract protected void onStartDialogShown();
 
     /**
+     * Called when matching startPressed dialog as been closed by the user.
+     *
+     * @param which identifier of clicked button
+     *              {@link fr.tvbarthel.apps.adaptilo.fragments.AdaptiloStartDialogFragment#BUTTON_RESUME}
+     *              {@link fr.tvbarthel.apps.adaptilo.fragments.AdaptiloStartDialogFragment#BUTTON_DISCONNECT}
+     *              {@link fr.tvbarthel.apps.adaptilo.fragments.AdaptiloStartDialogFragment#BUTTON_NEW_GAME}
+     *              or 0 if dismissed or canceled.
+     */
+    public abstract void onStartDialogClosed(int which);
+
+
+    /**
+     * Game config was loaded into the engine after scan success
+     *
+     * @param config config loaded in game engine
+     */
+    public abstract void onScannerSuccess(EngineConfig config);
+
+    /**
+     * Scanner error
+     *
+     * @param ex
+     */
+    public abstract void onScannerError(QrCodeException ex);
+
+    /**
      * QrCode scanner has been canceled.
      */
-    abstract protected void onScannerCanceled();
+    public abstract void onScannerCanceled();
 
 
     public AdaptiloControllerFragment() {
-        initEngineCallbacks();
-        mAdaptiloEngine = new AdaptiloEngine(mEngineCallbacks);
     }
 
     @Override
@@ -208,14 +235,13 @@ abstract public class AdaptiloControllerFragment extends Fragment {
         }
 
         mCallbacks = (Callbacks) activity;
-        mAdaptiloEngine.initEngine(getActivity().getApplicationContext());
     }
 
 
     @Override
     public void onResume() {
         super.onResume();
-        mAdaptiloEngine.resume();
+
     }
 
 
@@ -228,9 +254,7 @@ abstract public class AdaptiloControllerFragment extends Fragment {
         selectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAdaptiloEngine.pause();
-                getSelectDialogFragment().show(getFragmentManager(), "select_dialog_fragment");
-                onSelectDialogShown();
+                mCallbacks.onSelectDialogRequest();
             }
         });
 
@@ -239,19 +263,13 @@ abstract public class AdaptiloControllerFragment extends Fragment {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startPressed();
-                onStartDialogShown();
+                mCallbacks.onStartDialogRequest();
             }
         });
 
         initKeyButtons(view);
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        mAdaptiloEngine.pause();
-    }
 
     @Override
     public void onDetach() {
@@ -259,208 +277,29 @@ abstract public class AdaptiloControllerFragment extends Fragment {
         mCallbacks = sDummyCallbacks;
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mAdaptiloEngine.stop();
-    }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == QrCodeHelper.REQUEST_CODE) {
-            handleQrCodeResult(requestCode, resultCode, data);
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
+    /**
+     * Called by the activity when controller should display the start dialog
+     */
+    public final void displayStartDialog() {
+
+        //retrieve specific start dialog from controller implementation
+        getStartDialogFragment().show(getFragmentManager(), "start_dialog_fragment");
+
+        //let controller implement specific visual callback
+        onStartDialogShown();
     }
 
     /**
-     * Called when matching select dialog as been closed by the user.
-     *
-     * @param optionSaved true when options has been saved.
+     * Called by the activity when controller should display the select dialog
      */
-    public void onSelectDialogClosed(boolean optionSaved) {
-        mAdaptiloEngine.resume();
-    }
+    public final void displaySelectDialog() {
 
-    /**
-     * Called when matching startPressed dialog as been closed by the user.
-     *
-     * @param which identifier of clicked button
-     *              {@link fr.tvbarthel.apps.adaptilo.fragments.AdaptiloStartDialogFragment#BUTTON_RESUME}
-     *              {@link fr.tvbarthel.apps.adaptilo.fragments.AdaptiloStartDialogFragment#BUTTON_DISCONNECT}
-     *              {@link fr.tvbarthel.apps.adaptilo.fragments.AdaptiloStartDialogFragment#BUTTON_NEW_GAME}
-     *              or 0 if dismissed or canceled.
-     */
-    public void onStartDialogClosed(int which) {
-        mAdaptiloEngine.resume();
-        switch (which) {
-            case AdaptiloStartDialogFragment.BUTTON_DISCONNECT:
-                disconnect();
-                break;
-            case AdaptiloStartDialogFragment.BUTTON_NEW_GAME:
-                loadNewGame();
-        }
-    }
+        //retrieve specific select dialog from controller implementation
+        getSelectDialogFragment().show(getFragmentManager(), "select_dialog_fragment");
 
-    /**
-     * load game config into the controller after scan success
-     *
-     * @param config
-     */
-    protected void onScannerSuccess(EngineConfig config) {
-        mAdaptiloEngine.setEngineConfig(config);
-        mAdaptiloEngine.start();
-        Log.d(TAG, "onScannerSuccess : " + config.toString());
-    }
-
-    /**
-     * scanner error
-     *
-     * @param ex
-     */
-    protected void onScannerError(QrCodeException ex) {
-        Log.d(TAG, "onScannerError : " + ex.getMessage());
-    }
-
-    /**
-     * Used to process QrCode scanner result when {@link #onActivityResult} is called.
-     *
-     * @param requestCode - The integer request code originally supplied to startActivityForResult(), allowing you to identify who this result came from.
-     * @param resultCode  - The integer result code returned by the child activity through its setResult().
-     * @param data        - An Intent, which can return result data to the caller (various data can be attached to Intent "extras").
-     */
-    protected void handleQrCodeResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_CANCELED) {
-            onScannerCanceled();
-        } else {
-            EngineConfig config = null;
-            try {
-                config = QrCodeHelper.verifyFromActivityResult(requestCode, resultCode, data);
-            } catch (QrCodeException e) {
-                onScannerError(e);
-            } finally {
-                if (config != null) {
-                    onScannerSuccess(config);
-                }
-            }
-        }
-    }
-
-    /**
-     * Initialized engine callbacks. The abstract controller encapsulate all runOnUiThread in order
-     * to allow safe ui modification in controller implementation.
-     */
-    private void initEngineCallbacks() {
-        mEngineCallbacks = new AdaptiloEngine.Callbacks() {
-
-            @Override
-            public void onMessageReceived(final Message message) {
-                switch (message.getType()) {
-                    case ENGINE_READY:
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                onGameStart();
-                            }
-                        });
-                        break;
-                    default:
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                AdaptiloControllerFragment.this.onMessageReceived(message);
-                            }
-                        });
-                        break;
-                }
-            }
-
-            @Override
-            public void onErrorReceived(final Exception ex) {
-                if (ex.getMessage() != null && ex.getMessage().contains("ENETUNREACH")) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            onGameServerUnreachable();
-                        }
-                    });
-                } else {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            AdaptiloControllerFragment.this.onErrorReceived(ex);
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onConnectionClosed(final int closeCode) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        AdaptiloControllerFragment.this.onConnectionClosed(closeCode);
-                    }
-                });
-            }
-
-            @Override
-            public void onReplaceControllerRequest(final AdaptiloControllerFragment adaptiloControllerFragment) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mCallbacks.onReplaceControllerRequest(adaptiloControllerFragment);
-                    }
-                });
-            }
-        };
-    }
-
-    /**
-     * Used to startPressed Qr code scanner in order to load a game into your controller.
-     * <p/>
-     * Or prompt a dialog : Resume | Disconnect | New Game
-     * <p/>
-     * Called when "startPressed button" is pressed
-     */
-    private void startPressed() {
-        if (mAdaptiloEngine.isReadToCommunicate()) {
-
-            //controller already running for a game. Let current controller implementation ask the
-            // to the user if he want to load a new game, disconnect from the current one or resume.
-            getStartDialogFragment().show(getFragmentManager(), "start_dialog_fragment");
-            mAdaptiloEngine.pause();
-
-        } else {
-
-            //current controller isn't running, startPressed scanner to load a game
-            loadGame();
-        }
-    }
-
-    /**
-     * Disconnect controller from current game.
-     */
-    private void disconnect() {
-        mAdaptiloEngine.stop();
-    }
-
-    /**
-     * Start load game flow.
-     */
-    private void loadGame() {
-        //startPressed scanner to load the new game
-        QrCodeHelper.initiateQrCodeScan(AdaptiloControllerFragment.this, BasicControllerCaptureActivity.class,
-                getString(R.string.qr_code_scanner_prompt));
-    }
-
-    /**
-     * Load a new game when another one is already loaded.
-     */
-    private void loadNewGame() {
-        disconnect();
-        loadGame();
+        //let controller implement specific visual callback
+        onSelectDialogShown();
     }
 
     /**
@@ -474,7 +313,12 @@ abstract public class AdaptiloControllerFragment extends Fragment {
             public boolean onTouch(View v, MotionEvent event) {
                 final UserEvent userEvent = extractUserEvent(v, event);
                 if (userEvent != null) {
-                    mAdaptiloEngine.sendUserInput(new Message(MessageType.USER_INPUT, userEvent));
+
+                    //inform activity that an user input should be send to the server
+                    mCallbacks.onSendUserInputRequested(new Message(MessageType.USER_INPUT, userEvent));
+
+                    //let contoller implementation the possibility to display visual callbacks or
+                    //add a specific behavior according to the UserEvent send.
                     onUserEventSend(userEvent);
                 }
                 return false;
@@ -546,10 +390,20 @@ abstract public class AdaptiloControllerFragment extends Fragment {
      */
     public interface Callbacks {
         /**
-         * change the current controller
+         * Called when Activity should send an user input from the controller.
          *
-         * @param controllerFragment new controller to display
+         * @param userInputMessage user input to send to the sever.
          */
-        public void onReplaceControllerRequest(AdaptiloControllerFragment controllerFragment);
+        public void onSendUserInputRequested(Message userInputMessage);
+
+        /**
+         * Called when user wants to open start dialog.
+         */
+        public void onStartDialogRequest();
+
+        /**
+         * Called when user want to open select dialog.
+         */
+        public void onSelectDialogRequest();
     }
 }
