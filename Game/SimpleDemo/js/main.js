@@ -131,7 +131,8 @@ Adaptilo.Platform = (function() {
         },
         
         disconnect : function() {
-            mWebSocket.close();
+			var unregister = new Adaptilo.Message(Adaptilo.Message.Type.UNREGISTER_ROLE_REQUEST, {}); 
+			this.sendMessage(unregister);
         },
         
         setConfiguration : function(platformConfiguration) {
@@ -174,6 +175,7 @@ Adaptilo.Message = (function() {
 Adaptilo.Message.Type = (function() {
     return {
         REGISTER_ROLE_REQUEST   :   "REGISTER_ROLE_REQUEST",
+		UNREGISTER_ROLE_REQUEST	:	"UNREGISTER_ROLE_REQUEST",
         CONNECTION_COMPLETED    :   "CONNECTION_COMPLETED",
         ROLE_REQUEST            :   "ROLES_REQUEST",
         ON_ROLE_RETRIEVED       :   "ON_ROLES_RETRIEVED",
