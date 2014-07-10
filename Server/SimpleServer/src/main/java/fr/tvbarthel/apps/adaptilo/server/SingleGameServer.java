@@ -77,12 +77,6 @@ public class SingleGameServer extends AdaptiloServer {
         mGameRooms = new ArrayList<Room>();
         mRoomsHashMap = new HashMap<String, Room>();
         mRolesHashMap = new HashMap<String, Role>();
-
-        //TODO only for test purpose, should implement room creation
-        //simulate room creation
-        Room virtualRoom = new Room("virtual", 1);
-        virtualRoom.setAvailableRoles(mAllowedRoles);
-        mGameRooms.add(virtualRoom);
     }
 
 
