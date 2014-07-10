@@ -59,27 +59,30 @@
         <script type="text/javascript">
             $(function() {
                 // the DOM is now fully loaded.                
+                var connectionButton = $("#connection_button");
+                connectionButton.bind("click", function() {
+                    toggleConnection();
+                });
+                
                 var platformConfiguration = Adaptilo.Configuration.createDefault();  
                 
                 // Set the onConnected behavior
                 platformConfiguration.onConnected = function(roles) {
                     console.log("onConnected");
                     console.log(roles);
-                    $("#connection_button").html("Disconnect");
+                    connectionButton.html("Disconnect");
                 };
                 
                 // Set the onDisconnected behavior
                 platformConfiguration.onDisconnected = function() {
                     console.log("onDisconnected");
-                    $("#connection_button").html("Connect");
+                    connectionButton.html("Connect");
                 }
                 
                 // Create the platform
                 var platform = new Adaptilo.Platform();
                 
-                $("#connection_button").bind("click", function() {
-                    toggleConnection();
-                });
+                
                 
                 var toggleConnection = function() {
                     if (platform.isConnected) {
