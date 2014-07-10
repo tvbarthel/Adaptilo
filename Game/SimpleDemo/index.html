@@ -48,7 +48,7 @@
                     </table> 
                 </div>
                 
-                <button id="connection_button" type="button" class="card_button">Connection</button>            
+                <button id="connection_button" type="button" class="card_button">Connect</button>            
                 
             </div>
         </div>
@@ -59,25 +59,52 @@
         <script type="text/javascript">
             $(function() {
                 // the DOM is now fully loaded.                
-                var platformConfiguration = Adaptilo.Configuration.createDefault();                
+                var platformConfiguration = Adaptilo.Configuration.createDefault();  
+                
+                // Set the onConnected behavior
+                platformConfiguration.onConnected = function(roles) {
+                    console.log("onConnected");
+                    console.log(roles);
+                    $("#connection_button").html("Disconnect");
+                };
+                
+                // Set the onDisconnected behavior
+                platformConfiguration.onDisconnected = function() {
+                    console.log("onDisconnected");
+                    $("#connection_button").html("Connect");
+                }
+                
+                // Create the platform
                 var platform = new Adaptilo.Platform();
                 
                 $("#connection_button").bind("click", function() {
-                    // Get the server ip given by the user
-                    platformConfiguration.serverIp = $("#server_ip").val()
-                    // Get the server port given by the user
-                    platformConfiguration.serverPort = $("#server_port").val();
-                    // Set the game name used by the server
-                    platformConfiguration.gameName = "testGame";
-                    // Set game room for joining an existed one
-					if($("#join_room").val()){
-						platformConfiguration.gameRoom = $("#join_room").val();
-					}
-                    // Use the configuration for the connection
-                    platform.setConfiguration(platformConfiguration);
-                    platform.connect();
+                    toggleConnection();
                 });
-            });            
+                
+                var toggleConnection = function() {
+                    if (platform.isConnected) {
+                        platform.disconnect();
+                    } else {
+                        // Get the server ip given by the user
+                        platformConfiguration.serverIp = $("#server_ip").val()
+                        // Get the server port given by the user
+                        platformConfiguration.serverPort = $("#server_port").val();
+                        // Set the game name used by the server
+                        platformConfiguration.gameName = "testGame";
+                        // Set game room for joining an existed one
+                        if($("#join_room").val()){
+                            platformConfiguration.gameRoom = $("#join_room").val();
+                        }
+                        
+                        // Use the configuration for the connection
+                        platform.setConfiguration(platformConfiguration);
+                        platform.connect();                   
+                    }
+                };                
+                
+            });     
+
+            
         </script>
     </boby>
     

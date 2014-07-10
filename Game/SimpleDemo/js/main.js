@@ -25,6 +25,7 @@
  *          myConfiguration.createRoom -> true if the room should be created if it does not exist, false otherwise.
  *          myConfiguration.replaceRoom -> true if the room should be replaces if it already exists, false otherwise.
  *          myConfiguration.onConnected -> a function that is called when the platform is connected. This function takes one parameter : an array of roles. Each role is a simple string.
+ *          myConfiguration.onDisconnected -> a function that is called when the platform is disconnected. This function takes no paramters.
  *          myConfiguration.onMessege -> a function that is called when the platform receives a message. This function takes one parameter : the message received.
  *          myConfiguration.onError -> a function that is called when the platform experiences an error. This function takes one parameter : the error that occurred. 
  *
@@ -52,6 +53,9 @@ Adaptilo.Configuration = (function() {
                 console.log("onConnected");
                 console.log(roles);
             },
+            onDisconnected      :   function() {
+                console.log("onDisconnected");
+            },
             onMessage           :   function(event) {
                 console.log("onMessage");
                 console.log(event);                
@@ -73,6 +77,7 @@ Adaptilo.Platform = (function() {
     // constructor
     var AdaptiloPlatform = function(platformConfiguration) {   
         this.platformConfiguration = $.extend(true, {}, platformConfiguration);
+        this.isConnected = false;
     };
     
     // Public API
@@ -99,6 +104,8 @@ Adaptilo.Platform = (function() {
             mWebSocket.onclose   = function(event) {
                 console.log("[Web Socket] onclose");
                 console.log(event); 
+                that.isConnected = false;
+                that.platformConfiguration.onDisconnected();
             };
             
             // Setup the onmessage behavior
@@ -113,6 +120,7 @@ Adaptilo.Platform = (function() {
                     that.sendMessage(rolesRequest);
                 } else if (message.type === Adaptilo.Message.Type.ON_ROLE_RETRIEVED) {
                     that.platformConfiguration.onConnected(message.content);
+                    that.isConnected = true;
                 } else {
                     that.platformConfiguration.onMessage(message);
                 }                
@@ -120,6 +128,10 @@ Adaptilo.Platform = (function() {
             
             // Setup the onerror behavior
             mWebSocket.onerror   = this.platformConfiguration.onError;
+        },
+        
+        disconnect : function() {
+            mWebSocket.close();
         },
         
         setConfiguration : function(platformConfiguration) {
