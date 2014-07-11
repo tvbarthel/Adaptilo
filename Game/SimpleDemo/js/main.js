@@ -114,7 +114,7 @@ Adaptilo.Platform = (function() {
                 if (message.type === Adaptilo.Message.Type.CONNECTION_COMPLETED) {
 					//store external id assigned by the server
                     that.externalId = message.content.externalId;
-					console.log("Game room : "+message.content.gameRoom);
+					that.gameRoom = message.content.gameRoom;
                     // Send a message to get the available roles
                     var rolesRequest = new Adaptilo.Message(Adaptilo.Message.Type.ROLE_REQUEST, {});
                     that.sendMessage(rolesRequest);
