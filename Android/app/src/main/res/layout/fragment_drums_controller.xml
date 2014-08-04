@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/basic_controller_background">
+
+    <FrameLayout
+        android:id="@+id/drums_controller_game_slot_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/drums_controller_game_slot_container"
+        android:clickable="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/drums_controller_on_screen_message"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/basic_controller_game_slot_text"
+            android:textSize="@dimen/basic_controller_game_slot_text_size"
+            android:visibility="visible" />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="@dimen/default_padding"
+        android:layout_below="@+id/drums_controller_game_slot_container"
+        android:layout_above="@+id/drums_controller_game_name">
+
+        <fr.tvbarthel.apps.adaptilo.ui.TextPressedButton
+            android:id="@+id/drums_controller_btn_left"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.5"
+            android:text="@string/drums_controller_btn_left"
+            android:background="@drawable/btn_circle_gray"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/secondary"
+            android:textSize="@dimen/btn_circle_text_size"
+            custom:textSizePressed="@dimen/btn_circle_text_size_pressed" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical"
+            android:padding="@dimen/default_padding">
+
+            <fr.tvbarthel.apps.adaptilo.ui.TextPressedButton
+                android:id="@+id/drums_controller_btn_start"
+                android:layout_width="@dimen/btn_circle_size"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_rect"
+                android:text="@string/drums_controller_btn_start"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/secondary"
+                android:layout_marginBottom="5dp"
+                android:textSize="@dimen/btn_rect_text_size"
+                custom:textSizePressed="@dimen/btn_circle_text_size_pressed" />
+
+            <fr.tvbarthel.apps.adaptilo.ui.TextPressedButton
+                android:id="@+id/drums_controller_btn_select"
+                android:layout_width="@dimen/btn_circle_size"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_rect"
+                android:text="@string/drums_controller_btn_select"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/secondary"
+                android:textSize="@dimen/btn_rect_text_size"
+                custom:textSizePressed="@dimen/btn_circle_text_size_pressed" />
+        </LinearLayout>
+
+        <fr.tvbarthel.apps.adaptilo.ui.TextPressedButton
+            android:id="@+id/drums_controller_btn_right"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.5"
+            android:text="@string/drums_controller_btn_right"
+            android:background="@drawable/btn_circle_gray"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/secondary"
+            android:textSize="@dimen/btn_circle_text_size"
+            custom:textSizePressed="@dimen/btn_circle_text_size_pressed" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/drums_controller_game_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/drums_controller_name"
+        android:textColor="@color/gray_light"
+        android:gravity="end"
+        android:layout_alignParentBottom="true"
+        android:padding="@dimen/default_padding"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:textSize="@dimen/basic_controller_game_slot_text_size" />
+
+</RelativeLayout>
