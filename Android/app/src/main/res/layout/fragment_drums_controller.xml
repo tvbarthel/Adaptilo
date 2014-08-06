@@ -31,7 +31,6 @@
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:gravity="center"
-        android:padding="@dimen/default_padding"
         android:layout_below="@+id/drums_controller_game_slot_container"
         android:layout_above="@+id/drums_controller_game_name">
 
@@ -51,9 +50,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginTop="-50dp"
             android:layout_gravity="center_vertical"
             android:padding="@dimen/default_padding"
-            android:gravity="center"
             android:background="@drawable/drums_controller_middle_background">
 
             <fr.tvbarthel.apps.adaptilo.ui.TextPressedButton
@@ -61,7 +60,6 @@
                 android:layout_width="@dimen/btn_circle_size"
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_rect"
-                android:layout_marginTop="20dp"
                 android:text="@string/drums_controller_btn_start"
                 android:layout_gravity="center_vertical"
                 android:textColor="@color/secondary"
@@ -76,7 +74,6 @@
                 android:background="@drawable/btn_rect"
                 android:text="@string/drums_controller_btn_select"
                 android:layout_gravity="center_vertical"
-                android:layout_marginBottom="20dp"
                 android:textColor="@color/secondary"
                 android:textSize="@dimen/btn_rect_text_size"
                 custom:textSizePressed="@dimen/btn_circle_text_size_pressed" />
