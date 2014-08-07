@@ -326,9 +326,11 @@ abstract public class AdaptiloControllerFragment extends Fragment {
         };
 
         //iterate through all button ids set in getControllerKeys() to attached the keyListener
-        for (int i = 0; i < mKeys.size(); i++) {
-            final Button button = (Button) controllerView.findViewById(mKeys.keyAt(i));
-            button.setOnTouchListener(keyListener);
+        if (mKeys != null) {
+            for (int i = 0; i < mKeys.size(); i++) {
+                final Button button = (Button) controllerView.findViewById(mKeys.keyAt(i));
+                button.setOnTouchListener(keyListener);
+            }
         }
     }
 
