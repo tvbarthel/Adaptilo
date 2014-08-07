@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="basic_controller_background" type="drawable">@drawable/controller_background</item>
+    <item name="drums_controller_background" type="drawable">@drawable/controller_background</item>
+</resources>
