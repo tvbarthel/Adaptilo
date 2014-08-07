@@ -42,7 +42,7 @@
                                 <label for="port">Join Room</label>
                             </td>
                             <td>
-                                <input id="join_room" name="server_port" value="">
+                                <input id="join_room" name="join_room" value="">
                             </td>
                         </tr>
                     </table> 
@@ -58,10 +58,19 @@
         
         <script type="text/javascript">
             $(function() {
-                // the DOM is now fully loaded.                
-                var connectionButton = $("#connection_button");
+                // the DOM is now fully loaded.   
+
+                // Connection Button
+                var connectionButton = $("#connection_button");                
                 connectionButton.bind("click", function() {
                     toggleConnection();
+                });
+                
+                // Game Room Input
+                var inputGameRoom = $("#join_room");
+                inputGameRoom.val(window.location.hash.substring(1));
+                inputGameRoom.keyup(function(event){
+                    window.location.hash = inputGameRoom.val();
                 });
                 
                 var platformConfiguration = Adaptilo.Configuration.createDefault();  
@@ -71,6 +80,8 @@
                     console.log("onConnected");
                     console.log(roles);
                     connectionButton.html("Disconnect");
+                    console.log(platform.gameRoom);
+                    window.location.hash = platform.gameRoom;
                 };
                 
                 // Set the onDisconnected behavior
@@ -81,8 +92,6 @@
                 
                 // Create the platform
                 var platform = new Adaptilo.Platform();
-                
-                
                 
                 var toggleConnection = function() {
                     if (platform.isConnected) {
@@ -95,15 +104,16 @@
                         // Set the game name used by the server
                         platformConfiguration.gameName = "testGame";
                         // Set game room for joining an existed one
-                        if($("#join_room").val()){
-                            platformConfiguration.gameRoom = $("#join_room").val();
+                        platformConfiguration.gameRoom = null;
+                        if(inputGameRoom.val()){
+                            platformConfiguration.gameRoom = inputGameRoom.val();
                         }
                         
                         // Use the configuration for the connection
                         platform.setConfiguration(platformConfiguration);
                         platform.connect();                   
                     }
-                };                
+                }; 
                 
             });     
 

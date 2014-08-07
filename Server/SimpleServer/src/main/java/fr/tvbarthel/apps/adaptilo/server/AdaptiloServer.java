@@ -180,7 +180,7 @@ public abstract class AdaptiloServer extends WebSocketServer {
      */
     protected void broadcastMessage(Room room, Role sender, Message message) {
         for (Role role : room.getRoles()) {
-            if (role != sender) {
+            if (role != sender && role.getConnection().isOpen()) {
                 role.getConnection().send(mParser.toJson(message));
             }
         }
