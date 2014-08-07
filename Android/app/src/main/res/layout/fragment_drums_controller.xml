@@ -57,26 +57,26 @@
 
             <fr.tvbarthel.apps.adaptilo.ui.TextPressedButton
                 android:id="@+id/drums_controller_btn_start"
-                android:layout_width="@dimen/btn_circle_size"
-                android:layout_height="wrap_content"
+                android:layout_width="70dp"
+                android:layout_height="50dp"
                 android:background="@drawable/btn_rect"
                 android:text="@string/drums_controller_btn_start"
                 android:layout_gravity="center_vertical"
                 android:textColor="@color/secondary"
                 android:layout_marginBottom="5dp"
                 android:textSize="@dimen/btn_rect_text_size"
-                custom:textSizePressed="@dimen/btn_circle_text_size_pressed" />
+                custom:textSizePressed="@dimen/btn_rect_text_size_pressed" />
 
             <fr.tvbarthel.apps.adaptilo.ui.TextPressedButton
                 android:id="@+id/drums_controller_btn_select"
-                android:layout_width="@dimen/btn_circle_size"
-                android:layout_height="wrap_content"
+                android:layout_width="70dp"
+                android:layout_height="50dp"
                 android:background="@drawable/btn_rect"
                 android:text="@string/drums_controller_btn_select"
                 android:layout_gravity="center_vertical"
                 android:textColor="@color/secondary"
                 android:textSize="@dimen/btn_rect_text_size"
-                custom:textSizePressed="@dimen/btn_circle_text_size_pressed" />
+                custom:textSizePressed="@dimen/btn_rect_text_size_pressed" />
         </LinearLayout>
 
         <fr.tvbarthel.apps.adaptilo.ui.SquareTextPressedButton
