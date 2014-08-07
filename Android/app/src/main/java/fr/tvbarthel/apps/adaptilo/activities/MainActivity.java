@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import fr.tvbarthel.apps.adaptilo.fragments.AdaptiloControllerFragment;
 import fr.tvbarthel.apps.adaptilo.fragments.BasicControllerFragment;
+import fr.tvbarthel.apps.adaptilo.fragments.DrumsControllerFragment;
 
 
 public class MainActivity extends AdaptiloActivity {
@@ -15,6 +16,6 @@ public class MainActivity extends AdaptiloActivity {
 
     @Override
     AdaptiloControllerFragment getDefaultController() {
-        return new BasicControllerFragment();
+        return new DrumsControllerFragment();
     }
 }
