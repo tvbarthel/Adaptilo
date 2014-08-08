@@ -28,7 +28,7 @@ public class DrumsControllerFragment extends AdaptiloControllerFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CalligraphyConfig.initDefault("fonts/Minecraftia.ttf");
+        CalligraphyConfig.initDefault("fonts/Jumpman.ttf");
     }
 
     @Override
