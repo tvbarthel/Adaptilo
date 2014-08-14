@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.tvbarthel.apps.adaptilo.models.Event;
+import fr.tvbarthel.apps.adaptilo.models.enums.ControllerType;
 import fr.tvbarthel.apps.adaptilo.models.enums.MessageType;
 import fr.tvbarthel.apps.adaptilo.models.io.Message;
 import fr.tvbarthel.apps.adaptilo.models.io.RegisterRoleResponse;
@@ -115,6 +116,11 @@ public class MessageDeserializerHelper implements JsonDeserializer<Message> {
                         }.getType()
                 );
                 message.setContent(roles);
+                break;
+
+            case REPLACE_CONTROLLER:
+                ControllerType type = context.deserialize(content, ControllerType.class);
+                message.setContent(type);
                 break;
         }
         return message;

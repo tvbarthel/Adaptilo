@@ -6,10 +6,14 @@ import fr.tvbarthel.apps.adaptilo.server.helpers.MessageDeserializerHelper;
 import fr.tvbarthel.apps.adaptilo.server.models.Event;
 import fr.tvbarthel.apps.adaptilo.server.models.Role;
 import fr.tvbarthel.apps.adaptilo.server.models.Room;
+import fr.tvbarthel.apps.adaptilo.server.models.enums.ControllerType;
 import fr.tvbarthel.apps.adaptilo.server.models.enums.EventAction;
 import fr.tvbarthel.apps.adaptilo.server.models.enums.EventType;
 import fr.tvbarthel.apps.adaptilo.server.models.enums.MessageType;
-import fr.tvbarthel.apps.adaptilo.server.models.io.*;
+import fr.tvbarthel.apps.adaptilo.server.models.io.Message;
+import fr.tvbarthel.apps.adaptilo.server.models.io.RegisterRoleRequest;
+import fr.tvbarthel.apps.adaptilo.server.models.io.RegisterRoleResponse;
+import fr.tvbarthel.apps.adaptilo.server.models.io.ServerRequest;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -169,6 +173,28 @@ public abstract class AdaptiloServer extends WebSocketServer {
         final EventAction action = enable ? EventAction.ACTION_ENABLE : EventAction.ACTION_DISABLE;
         final Event enableShaker = new Event(EventType.SHAKER, action);
         sendToAll(mParser.toJson(new Message(MessageType.SENSOR, enableShaker)));
+    }
+
+    /**
+     * allow to test controller replacement
+     * TODO remove, only for test purpose
+     *
+     * @param controller
+     */
+    public void switchController(int controller) {
+        ControllerType type;
+        switch (controller) {
+            case 1:
+                type = ControllerType.BASIC_CONTROLLER;
+                break;
+            case 2:
+                type = ControllerType.DRUMS_CONTROLLER;
+                break;
+            default:
+                type = ControllerType.BASIC_CONTROLLER;
+                break;
+        }
+        sendToAll(mParser.toJson(new Message(MessageType.REPLACE_CONTROLLER, type)));
     }
 
     /**

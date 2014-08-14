@@ -13,12 +13,14 @@ import java.net.URI;
 
 import fr.tvbarthel.apps.adaptilo.fragments.AdaptiloControllerFragment;
 import fr.tvbarthel.apps.adaptilo.fragments.BasicControllerFragment;
+import fr.tvbarthel.apps.adaptilo.fragments.DrumsControllerFragment;
 import fr.tvbarthel.apps.adaptilo.helpers.SensorListenerHelper;
 import fr.tvbarthel.apps.adaptilo.helpers.SharedPreferencesHelper;
 import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
 import fr.tvbarthel.apps.adaptilo.models.Event;
 import fr.tvbarthel.apps.adaptilo.models.SensorEvent;
 import fr.tvbarthel.apps.adaptilo.models.UserEvent;
+import fr.tvbarthel.apps.adaptilo.models.enums.ControllerType;
 import fr.tvbarthel.apps.adaptilo.models.enums.EventAction;
 import fr.tvbarthel.apps.adaptilo.models.enums.EventType;
 import fr.tvbarthel.apps.adaptilo.models.enums.MessageType;
@@ -134,8 +136,11 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
     public void onMessage(Message message) {
         switch (message.getType()) {
             case REPLACE_CONTROLLER:
-                //TODO process message to know which controller to use
-                mCallbacks.onReplaceControllerRequest(new BasicControllerFragment());
+                ControllerType type = ((ControllerType) message.getContent());
+                AdaptiloControllerFragment f = retrieveControllerFragment(type);
+                if (f != null) {
+                    mCallbacks.onReplaceControllerRequest(f);
+                }
                 break;
             case VIBRATOR:
                 if (vibrateOnServerEventIsAllowed()) {
@@ -465,6 +470,28 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
                     break;
             }
         }
+    }
+
+    /**
+     * Used to match a {@link fr.tvbarthel.apps.adaptilo.fragments.AdaptiloControllerFragment}
+     * according to an {@link fr.tvbarthel.apps.adaptilo.models.enums.ControllerType}
+     *
+     * @param type given controller type
+     * @return matching controller or null
+     */
+    private AdaptiloControllerFragment retrieveControllerFragment(ControllerType type) {
+        AdaptiloControllerFragment controller = null;
+        switch (type) {
+            case BASIC_CONTROLLER:
+                controller = new BasicControllerFragment();
+                break;
+            case DRUMS_CONTROLLER:
+                controller = new DrumsControllerFragment();
+                break;
+            default:
+                break;
+        }
+        return controller;
     }
 
     /**

@@ -40,6 +40,9 @@ public class Launcher {
                 server.vibrate(2000l);
             } else if (in.equals("vibrate pattern")) {
                 server.vibratePattern(new long[]{100, 250, 200, 250, 200, 250, 200, 250, 200, 250});
+            } else if (in.startsWith("controller")) {
+                String id = in.substring(in.indexOf(" ") + 1);
+                server.switchController(Integer.valueOf(id));
             } else {
                 System.out.println("sendToAll " + in);
                 server.sendToAll(in);
