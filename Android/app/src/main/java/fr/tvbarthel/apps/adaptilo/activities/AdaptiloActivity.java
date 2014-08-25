@@ -101,6 +101,12 @@ public abstract class AdaptiloActivity extends FragmentActivity implements
 
     @Override
     public void onReplaceControllerRequest(AdaptiloControllerFragment controllerFragment) {
+        Bundle args = new Bundle();
+        args.putBoolean(AdaptiloControllerFragment.BUNDLE_FLAG_START_TO_REPLACE, true);
+        args.putString(AdaptiloControllerFragment.BUNDLE_CURRENT_GAME_NAME,
+                mAdaptiloEngine.getEngineConfig().getGameName());
+
+        controllerFragment.setArguments(args);
         setAdaptiloController(controllerFragment);
     }
 

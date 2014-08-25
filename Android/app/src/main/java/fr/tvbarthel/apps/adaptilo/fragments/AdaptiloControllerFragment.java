@@ -36,6 +36,18 @@ import fr.tvbarthel.apps.adaptilo.models.io.Message;
 abstract public class AdaptiloControllerFragment extends Fragment {
 
     /**
+     * Bundle key used to set the flag start to replace.
+     * This means that the current controller has been started to replace a previous one.
+     */
+    public static final String BUNDLE_FLAG_START_TO_REPLACE = "bundle_key_start_to_replace_controller";
+
+    /**
+     * Bundle key used to set the current game name.
+     * Used when controller is start to replace a previous one.
+     */
+    public static final String BUNDLE_CURRENT_GAME_NAME = "bundle_key_game_name";
+
+    /**
      * Logcat
      */
     private static final String TAG = AdaptiloControllerFragment.class.getName();
@@ -45,6 +57,11 @@ abstract public class AdaptiloControllerFragment extends Fragment {
      * The current callbacks object for controller event
      */
     protected Callbacks mCallbacks = sDummyCallbacks;
+
+    /**
+     * Set to true when the current controller has been started to replace a previous one.
+     */
+    private boolean mIsStartToReplaceController;
 
     /**
      * dummy callbacks use when fragment isn't attached
@@ -235,6 +252,13 @@ abstract public class AdaptiloControllerFragment extends Fragment {
         }
 
         mCallbacks = (Callbacks) activity;
+
+        Bundle args = getArguments();
+        if (args != null && args.containsKey(BUNDLE_FLAG_START_TO_REPLACE)) {
+            mIsStartToReplaceController = args.getBoolean(BUNDLE_FLAG_START_TO_REPLACE, false);
+        } else {
+            mIsStartToReplaceController = false;
+        }
     }
 
 
@@ -242,6 +266,17 @@ abstract public class AdaptiloControllerFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        if (mIsStartToReplaceController == true) {
+            Bundle args = getArguments();
+            String gameName;
+            if (args != null && args.containsKey(BUNDLE_CURRENT_GAME_NAME)) {
+                gameName = args.getString(BUNDLE_CURRENT_GAME_NAME);
+            } else {
+                gameName = "";
+            }
+            this.onGameStart(gameName);
+            mIsStartToReplaceController = false;
+        }
     }
 
 
