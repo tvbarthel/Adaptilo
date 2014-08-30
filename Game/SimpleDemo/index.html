@@ -88,12 +88,14 @@
                     console.log(platform.gameRoom);
                     window.location.hash = platform.gameRoom;
                     $("#roles_container").show();
+                    generateQrCodes(roles);
                 };
                 
                 // Set the onDisconnected behavior
                 platformConfiguration.onDisconnected = function() {
                     console.log("onDisconnected");
                     connectionButton.html("Connect");
+                    clearQrCodes();
                     $("#roles_container").hide();
                 }
                 
@@ -109,7 +111,7 @@
                         // Get the server port given by the user
                         platformConfiguration.serverPort = $("#server_port").val();
                         // Set the game name used by the server
-                        platformConfiguration.gameName = "testGame";
+                        platformConfiguration.gameName = "simple_demo";
                         // Set game room for joining an existed one
                         platformConfiguration.gameRoom = null;
                         if(inputGameRoom.val()){
@@ -121,6 +123,22 @@
                         platform.connect();                   
                     }
                 }; 
+                
+                var clearQrCodes = function() {
+                    $("#roles_container").empty();
+                    var title = $(document.createElement('h1'));
+                    title.text("Roles");
+                    $("#roles_container").append(title);
+                };
+                
+                var generateQrCodes = function(roles) {
+                        for (var i = 0; i < roles.length; i++) {
+                            // We don't want to show a qr code for the field role.
+                            if (roles[i] != "field") {
+                                generateQrCode(roles[i]);
+                            }                            
+                        }
+                };
                 
                 var generateQrCode = function(role) {
                     var qrCodeTitle = $(document.createElement('h2'));
@@ -134,7 +152,7 @@
                     qrCodeContainer.qrcode({
                         width: 220,
                         height: 220,
-                        text : "http://www.google.fr"
+                        text : "adaptilo://" + platformConfiguration.serverIp + ":" + platformConfiguration.serverPort + "/" + platformConfiguration.gameName + "?room=" + platform.gameRoom + "&role=" + role,
                     });                    
                 };                
                 

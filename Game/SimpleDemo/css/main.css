@@ -104,7 +104,8 @@ p{
     font-weight             :   bold;
     font                    :   25px/30px Roboto;    
     padding-left            :   16px;
-    padding-top             :   10px;
+    margin-top              :   16px;
+    margin-bottom           :   4px;
 }
 
 /* http://css-tricks.com/centering-in-the-unknown/ */
