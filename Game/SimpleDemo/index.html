@@ -15,6 +15,10 @@
             </h1>
         </div>
         
+        <div id="roles_container" style="display:none;">
+            <h1>Roles</h1>
+        </div>
+        
         <div class="block">
             <div class="card centered" id="connection_card">
             
@@ -26,7 +30,7 @@
                                 <label for="hostIp">Host Ip</label>
                             </td>
                             <td>
-                                <input id="server_ip" name="server_ip" value="192.168.1.6">
+                                <input id="server_ip" name="server_ip" value="192.168.0.15">
                             </td>
                         </tr>
                         <tr>
@@ -82,12 +86,14 @@
                     connectionButton.html("Disconnect");
                     console.log(platform.gameRoom);
                     window.location.hash = platform.gameRoom;
+                    $("#roles_container").show();
                 };
                 
                 // Set the onDisconnected behavior
                 platformConfiguration.onDisconnected = function() {
                     console.log("onDisconnected");
                     connectionButton.html("Connect");
+                    $("#roles_container").hide();
                 }
                 
                 // Create the platform
