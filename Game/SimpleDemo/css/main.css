@@ -83,7 +83,7 @@ p{
 }
 
 #roles_container {
-    position                :   absolute;
+    position                :   fixed;
     width                   :   220px;
     top                     :   150px;
     bottom                  :   0px;

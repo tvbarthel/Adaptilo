@@ -152,7 +152,7 @@
                     qrCodeContainer.qrcode({
                         width: 220,
                         height: 220,
-                        text : "adaptilo://" + platformConfiguration.serverIp + ":" + platformConfiguration.serverPort + "/" + platformConfiguration.gameName + "?room=" + platform.gameRoom + "&role=" + role,
+                        text : platform.getRoleUrl(role),
                     });                    
                 };                
                 
