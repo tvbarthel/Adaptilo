@@ -15,11 +15,11 @@
             </h1>
         </div>
         
-        <div id="roles_container" style="display:none;">
+        <div id="roles_container"  style="display:none;">
             <h1>Roles</h1>
         </div>
         
-        <div class="block">
+        <div class="block" id="connection_container">
             <div class="card centered" id="connection_card">
             
                 <div class="card_content">
@@ -55,7 +55,17 @@
                 <button id="connection_button" type="button" class="card_button">Connect</button>            
                 
             </div>
+                        
         </div>
+        
+        <div id="content_container" style="display:none;">
+            <section id="message_section">
+                <ul id="message_container">
+                    
+                </ul>
+            </section>
+        </div>
+            
     
         <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
         <script src="js/jquery.qrcode.min.js"></script>
@@ -88,7 +98,10 @@
                     console.log(platform.gameRoom);
                     window.location.hash = platform.gameRoom;
                     $("#roles_container").show();
+                    $("#content_container").show();
+                    $("#connection_container").hide();
                     generateQrCodes(roles);
+                    printMessage("connected");
                 };
                 
                 // Set the onDisconnected behavior
@@ -97,7 +110,14 @@
                     connectionButton.html("Connect");
                     clearQrCodes();
                     $("#roles_container").hide();
-                }
+                    $("#content_container").hide();
+                    $("#connection_container").show();
+                };
+                
+                // Set the onMessage behavior
+                platformConfiguration.onMessage = function(message) {
+                    printMessage(message);
+                };
                 
                 // Create the platform
                 var platform = new Adaptilo.Platform();
@@ -154,7 +174,14 @@
                         height: 220,
                         text : platform.getRoleUrl(role),
                     });                    
-                };                
+                };   
+
+                var printMessage = function(message) {
+                    var currentdate = new Date(); 
+                    var newLi = $(document.createElement('li'));
+                    newLi.text("[" + currentdate.toLocaleString() + "]     " + JSON.stringify(message));
+                    $("#message_container").prepend(newLi);
+                };
                 
             });     
 

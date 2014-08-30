@@ -71,8 +71,9 @@ p{
     padding-top             :   100px;
     background-color        :   #607d8b;
     padding-bottom          :   15px;
-    position                :   absolute;
-    width                   :   100%
+    position                :   fixed;
+    width                   :   100%;
+    z-index                 :   100;
 }
 
 #fixed_header h1{
@@ -106,6 +107,36 @@ p{
     padding-left            :   16px;
     margin-top              :   16px;
     margin-bottom           :   4px;
+}
+
+#content_container {
+    display                 :   block;
+    position                :   absolute;
+    top                     :   150px;
+    left                    :   284px;
+    bottom                  :   0px;
+    right                   :   0px;
+    padding-top             :   72px;
+}
+
+#message_section {
+    width                   :   900px;
+    margin                  :   auto;
+    border-left             :   5px solid #8bc34a;
+    padding-left            :   16px;
+    padding-top             :   10px;
+    padding-bottom          :   10px;
+}
+
+#message_section ul {
+    list-style              :   none;
+}
+
+#message_section li {
+    font-family             :   Roboto;
+    font-size               :   15px;
+    line-height             :   25px;
+    white-space             :   pre;
 }
 
 /* http://css-tricks.com/centering-in-the-unknown/ */
