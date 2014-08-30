@@ -140,8 +140,8 @@ Adaptilo.Platform = (function() {
         },
         
         getRoleUrl : function(role) {
-            return "adaptilo://" + platformConfiguration.serverIp + ":" + platformConfiguration.serverPort + "/" + platformConfiguration.gameName + "?room=" + platform.gameRoom + "&role=" + role;
-        }
+            return "adaptilo://" + this.platformConfiguration.serverIp + ":" + this.platformConfiguration.serverPort + "/" + this.platformConfiguration.gameName + "?room=" + this.gameRoom + "&role=" + role;
+        },
         
         sendMessage : function(message) {        
             var serverRequest = new Adaptilo.ServerRequest(this.externalId, message);            
