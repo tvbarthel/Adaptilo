@@ -42,9 +42,14 @@ public class ClapEngine {
     private File mTempFile;
 
     /**
-     * True while runnable should process sounds.
+     * True while the engine is running.
      */
     private boolean mRecording;
+
+    /**
+     * True when the engine is paused.
+     */
+    private boolean mIsPaused;
 
     /**
      * Last max amplitude recorded.
@@ -92,7 +97,7 @@ public class ClapEngine {
      * Resume the Clap Engine
      */
     public void resume() {
-        //TODO should restart looping
+        mIsPaused = false;
     }
 
 
@@ -100,7 +105,7 @@ public class ClapEngine {
      * Pause the Clap Engine
      */
     public void pause() {
-        //TODO should stop looping
+        mIsPaused = true;
     }
 
     /**
@@ -134,7 +139,9 @@ public class ClapEngine {
             public void run() {
                 super.run();
                 while (mRecording) {
-                    processNewAmplitude(mMediaRecorder.getMaxAmplitude());
+                    if (!mIsPaused) {
+                        processNewAmplitude(mMediaRecorder.getMaxAmplitude());
+                    }
                     try {
                         sleep(TICKING_TIME_IN_MILLI);
                     } catch (InterruptedException e) {
