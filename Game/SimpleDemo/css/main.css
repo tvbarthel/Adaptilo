@@ -91,11 +91,20 @@ p{
     padding-right           :   32px;
     padding-top             :   16px;    
     background-color        :   #FFFFFF;
+    overflow-y              :   auto;
 }
 
 #roles_container h1{
     color                   :   #607d8b;
     font                    :   20px/25px Roboto;    
+}
+
+#roles_container h2{
+    color                   :   #8bc34a;  
+    font-weight             :   bold;
+    font                    :   25px/30px Roboto;    
+    padding-left            :   16px;
+    padding-top             :   10px;
 }
 
 /* http://css-tricks.com/centering-in-the-unknown/ */

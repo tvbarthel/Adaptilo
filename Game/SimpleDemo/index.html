@@ -58,6 +58,7 @@
         </div>
     
         <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="js/jquery.qrcode.min.js"></script>
         <script src="js/main.js"></script>
         
         <script type="text/javascript">
@@ -120,6 +121,22 @@
                         platform.connect();                   
                     }
                 }; 
+                
+                var generateQrCode = function(role) {
+                    var qrCodeTitle = $(document.createElement('h2'));
+                    qrCodeTitle.html("&#8226; "+role);
+                    $("#roles_container").append(qrCodeTitle);
+                    
+                    var id = "qr_code_"+role;
+                    var qrCodeContainer = $(document.createElement('div'));                    
+                    qrCodeContainer.attr("id", id);
+                    $("#roles_container").append(qrCodeContainer);
+                    qrCodeContainer.qrcode({
+                        width: 220,
+                        height: 220,
+                        text : "http://www.google.fr"
+                    });                    
+                };                
                 
             });     
 
