@@ -176,6 +176,16 @@ public abstract class AdaptiloServer extends WebSocketServer {
     }
 
     /**
+     * allow to test clap engine activation and deactivation
+     * TODO remove, only for test purpose
+     */
+    public void enableClaper(boolean enable) {
+        final EventAction action = enable ? EventAction.ACTION_ENABLE : EventAction.ACTION_DISABLE;
+        final Event enableShaker = new Event(EventType.CLAP, action);
+        sendToAll(mParser.toJson(new Message(MessageType.SENSOR, enableShaker)));
+    }
+
+    /**
      * allow to test controller replacement
      * TODO remove, only for test purpose
      *

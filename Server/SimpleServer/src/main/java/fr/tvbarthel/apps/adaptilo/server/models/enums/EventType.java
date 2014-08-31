@@ -21,6 +21,8 @@ public enum EventType {
 
     KEY_LEFT,
 
-    SHAKER
+    SHAKER,
+
+    CLAP
 
 }
