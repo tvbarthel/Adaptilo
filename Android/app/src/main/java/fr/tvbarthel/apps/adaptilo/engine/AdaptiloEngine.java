@@ -446,7 +446,13 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
         mClapEngine = new ClapEngine(mContext, new ClapListener() {
             @Override
             public void onClapDetected() {
-                Log.d("DEBUG===", "onClapDetected");
+                //send clap event
+                if (mReadyToCommunicate) {
+                    final SensorEvent sensorEvent =
+                            new SensorEvent(EventType.CLAP, EventAction.ACTION_HAPPENED, 0);
+                    final Message message = new Message(MessageType.SENSOR, sensorEvent);
+                    mAdaptiloClient.send(message);
+                }
             }
         });
     }
