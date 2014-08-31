@@ -84,9 +84,19 @@ public class ClapEngine {
      * Start the Clap Engine
      */
     public void start() {
+
+        if (mMediaRecorder == null) {
+            mMediaRecorder = new MediaRecorder();
+            initMediaRecorder();
+        }
+
         if (!mRecording) {
             mMediaRecorder.start();
             mRecording = true;
+        }
+
+        if (mThread == null) {
+            initThread();
         }
 
         //start thread
@@ -112,7 +122,18 @@ public class ClapEngine {
      * Stop the Clap Engine
      */
     public void stop() {
-        //TODO should should stop looping and deleting temp file
+        mMediaRecorder.stop();
+        mMediaRecorder.reset();
+        mMediaRecorder.release();
+        mMediaRecorder = null;
+
+        mTempFile.delete();
+
+        mThread.interrupt();
+        mThread = null;
+
+        mRecording = false;
+        mIsPaused = true;
     }
 
     /**
