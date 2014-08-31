@@ -20,7 +20,7 @@
         </div>
         
         <div id="roles_container" style="display:none;">
-            <h1>Roles</h1>
+
         </div>
         
         <div class="block" id="connection_container">
@@ -156,9 +156,6 @@
                 
                 var clearQrCodes = function() {
                     $("#roles_container").empty();
-                    var title = $(document.createElement('h1'));
-                    title.text("Roles");
-                    $("#roles_container").append(title);
                 };
                 
                 var generateQrCodes = function(roles) {
@@ -172,7 +169,7 @@
                 
                 var generateQrCode = function(role) {
                     var qrCodeTitle = $(document.createElement('h2'));
-                    qrCodeTitle.html("&#8226; "+role);
+                    qrCodeTitle.html("<i class=\"fa fa-gamepad fa-lg\"></i> "+role);
                     $("#roles_container").append(qrCodeTitle);
                     
                     var id = "qr_code_"+role;
