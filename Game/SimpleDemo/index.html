@@ -5,6 +5,7 @@
         <title>Adaptilo : Simple Demo</title>
         <link rel="stylesheet" href="css/reset.css"/>
         <link rel="stylesheet" href="css/main.css"/>
+        <link rel="stylesheet" href="css/font-awesome.min.css"/>
     </head>
     
     <body>
@@ -13,14 +14,17 @@
             <h1>
                 Adaptilo Simple Demo
             </h1>
+            <button id="btn_disconnect" class="z-depth-4" style="display:none;">
+                <i class="fa fa-times"></i>
+            </button>
         </div>
         
-        <div id="roles_container"  style="display:none;">
+        <div id="roles_container" style="display:none;">
             <h1>Roles</h1>
         </div>
         
         <div class="block" id="connection_container">
-            <div class="card centered" id="connection_card">
+            <div class="card centered z-depth-1" id="connection_card">
             
                 <div class="card_content">
                     
@@ -81,6 +85,10 @@
                     toggleConnection();
                 });
                 
+                $("#btn_disconnect").bind("click", function() {
+                    toggleConnection();
+                });
+                
                 // Game Room Input
                 var inputGameRoom = $("#join_room");
                 inputGameRoom.val(window.location.hash.substring(1));
@@ -99,6 +107,7 @@
                     window.location.hash = platform.gameRoom;
                     $("#roles_container").show();
                     $("#content_container").show();
+                    $("#btn_disconnect").show();
                     $("#connection_container").hide();
                     generateQrCodes(roles);
                     printMessage("connected");
@@ -111,6 +120,7 @@
                     clearQrCodes();
                     $("#roles_container").hide();
                     $("#content_container").hide();
+                    $("#btn_disconnect").hide();
                     $("#connection_container").show();
                 };
                 
