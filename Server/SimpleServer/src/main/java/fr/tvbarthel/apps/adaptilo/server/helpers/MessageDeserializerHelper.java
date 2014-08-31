@@ -88,9 +88,11 @@ public class MessageDeserializerHelper implements JsonDeserializer<Message> {
                 break;
 
             case SENSOR:
+            case USER_INPUT:
                 Event event = context.deserialize(content, Event.class);
                 message.setContent(event);
                 break;
+
         }
         return message;
     }

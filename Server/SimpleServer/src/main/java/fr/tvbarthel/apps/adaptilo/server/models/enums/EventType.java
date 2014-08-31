@@ -17,6 +17,10 @@ public enum EventType {
 
     KEY_ARROW_DOWN,
 
+    KEY_RIGHT,
+
+    KEY_LEFT,
+
     SHAKER
 
 }
