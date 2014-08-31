@@ -24,6 +24,11 @@ public enum EventType {
     /**
      * linked to {@link fr.tvbarthel.apps.adaptilo.engine.ShakeListener}
      */
-    SHAKER
+    SHAKER,
+
+    /**
+     * linked to {@link fr.tvbarthel.apps.adaptilo.engine.ClapEngine}
+     */
+    CLAP
 
 }

@@ -62,6 +62,11 @@ public class ClapEngine {
     private Thread mThread;
 
     /**
+     * Listener used to catch {@link fr.tvbarthel.apps.adaptilo.engine.ClapEngine} callbacks.
+     */
+    private ClapListener mClapListener;
+
+    /**
      * Handler used to catch clap event from non ui Thread which perform the detection.
      */
     private ClapHandler mClapHandler;
@@ -69,12 +74,10 @@ public class ClapEngine {
     public ClapEngine(Context context, ClapListener listener) {
         mTempFile = new File(context.getExternalFilesDir(null), RECORDER_FILE_NAME);
 
-        initMediaRecorder();
-
-        initThread();
+        mClapListener = listener;
 
         //Handler attach to the ui thread.
-        mClapHandler = new ClapHandler(listener);
+        mClapHandler = new ClapHandler(mClapListener);
 
         mLastMaxAmplitude = -1;
     }
@@ -129,17 +132,27 @@ public class ClapEngine {
      * Should be linked to the hosting activity life cycle.
      */
     public void stop() {
+        mRecording = false;
+
+        if (mThread != null) {
+            mThread.interrupt();
+            mThread = null;
+        }
+
         if (mMediaRecorder != null) {
             releaseMediaRecorder();
         }
 
         mTempFile.delete();
+    }
 
-        mThread.interrupt();
-        mThread = null;
-
-        mRecording = false;
-        mIsPaused = true;
+    /**
+     * Retrieve engine state.
+     *
+     * @return true when engine is paused.
+     */
+    public boolean isPaused() {
+        return mIsPaused;
     }
 
     /**
@@ -207,10 +220,12 @@ public class ClapEngine {
      * Release the media recorder to avoid recording failure for other application.
      */
     private void releaseMediaRecorder() {
-        mMediaRecorder.stop();
-        mMediaRecorder.reset();
-        mMediaRecorder.release();
-        mMediaRecorder = null;
+        if (mMediaRecorder != null) {
+            mMediaRecorder.stop();
+            mMediaRecorder.reset();
+            mMediaRecorder.release();
+            mMediaRecorder = null;
+        }
     }
 
     /**

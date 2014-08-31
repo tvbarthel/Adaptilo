@@ -17,6 +17,8 @@ public enum EventType {
 
     KEY_ARROW_DOWN,
 
-    SHAKER
+    SHAKER,
+
+    CLAP
 
 }

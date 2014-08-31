@@ -43,6 +43,10 @@ public class Launcher {
             } else if (in.startsWith("controller")) {
                 String id = in.substring(in.indexOf(" ") + 1);
                 server.switchController(Integer.valueOf(id));
+            } else if (in.equals("enable clap")) {
+                server.enableClaper(true);
+            } else if (in.equals("disable clap")) {
+                server.enableClaper(false);
             } else {
                 System.out.println("sendToAll " + in);
                 server.sendToAll(in);

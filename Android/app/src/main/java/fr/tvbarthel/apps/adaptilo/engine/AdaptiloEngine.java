@@ -104,6 +104,11 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
      */
     private ShakeListener mShakeListener;
 
+    /**
+     * Engine used to catch event when user claps his hands.
+     */
+    private ClapEngine mClapEngine;
+
 
     /**
      * Create a new AdaptiloEngine to process userInput.
@@ -238,6 +243,8 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
             );
             mAdaptiloClient.connect();
         }
+
+        initClapEngine();
     }
 
     /**
@@ -260,6 +267,10 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
             mAdaptiloClient = null;
             mEngineConfig = null;
         }
+
+        if (mClapEngine != null) {
+            mClapEngine.stop();
+        }
     }
 
     /**
@@ -274,6 +285,11 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
         if (mShakeListener != null) {
             shakeDetection(SensorListenerHelper.PAUSE);
         }
+
+        //clap engine
+        if (mClapEngine != null) {
+            mClapEngine.pause();
+        }
     }
 
     /**
@@ -287,6 +303,11 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
         //shake detection
         if (mShakeListener != null) {
             shakeDetection(SensorListenerHelper.RESUME);
+        }
+
+        //clap engine
+        if (mClapEngine != null) {
+            mClapEngine.resume();
         }
     }
 
@@ -342,6 +363,17 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
                     shakeDetection(SensorListenerHelper.START);
                 } else if (action == EventAction.ACTION_DISABLE) {
                     shakeDetection(SensorListenerHelper.STOP);
+                }
+                break;
+            case CLAP:
+                if (action == EventAction.ACTION_ENABLE) {
+                    if (mClapEngine.isPaused()) {
+                        mClapEngine.resume();
+                    } else {
+                        mClapEngine.start();
+                    }
+                } else if (action == EventAction.ACTION_DISABLE) {
+                    mClapEngine.stop();
                 }
                 break;
         }
@@ -405,6 +437,18 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
         if (mAccelerometer == null) {
             mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         }
+    }
+
+    /**
+     * Initialize engine used to detect clap event.
+     */
+    private void initClapEngine() {
+        mClapEngine = new ClapEngine(mContext, new ClapListener() {
+            @Override
+            public void onClapDetected() {
+                Log.d("DEBUG===", "onClapDetected");
+            }
+        });
     }
 
     /**
