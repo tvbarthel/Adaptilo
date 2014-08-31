@@ -69,7 +69,6 @@ public class ClapEngine {
     public ClapEngine(Context context, ClapListener listener) {
         mTempFile = new File(context.getExternalFilesDir(null), RECORDER_FILE_NAME);
 
-        mMediaRecorder = new MediaRecorder();
         initMediaRecorder();
 
         initThread();
@@ -81,51 +80,58 @@ public class ClapEngine {
     }
 
     /**
-     * Start the Clap Engine
+     * Start the Clap Engine.
+     * <p/>
+     * Should be linked to the hosting activity life cycle.
      */
     public void start() {
 
         if (mMediaRecorder == null) {
-            mMediaRecorder = new MediaRecorder();
             initMediaRecorder();
-        }
-
-        if (!mRecording) {
-            mMediaRecorder.start();
-            mRecording = true;
         }
 
         if (mThread == null) {
             initThread();
         }
 
+        mRecording = true;
+
         //start thread
         mThread.start();
     }
 
     /**
-     * Resume the Clap Engine
+     * Resume the Clap Engine.
+     * <p/>
+     * Should be linked to the hosting activity life cycle.
      */
     public void resume() {
-        mIsPaused = false;
+        if (mIsPaused) {
+            initMediaRecorder();
+            mIsPaused = false;
+        }
     }
 
 
     /**
-     * Pause the Clap Engine
+     * Pause the Clap Engine.
+     * <p/>
+     * Should be linked to the hosting activity life cycle.
      */
     public void pause() {
         mIsPaused = true;
+        releaseMediaRecorder();
     }
 
     /**
-     * Stop the Clap Engine
+     * Stop the Clap Engine.
+     * <p/>
+     * Should be linked to the hosting activity life cycle.
      */
     public void stop() {
-        mMediaRecorder.stop();
-        mMediaRecorder.reset();
-        mMediaRecorder.release();
-        mMediaRecorder = null;
+        if (mMediaRecorder != null) {
+            releaseMediaRecorder();
+        }
 
         mTempFile.delete();
 
@@ -140,12 +146,14 @@ public class ClapEngine {
      * Used to initialize the media recorder.
      */
     private void initMediaRecorder() {
+        mMediaRecorder = new MediaRecorder();
         mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         mMediaRecorder.setOutputFile(mTempFile.getAbsolutePath());
         try {
             mMediaRecorder.prepare();
+            mMediaRecorder.start();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -193,6 +201,16 @@ public class ClapEngine {
                 mLastMaxAmplitude = newAmplitude;
             }
         }
+    }
+
+    /**
+     * Release the media recorder to avoid recording failure for other application.
+     */
+    private void releaseMediaRecorder() {
+        mMediaRecorder.stop();
+        mMediaRecorder.reset();
+        mMediaRecorder.release();
+        mMediaRecorder = null;
     }
 
     /**
