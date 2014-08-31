@@ -20,10 +20,6 @@ p{
     moz-border-radius       :   2px;
     -webkit-border-radius   :   2px;
     border-radius           :   2px;
-    -moz-box-shadow         :   0 2px 4px rgba(0,0,0,0.5);
-    -ms-box-shadow          :   0 2px 4px rgba(0,0,0,0.5);
-    -webkit-box-shadow      :   0 2px 4px rgba(0,0,0,0.5);
-    box-shadow              :   0 2px 4px rgba(0,0,0,0.5);
 }
 
 .card_content{
@@ -70,9 +66,10 @@ p{
 #fixed_header {
     padding-top             :   100px;
     background-color        :   #607d8b;
-    padding-bottom          :   12px;
-    position                :   absolute;
-    width                   :   100%
+    padding-bottom          :   15px;
+    position                :   fixed;
+    width                   :   100%;
+    z-index                 :   100;
 }
 
 #fixed_header h1{
@@ -80,6 +77,99 @@ p{
     font                    :   30px/35px Roboto;    
     font-weight             :   bold;
     padding-left            :   60px;
+}
+
+#btn_disconnect {
+    position                :   absolute;
+    margin-top              :   -10px;
+    right                   :   150px;  
+    background-color        :   #8bc34a;
+    width                   :   50px;
+    height                  :   50px;
+    border                  :   medium none;
+    border-radius           :   50%;
+    moz-border-radius       :   50%;
+    -webkit-border-radius   :   50%;
+    border-spacing          :   0;
+    color                   :   #FFFFFF;
+    outline                 :   0 !important;
+    cursor                  :   pointer;
+}
+
+#btn_disconnect:active {
+    right                   :   151px;
+    margin-top              :   -9px;
+    width                   :   48px;
+    height                  :   48px;
+}
+
+#roles_container {
+    position                :   fixed;
+    width                   :   220px;
+    top                     :   150px;
+    bottom                  :   0px;
+    padding-left            :   32px;
+    padding-right           :   32px;
+    padding-top             :   16px;    
+    padding-bottom          :   16px;    
+    background-color        :   #FFFFFF;
+    overflow-y              :   auto;
+}
+
+#roles_container h2{
+    color                   :   #8bc34a;  
+    font-weight             :   bold;
+    font                    :   25px/30px Roboto;   
+    line-height             :   35px;
+    padding-left            :   16px;
+    margin-top              :   16px;
+    margin-bottom           :   4px;
+}
+
+#content_container {
+    display                 :   block;
+    position                :   absolute;
+    top                     :   150px;
+    left                    :   284px;
+    bottom                  :   0px;
+    right                   :   0px;
+    padding-top             :   72px;
+}
+
+#message_section {
+    width                   :   85%;
+    max-width               :   900px;
+    margin                  :   auto;
+    border-left             :   5px solid #8bc34a;
+    padding-left            :   16px;
+    padding-top             :   10px;
+    padding-bottom          :   10px;
+}
+
+#message_section ul {
+    list-style              :   none;
+}
+
+#message_section li {
+    font-family             :   Roboto;
+    font-size               :   15px;
+    line-height             :   25px;
+    white-space             :   pre;
+}
+
+
+.z-depth-1 {
+    -moz-box-shadow           :   0px 2px 4px 2px rgba(0,0,0, 0.25);
+    -ms-box-shadow            :   0px 2px 4px 2px rgba(0,0,0, 0.25);
+    -webkit-box-shadow        :   0px 2px 4px 2px rgba(0,0,0, 0.25);
+    box-shadow                :   0px 2px 4px 2px rgba(0,0,0, 0.25);
+}
+
+.z-depth-4 {
+    -moz-box-shadow           :   0px 3px 6px 3px rgba(0,0,0, 0.30);
+    -ms-box-shadow            :   0px 3px 6px 3px rgba(0,0,0, 0.30);
+    -webkit-box-shadow        :   0px 3px 6px 3px rgba(0,0,0, 0.30);
+    box-shadow                :   0px 3px 6px 3px rgba(0,0,0, 0.30);
 }
 
 /* http://css-tricks.com/centering-in-the-unknown/ */

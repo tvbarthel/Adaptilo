@@ -16,13 +16,13 @@ public class Launcher {
 
         //create roles
         final ArrayList<RoleConfiguration> roles = new ArrayList<RoleConfiguration>();
-        roles.add(new RoleConfiguration("a", true, true, 2));
-        roles.add(new RoleConfiguration("b", true, false, 1));
-        roles.add(new RoleConfiguration("c", false, false, 1));
+        roles.add(new RoleConfiguration("role_a", true, true, 2));
+        roles.add(new RoleConfiguration("role_b", true, false, 1));
+        roles.add(new RoleConfiguration("role_c", false, false, 1));
         roles.add(new RoleConfiguration("field", true, true, 2));
 
         //create server
-        final SingleGameServer server = new SingleGameServer(new InetSocketAddress(8887), "testGame", roles);
+        final SingleGameServer server = new SingleGameServer(new InetSocketAddress(8887), "simple_demo", roles);
 
         server.start();
         BufferedReader sysin = new BufferedReader(new InputStreamReader(System.in));

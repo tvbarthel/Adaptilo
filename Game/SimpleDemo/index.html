@@ -5,6 +5,7 @@
         <title>Adaptilo : Simple Demo</title>
         <link rel="stylesheet" href="css/reset.css"/>
         <link rel="stylesheet" href="css/main.css"/>
+        <link rel="stylesheet" href="css/font-awesome.min.css"/>
     </head>
     
     <body>
@@ -13,10 +14,17 @@
             <h1>
                 Adaptilo Simple Demo
             </h1>
+            <button id="btn_disconnect" class="z-depth-4" style="display:none;">
+                <i class="fa fa-times"></i>
+            </button>
         </div>
         
-        <div class="block">
-            <div class="card centered" id="connection_card">
+        <div id="roles_container" style="display:none;">
+
+        </div>
+        
+        <div class="block" id="connection_container">
+            <div class="card centered z-depth-1" id="connection_card">
             
                 <div class="card_content">
                     
@@ -26,7 +34,7 @@
                                 <label for="hostIp">Host Ip</label>
                             </td>
                             <td>
-                                <input id="server_ip" name="server_ip" value="192.168.1.6">
+                                <input id="server_ip" name="server_ip" value="192.168.0.15">
                             </td>
                         </tr>
                         <tr>
@@ -51,9 +59,20 @@
                 <button id="connection_button" type="button" class="card_button">Connect</button>            
                 
             </div>
+                        
         </div>
+        
+        <div id="content_container" style="display:none;">
+            <section id="message_section">
+                <ul id="message_container">
+                    
+                </ul>
+            </section>
+        </div>
+            
     
         <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="js/jquery.qrcode.min.js"></script>
         <script src="js/main.js"></script>
         
         <script type="text/javascript">
@@ -63,6 +82,10 @@
                 // Connection Button
                 var connectionButton = $("#connection_button");                
                 connectionButton.bind("click", function() {
+                    toggleConnection();
+                });
+                
+                $("#btn_disconnect").bind("click", function() {
                     toggleConnection();
                 });
                 
@@ -82,13 +105,29 @@
                     connectionButton.html("Disconnect");
                     console.log(platform.gameRoom);
                     window.location.hash = platform.gameRoom;
+                    $("#roles_container").show();
+                    $("#content_container").show();
+                    $("#btn_disconnect").show();
+                    $("#connection_container").hide();
+                    generateQrCodes(roles);
+                    printMessage("connected");
                 };
                 
                 // Set the onDisconnected behavior
                 platformConfiguration.onDisconnected = function() {
                     console.log("onDisconnected");
                     connectionButton.html("Connect");
-                }
+                    clearQrCodes();
+                    $("#roles_container").hide();
+                    $("#content_container").hide();
+                    $("#btn_disconnect").hide();
+                    $("#connection_container").show();
+                };
+                
+                // Set the onMessage behavior
+                platformConfiguration.onMessage = function(message) {
+                    printMessage(message);
+                };
                 
                 // Create the platform
                 var platform = new Adaptilo.Platform();
@@ -102,7 +141,7 @@
                         // Get the server port given by the user
                         platformConfiguration.serverPort = $("#server_port").val();
                         // Set the game name used by the server
-                        platformConfiguration.gameName = "testGame";
+                        platformConfiguration.gameName = "simple_demo";
                         // Set game room for joining an existed one
                         platformConfiguration.gameRoom = null;
                         if(inputGameRoom.val()){
@@ -114,6 +153,42 @@
                         platform.connect();                   
                     }
                 }; 
+                
+                var clearQrCodes = function() {
+                    $("#roles_container").empty();
+                };
+                
+                var generateQrCodes = function(roles) {
+                        for (var i = 0; i < roles.length; i++) {
+                            // We don't want to show a qr code for the field role.
+                            if (roles[i] != "field") {
+                                generateQrCode(roles[i]);
+                            }                            
+                        }
+                };
+                
+                var generateQrCode = function(role) {
+                    var qrCodeTitle = $(document.createElement('h2'));
+                    qrCodeTitle.html("<i class=\"fa fa-gamepad fa-lg\"></i> "+role);
+                    $("#roles_container").append(qrCodeTitle);
+                    
+                    var id = "qr_code_"+role;
+                    var qrCodeContainer = $(document.createElement('div'));                    
+                    qrCodeContainer.attr("id", id);
+                    $("#roles_container").append(qrCodeContainer);
+                    qrCodeContainer.qrcode({
+                        width: 220,
+                        height: 220,
+                        text : platform.getRoleUrl(role),
+                    });                    
+                };   
+
+                var printMessage = function(message) {
+                    var currentdate = new Date(); 
+                    var newLi = $(document.createElement('li'));
+                    newLi.text("[" + currentdate.toLocaleString() + "]     " + JSON.stringify(message));
+                    $("#message_container").prepend(newLi);
+                };
                 
             });     
 

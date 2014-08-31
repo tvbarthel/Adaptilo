@@ -139,6 +139,10 @@ Adaptilo.Platform = (function() {
             this.platformConfiguration = $.extend(true, {}, platformConfiguration);
         },
         
+        getRoleUrl : function(role) {
+            return "adaptilo://" + this.platformConfiguration.serverIp + ":" + this.platformConfiguration.serverPort + "/" + this.platformConfiguration.gameName + "?room=" + this.gameRoom + "&role=" + role;
+        },
+        
         sendMessage : function(message) {        
             var serverRequest = new Adaptilo.ServerRequest(this.externalId, message);            
             mWebSocket.send(JSON.stringify(serverRequest));
