@@ -1,0 +1,185 @@
+html,body{
+    height                  :   100%;
+}
+
+body{
+    background-color        :   #E2E2E2; 
+    color                   :   #222;
+    font                    :   16px/19px Roboto, sans-serif;
+    font-weight             :   400;   
+}
+
+p{
+    word-wrap               :   break-word;
+}
+
+
+.card{
+    display                 :   block;
+    background-color        :   #FFFFFF;
+    moz-border-radius       :   2px;
+    -webkit-border-radius   :   2px;
+    border-radius           :   2px;
+}
+
+.card_content{
+    padding                 :   16px;
+}
+
+.card_button{
+    display                 :   inline-block;
+    border                  :   none;
+    margin                  :   0px;
+    padding                 :   16px;    
+    background-color        :   #FFFFFF;
+    color                   :   #222;
+    font                    :   16px/19px Roboto;
+    border-radius           :   0 0 2px 0;
+}
+
+.card_button:focus{
+    outline                 :   0 !important;
+}
+
+.card_button:hover{
+    background-color        :   #dcedc8;    
+}
+
+.card_button:active{
+    background-color        :   #8bc34a;
+}
+
+#connection_card{
+    width                   :   300px;
+    text-align              :   right;
+}
+
+#connection_settings{
+    margin                  :   0 auto;
+    margin-top              :   10px;
+}
+
+#connection_settings td {
+    padding                 :   8px;
+}
+
+#fixed_header {
+    padding-top             :   100px;
+    background-color        :   #607d8b;
+    padding-bottom          :   15px;
+    position                :   fixed;
+    width                   :   100%;
+    z-index                 :   100;
+    padding-left            :   60px;
+}
+
+#fixed_header h1{
+    color                   :   #FFFFFF;
+    font                    :   30px/35px Roboto;    
+    font-weight             :   bold;
+    margin-bottom           :   5px;
+}
+
+#fixed_header a {
+    color                   :   #EEEEEE;
+}
+
+#btn_disconnect {
+    position                :   absolute;
+    margin-top              :   -10px;
+    right                   :   150px;  
+    background-color        :   #8bc34a;
+    width                   :   50px;
+    height                  :   50px;
+    border                  :   medium none;
+    border-radius           :   50%;
+    moz-border-radius       :   50%;
+    -webkit-border-radius   :   50%;
+    border-spacing          :   0;
+    color                   :   #FFFFFF;
+    outline                 :   0 !important;
+    cursor                  :   pointer;
+}
+
+#btn_disconnect:active {
+    right                   :   151px;
+    margin-top              :   -9px;
+    width                   :   48px;
+    height                  :   48px;
+}
+
+#roles_container {
+    position                :   fixed;
+    width                   :   220px;
+    top                     :   175px;
+    bottom                  :   0px;
+    padding-left            :   32px;
+    padding-right           :   32px;
+    padding-top             :   16px;    
+    padding-bottom          :   16px;    
+    background-color        :   #FFFFFF;
+    overflow-y              :   auto;
+}
+
+#roles_container h2{
+    color                   :   #8bc34a;  
+    font-weight             :   bold;
+    font                    :   25px/30px Roboto;   
+    line-height             :   35px;
+    padding-left            :   16px;
+    margin-top              :   16px;
+    margin-bottom           :   4px;
+}
+
+#content_container {
+    display                 :   block;
+    position                :   absolute;
+    top                     :   175px;
+    left                    :   284px;
+    bottom                  :   0px;
+    right                   :   0px;
+    padding-top             :   72px;
+}
+
+#game {
+    margin                  :   auto;
+}
+
+
+.z-depth-1 {
+    -moz-box-shadow           :   0px 2px 4px 2px rgba(0,0,0, 0.25);
+    -ms-box-shadow            :   0px 2px 4px 2px rgba(0,0,0, 0.25);
+    -webkit-box-shadow        :   0px 2px 4px 2px rgba(0,0,0, 0.25);
+    box-shadow                :   0px 2px 4px 2px rgba(0,0,0, 0.25);
+}
+
+.z-depth-4 {
+    -moz-box-shadow           :   0px 3px 6px 3px rgba(0,0,0, 0.30);
+    -ms-box-shadow            :   0px 3px 6px 3px rgba(0,0,0, 0.30);
+    -webkit-box-shadow        :   0px 3px 6px 3px rgba(0,0,0, 0.30);
+    box-shadow                :   0px 3px 6px 3px rgba(0,0,0, 0.30);
+}
+
+/* http://css-tricks.com/centering-in-the-unknown/ */
+
+/* This parent can be any width and height */
+.block {
+    text-align              :   center;
+    height                  :   100%
+}
+ 
+/* The ghost, nudged to maintain perfect centering */
+.block:before {
+    content                 :   '';
+    display                 :   inline-block;
+    height                  :   100%;
+    vertical-align          :   middle;
+    margin-right            :   -0.25em; /* Adjusts for spacing */
+}
+
+/* The element to be centered, can
+   also be of any width and height */ 
+.centered {
+    display                 :   inline-block;
+    vertical-align          :   middle;
+}

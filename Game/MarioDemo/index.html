@@ -1,0 +1,226 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+        <title>Adaptilo : Mario Demo</title>
+        <link rel="stylesheet" href="css/reset.css"/>
+        <link rel="stylesheet" href="css/main.css"/>
+        <link rel="stylesheet" href="css/font-awesome.min.css"/>
+        <link rel="stylesheet" type="text/css" href="./css/mario_styles.css">
+        <script type="text/javascript" src="./js/mario.js"></script>
+    </head>    
+
+
+    <body>
+    
+        <div id="fixed_header">        
+            <h1>
+                Adaptilo Simple Demo
+            </h1>
+            <a href="http://blog.nihilogic.dk/2008/04/super-mario-in-14kb-javascript.html">Credit for the game goes to Nihilogic.</a>
+            <button id="btn_disconnect" class="z-depth-4" style="display:none;">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+        
+        <div id="roles_container" style="display:none;">
+
+        </div>
+        
+        <div class="block" id="connection_container">
+            <div class="card centered z-depth-1" id="connection_card">
+            
+                <div class="card_content">
+                    
+                    <table id="connection_settings">
+                        <tr>
+                            <td>
+                                <label for="hostIp">Host Ip</label>
+                            </td>
+                            <td>
+                                <input id="server_ip" name="server_ip" value="192.168.0.15">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="port">Port</label>
+                            </td>
+                            <td>
+                                <input id="server_port" name="server_port" value="8887">
+                            </td>
+                        </tr>
+						<tr>
+                            <td>
+                                <label for="port">Join Room</label>
+                            </td>
+                            <td>
+                                <input id="join_room" name="join_room" value="">
+                            </td>
+                        </tr>
+                    </table> 
+                </div>
+                
+                <button id="connection_button" type="button" class="card_button">Connect</button>            
+                
+            </div>
+            
+        </div>
+
+        
+        
+        <div id="content_container" style="display:none;">            
+            <div id="game" tabindex="0" style="margin-top: 10px; height: 416px; width: 512px;"></div>            
+        </div>
+        
+        <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="js/jquery.qrcode.min.js"></script>
+        <script src="js/main.js"></script>
+        
+        <script type="text/javascript">
+            $(function() {
+                // the DOM is now fully loaded.   
+
+                // Connection Button
+                var connectionButton = $("#connection_button");                
+                connectionButton.bind("click", function() {
+                    toggleConnection();
+                });
+                
+                $("#btn_disconnect").bind("click", function() {
+                    toggleConnection();
+                });
+                
+                // Game Room Input
+                var inputGameRoom = $("#join_room");
+                inputGameRoom.val(window.location.hash.substring(1));
+                inputGameRoom.keyup(function(event){
+                    window.location.hash = inputGameRoom.val();
+                });
+                
+                var platformConfiguration = Adaptilo.Configuration.createDefault();  
+                
+                // Set the onConnected behavior
+                platformConfiguration.onConnected = function(roles) {
+                    console.log("onConnected");
+                    console.log(roles);
+                    connectionButton.html("Disconnect");
+                    console.log(platform.gameRoom);
+                    window.location.hash = platform.gameRoom;
+                    $("#roles_container").show();
+                    $("#content_container").show();
+                    $("#btn_disconnect").show();
+                    $("#connection_container").hide();
+                    generateQrCodes(roles);
+                };
+                
+                // Set the onDisconnected behavior
+                platformConfiguration.onDisconnected = function() {
+                    console.log("onDisconnected");
+                    connectionButton.html("Connect");
+                    clearQrCodes();
+                    $("#roles_container").hide();
+                    $("#content_container").hide();
+                    $("#btn_disconnect").hide();
+                    $("#connection_container").show();
+                };
+                
+                // Set the onMessage behavior
+                platformConfiguration.onMessage = function(message) {
+                    if (message.type === "ON_ROLE_REGISTERED" && message.content === "mario") {
+                        Mario(false, 2);
+                    } else if (message.type === "USER_INPUT" || message.type === "SENSOR") {
+                        handleUserInput(message.content);
+                    }
+                };
+                
+                var handleUserInput = function(userInput) {
+                    console.log(userInput);
+                    if (userInput.mEventAction === "ACTION_KEY_DOWN") {
+                        if (userInput.mEventType === "KEY_RIGHT") {
+                            simulateKeyDown(39);
+                        } else if (userInput.mEventType === "KEY_LEFT") {
+                            simulateKeyDown(37);
+                        }
+                    } else if (userInput.mEventAction === "ACTION_KEY_UP") {
+                        if (userInput.mEventType === "KEY_RIGHT") {
+                            simulateKeyUp(39);
+                        } else if (userInput.mEventType === "KEY_LEFT") {
+                            simulateKeyUp(37);
+                        }
+                    } else if (userInput.mEventAction === "ACTION_HAPPENED" && userInput.mEventType === "CLAP") {
+                        simulateKeyDown(38);
+                        simulateKeyUp(38);
+                    }                    
+                };
+                
+                var simulateKeyUp = function(key) {
+                    var e = jQuery.Event("keyup", { keyCode: key } );
+                    $(document).trigger(e);
+                };
+                
+                var simulateKeyDown = function(key) {
+                    var e = jQuery.Event("keydown", { keyCode: key } );
+                    $(document).trigger(e);
+                };
+                
+                // Create the platform
+                var platform = new Adaptilo.Platform();
+                
+                var toggleConnection = function() {
+                    if (platform.isConnected) {
+                        platform.disconnect();
+                    } else {
+                        // Get the server ip given by the user
+                        platformConfiguration.serverIp = $("#server_ip").val()
+                        // Get the server port given by the user
+                        platformConfiguration.serverPort = $("#server_port").val();
+                        // Set the game name used by the server
+                        platformConfiguration.gameName = "mario_demo";
+                        // Set game room for joining an existed one
+                        platformConfiguration.gameRoom = null;
+                        if(inputGameRoom.val()){
+                            platformConfiguration.gameRoom = inputGameRoom.val();
+                        }
+                        
+                        // Use the configuration for the connection
+                        platform.setConfiguration(platformConfiguration);
+                        platform.connect();                   
+                    }
+                }; 
+                
+                var clearQrCodes = function() {
+                    $("#roles_container").empty();
+                };
+                
+                var generateQrCodes = function(roles) {
+                        for (var i = 0; i < roles.length; i++) {
+                            // We don't want to show a qr code for the field role.
+                            if (roles[i] != "field") {
+                                generateQrCode(roles[i]);
+                            }                            
+                        }
+                };
+                
+                var generateQrCode = function(role) {
+                    var qrCodeTitle = $(document.createElement('h2'));
+                    qrCodeTitle.html("<i class=\"fa fa-gamepad fa-lg\"></i> "+role);
+                    $("#roles_container").append(qrCodeTitle);
+                    
+                    var id = "qr_code_"+role;
+                    var qrCodeContainer = $(document.createElement('div'));                    
+                    qrCodeContainer.attr("id", id);
+                    $("#roles_container").append(qrCodeContainer);
+                    qrCodeContainer.qrcode({
+                        width: 220,
+                        height: 220,
+                        text : platform.getRoleUrl(role),
+                    });                    
+                };   
+                
+            });     
+
+            
+        </script>
+
+    </body>
+</html>
+    
