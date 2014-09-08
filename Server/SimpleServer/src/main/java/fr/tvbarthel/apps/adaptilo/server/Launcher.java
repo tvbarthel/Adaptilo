@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Launcher {
 
@@ -15,7 +16,7 @@ public class Launcher {
         System.out.println("Simple Server Launcher");
 
         //create roles
-        final ArrayList<RoleConfiguration> roles = new ArrayList<RoleConfiguration>();
+        final List<RoleConfiguration> roles = new ArrayList<RoleConfiguration>();
         roles.add(new RoleConfiguration("role_a", true, true, 2));
         roles.add(new RoleConfiguration("role_b", true, false, 1));
         roles.add(new RoleConfiguration("role_c", false, false, 1));

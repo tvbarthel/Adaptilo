@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple launcher for the mario demonstration.
@@ -16,7 +17,7 @@ public class Launcher_mario {
         System.out.println("Mario Server Launcher");
 
         //create roles
-        final ArrayList<RoleConfiguration> roles = new ArrayList<RoleConfiguration>();
+        final List<RoleConfiguration> roles = new ArrayList<RoleConfiguration>();
         roles.add(new RoleConfiguration("mario", true, true, 1));
         roles.add(new RoleConfiguration("field", true, true, 1));
 
