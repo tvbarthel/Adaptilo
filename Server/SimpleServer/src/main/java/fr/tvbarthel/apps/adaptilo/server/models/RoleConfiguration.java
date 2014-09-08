@@ -1,5 +1,10 @@
 package fr.tvbarthel.apps.adaptilo.server.models;
 
+import fr.tvbarthel.apps.adaptilo.server.models.io.Message;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Encapsulate role configuration, such as role name, role replacement policy and room creation policy.
  */
@@ -26,6 +31,11 @@ public final class RoleConfiguration {
     private int mMaxInstance;
 
     /**
+     * A list of messages that will be sent during the role registration.
+     */
+    private List<Message> mInitialMessages;
+
+    /**
      * Role configuration.
      *
      * @param name          Role identifier.
@@ -38,6 +48,7 @@ public final class RoleConfiguration {
         mCanBeReplaced = canBeReplaced;
         mCanCreateRoom = canCreateRoom;
         mMaxInstance = maxInstance;
+        mInitialMessages = new ArrayList<Message>();
     }
 
     /**
@@ -58,5 +69,13 @@ public final class RoleConfiguration {
 
     public int getMaxInstance() {
         return mMaxInstance;
+    }
+
+    public void addInitialMessage(Message initialMessage) {
+        mInitialMessages.add(initialMessage);
+    }
+
+    public List<Message> getInitialMessages() {
+        return mInitialMessages;
     }
 }

@@ -1,6 +1,11 @@
 package fr.tvbarthel.apps.adaptilo.server;
 
+import fr.tvbarthel.apps.adaptilo.server.models.Event;
 import fr.tvbarthel.apps.adaptilo.server.models.RoleConfiguration;
+import fr.tvbarthel.apps.adaptilo.server.models.enums.EventAction;
+import fr.tvbarthel.apps.adaptilo.server.models.enums.EventType;
+import fr.tvbarthel.apps.adaptilo.server.models.enums.MessageType;
+import fr.tvbarthel.apps.adaptilo.server.models.io.Message;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,7 +23,11 @@ public class Launcher_mario {
 
         //create roles
         final List<RoleConfiguration> roles = new ArrayList<RoleConfiguration>();
-        roles.add(new RoleConfiguration("mario", true, true, 1));
+        final RoleConfiguration mario = new RoleConfiguration("mario", true, true, 1);
+        final EventAction action = EventAction.ACTION_ENABLE;
+        final Event enableClap = new Event(EventType.CLAP, action);
+        mario.addInitialMessage(new Message(MessageType.SENSOR, enableClap));
+        roles.add(mario);
         roles.add(new RoleConfiguration("field", true, true, 1));
 
         //create server
