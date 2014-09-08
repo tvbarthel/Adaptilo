@@ -227,7 +227,7 @@ public abstract class AdaptiloServer extends WebSocketServer {
      * if the associated connection is opened.
      *
      * @param target  the {@link fr.tvbarthel.apps.adaptilo.server.models.Role}
-     * @param message the {@link fr.tvbarthel.apps.adaptilo.server.models.io.Message} to be send.
+     * @param message the {@link fr.tvbarthel.apps.adaptilo.server.models.io.Message} to be sent.
      */
     protected void sendMessage(Role target, Message message) {
         if (target != null && message != null && target.getConnection().isOpen()) {
