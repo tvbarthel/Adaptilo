@@ -47,7 +47,7 @@ public abstract class AdaptiloServer extends WebSocketServer {
      * @param role          the role instance to register
      * @param shouldReplace replacement policy when role is already registered
      * @return should return 0 if registration succeeds, else an
-     *         {@link fr.tvbarthel.apps.adaptilo.server.models.io.ClosingCode} matching a registration code.
+     * {@link fr.tvbarthel.apps.adaptilo.server.models.io.ClosingCode} matching a registration code.
      */
     protected abstract int registerRole(String externalId, String gameId, String roomId, Role role, boolean shouldReplace);
 
@@ -219,6 +219,19 @@ public abstract class AdaptiloServer extends WebSocketServer {
             if (role != sender && role.getConnection().isOpen()) {
                 role.getConnection().send(mParser.toJson(message));
             }
+        }
+    }
+
+    /**
+     * Send a {@link fr.tvbarthel.apps.adaptilo.server.models.io.Message} to one {@link fr.tvbarthel.apps.adaptilo.server.models.Role}
+     * if the associated connection is opened.
+     *
+     * @param target  the {@link fr.tvbarthel.apps.adaptilo.server.models.Role}
+     * @param message the {@link fr.tvbarthel.apps.adaptilo.server.models.io.Message} to be send.
+     */
+    protected void sendMessage(Role target, Message message) {
+        if (target != null && message != null && target.getConnection().isOpen()) {
+            target.getConnection().send(mParser.toJson(message));
         }
     }
 
