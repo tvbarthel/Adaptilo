@@ -1,7 +1,11 @@
 package fr.tvbarthel.apps.adaptilo.server;
 
-
+import fr.tvbarthel.apps.adaptilo.server.models.Event;
 import fr.tvbarthel.apps.adaptilo.server.models.RoleConfiguration;
+import fr.tvbarthel.apps.adaptilo.server.models.enums.EventAction;
+import fr.tvbarthel.apps.adaptilo.server.models.enums.EventType;
+import fr.tvbarthel.apps.adaptilo.server.models.enums.MessageType;
+import fr.tvbarthel.apps.adaptilo.server.models.io.Message;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,20 +14,24 @@ import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Launcher {
-
+/**
+ * A simple launcher for the mario demonstration.
+ */
+public class Launcher_mario {
     public static void main(String[] args) throws InterruptedException, IOException {
-        System.out.println("Simple Server Launcher");
+        System.out.println("Mario Server Launcher");
 
         //create roles
         final List<RoleConfiguration> roles = new ArrayList<RoleConfiguration>();
-        roles.add(new RoleConfiguration("role_a", true, true, 2));
-        roles.add(new RoleConfiguration("role_b", true, false, 1));
-        roles.add(new RoleConfiguration("role_c", false, false, 1));
-        roles.add(new RoleConfiguration("field", true, true, 2));
+        final RoleConfiguration mario = new RoleConfiguration("mario", true, true, 1);
+        final EventAction action = EventAction.ACTION_ENABLE;
+        final Event enableClap = new Event(EventType.CLAP, action);
+        mario.addInitialMessage(new Message(MessageType.SENSOR, enableClap));
+        roles.add(mario);
+        roles.add(new RoleConfiguration("field", true, true, 1));
 
         //create server
-        final SingleGameServer server = new SingleGameServer(new InetSocketAddress(8887), "simple_demo", roles);
+        final SingleGameServer server = new SingleGameServer(new InetSocketAddress(8887), "mario_demo", roles);
 
         server.start();
         BufferedReader sysin = new BufferedReader(new InputStreamReader(System.in));
