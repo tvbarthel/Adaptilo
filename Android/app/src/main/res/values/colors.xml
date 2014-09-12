@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="primary">#FF457D97</color>
     <color name="secondary">#FFF2F2F2</color>
 
     <color name="gray_dark">#ff808080</color>
     <color name="gray_light">#ffc4c4c4</color>
 
     <!-- Button -->
-    <color name="btn_primary">#ff3b677c</color>
-    <color name="btn_secondary">#FF457D97</color>
     <color name="btn_circle_primary">@color/gray_dark</color>
     <color name="btn_circle_secondary">@color/gray_light</color>
     <color name="btn_rect_primary">@color/holo_red_light</color>
@@ -20,6 +17,5 @@
 
     <!-- Basic Controller Game Slot -->
     <color name="basic_controller_game_slot_primary">#ff5f5f5f</color>
-    <color name="basic_controller_game_slot_secondary">#ffc4c4c4</color>
     <color name="basic_controller_game_slot_text">@color/holo_purple</color>
 </resources>

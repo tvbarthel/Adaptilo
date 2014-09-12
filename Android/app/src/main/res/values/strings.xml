@@ -2,8 +2,6 @@
 <resources>
 
     <string name="app_name">Adaptilo</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
     <string name="qr_code_scanner_prompt">Scan a QrCode</string>
 
     <!-- Basic Controller Fragment !-->
