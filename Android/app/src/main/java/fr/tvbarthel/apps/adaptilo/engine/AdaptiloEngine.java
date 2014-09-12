@@ -497,7 +497,7 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
         prefs.registerOnSharedPreferenceChangeListener(mVibratorPreferencesListener);
 
         // retrieve vibrator
-        if (mVibrateOnServerEvent || mVibrateOnServerEvent) {
+        if (mVibrateOnServerEvent || mVibrateOnKeyEvent) {
             mVibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
         }
     }
