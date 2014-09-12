@@ -147,6 +147,11 @@ public class SingleGameServer extends AdaptiloServer {
                     role,
                     new Message(MessageType.ON_ROLE_REGISTERED, role.getName())
             );
+
+            // send initial messages
+            for (Message initialMessage : roleAllowed.getInitialMessages()) {
+                sendMessage(role, initialMessage);
+            }
         }
         return registeringCode;
     }
