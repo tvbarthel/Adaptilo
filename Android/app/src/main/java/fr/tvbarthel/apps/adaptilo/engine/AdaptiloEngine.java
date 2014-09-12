@@ -170,30 +170,31 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
     @Override
     public void onClose(int code) {
         mReadyToCommunicate = false;
+        String close = "Connection closed : ";
         switch (code) {
             case ClosingCode.REGISTRATION_REQUESTED_GAME_NAME_UNKNOWN:
-                Log.e(TAG, "Connection closed : " + "REGISTRATION_REQUESTED_GAME_NAME_UNKNOWN");
+                Log.e(TAG, close + "REGISTRATION_REQUESTED_GAME_NAME_UNKNOWN");
                 break;
             case ClosingCode.REGISTRATION_NO_ROOM_CREATED:
-                Log.e(TAG, "Connection closed : " + "REGISTRATION_NO_ROOM_CREATED");
+                Log.e(TAG, close + "REGISTRATION_NO_ROOM_CREATED");
                 break;
             case ClosingCode.REGISTRATION_REQUESTED_ROOM_UNKNOW:
-                Log.e(TAG, "Connection closed : " + "REGISTRATION_REQUESTED_ROOM_UNKNOW");
+                Log.e(TAG, close + "REGISTRATION_REQUESTED_ROOM_UNKNOW");
                 break;
             case ClosingCode.REGISTRATION_REQUESTED_ROLE_UNKNOWN:
-                Log.e(TAG, "Connection closed : " + "REGISTRATION_REQUESTED_ROLE_UNKNOWN");
+                Log.e(TAG, close + "REGISTRATION_REQUESTED_ROLE_UNKNOWN");
                 break;
             case ClosingCode.REGISTRATION_REQUESTED_ROOM_IS_FULL:
-                Log.e(TAG, "Connection closed : " + "REGISTRATION_REQUESTED_ROOM_IS_FULL");
+                Log.e(TAG, close + "REGISTRATION_REQUESTED_ROOM_IS_FULL");
                 break;
             case ClosingCode.DISCONNECTION_DUE_TO_ROLE_REPLACEMENT:
-                Log.e(TAG, "Connection closed : " + "DISCONNECTION_DUE_TO_ROLE_REPLACEMENT");
+                Log.e(TAG, close + "DISCONNECTION_DUE_TO_ROLE_REPLACEMENT");
                 break;
             case CloseFrame.NORMAL:
-                Log.e(TAG, "Connection closed : " + "CloseFrame.NORMAL");
+                Log.e(TAG, close + "CloseFrame.NORMAL");
                 break;
             default:
-                Log.e(TAG, "Connection closed : " + "Error code unknown.");
+                Log.e(TAG, close + "Error code unknown.");
                 break;
         }
 

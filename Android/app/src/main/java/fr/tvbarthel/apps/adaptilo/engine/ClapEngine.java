@@ -4,6 +4,7 @@ import android.content.Context;
 import android.media.MediaRecorder;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -174,7 +175,7 @@ public class ClapEngine {
             mMediaRecorder.prepare();
             mMediaRecorder.start();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.d(TAG, e.getMessage());
         }
     }
 
@@ -193,7 +194,7 @@ public class ClapEngine {
                     try {
                         sleep(TICKING_TIME_IN_MILLI);
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        Log.d(TAG, e.getMessage());
                     }
                 }
             }

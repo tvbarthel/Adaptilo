@@ -380,10 +380,17 @@ public abstract class AdaptiloControllerFragment extends Fragment {
      * @return
      */
     private UserEvent extractUserEvent(View view, MotionEvent motionEvent) {
+
         final EventAction eventAction = extractEventAction(motionEvent);
-        if (eventAction == null) return null;
+        if (eventAction == null) {
+            return null;
+        }
+
         final EventType eventType = extractEventType(view);
-        if (eventType == null) return null;
+        if (eventType == null) {
+            return null;
+        }
+
         return new UserEvent(eventType, eventAction);
     }
 

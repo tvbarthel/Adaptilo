@@ -39,11 +39,6 @@ public class BasicControllerSelectDialogFragment extends AdaptiloSelectDialogFra
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mVibratorSharedPreferences = activity.getSharedPreferences(
