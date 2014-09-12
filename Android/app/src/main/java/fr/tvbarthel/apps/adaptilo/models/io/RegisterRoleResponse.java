@@ -38,19 +38,22 @@ public class RegisterRoleResponse {
         mRoomId = roomId;
     }
 
+    /**
+     * Retrieve external id associated to the device during registration process.
+     *
+     * @return external id. Should be store has it must be added to the server requests.
+     */
     public String getExternalId() {
         return mExternalId;
     }
 
-    public void setmExternalId(String externalId) {
-        this.mExternalId = externalId;
-    }
-
+    /**
+     * Retrieve room id in which the player has been registered.
+     *
+     * @return room id.
+     */
     public String getRoomId() {
         return mRoomId;
     }
 
-    public void setRoomId(String roomId) {
-        this.mRoomId = roomId;
-    }
 }

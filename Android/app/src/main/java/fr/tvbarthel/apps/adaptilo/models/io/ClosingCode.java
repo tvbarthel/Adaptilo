@@ -13,14 +13,6 @@ package fr.tvbarthel.apps.adaptilo.models.io;
  */
 public final class ClosingCode {
 
-    /**
-     * non instantiable class
-     */
-    private ClosingCode() {
-
-    }
-
-
     ////////////////////////////////////////
     /////////// REGISTRATION ERROR /////////
     ////////////////////////////////////////
@@ -54,4 +46,11 @@ public final class ClosingCode {
      * Closing code used when role as been replaced and send to the replaced user.
      */
     public static final int DISCONNECTION_DUE_TO_ROLE_REPLACEMENT = 2006;
+
+    /**
+     * non instantiable class
+     */
+    private ClosingCode() {
+
+    }
 }

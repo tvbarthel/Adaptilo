@@ -5,7 +5,9 @@ import com.google.gson.annotations.SerializedName;
 import fr.tvbarthel.apps.adaptilo.helpers.MessageDeserializerHelper;
 
 /**
- * use to send message to the server with the current connection id
+ * Encapsulate any request send to the server.
+ * <p/>
+ * Use to send message to the server with the current connection id
  */
 public class ServerRequest {
 
@@ -21,7 +23,12 @@ public class ServerRequest {
     @SerializedName(MessageDeserializerHelper.NODE_MESSAGE)
     private Message mMessage;
 
-
+    /**
+     * Constructor.
+     *
+     * @param connectionId external id send back during the registration process.
+     * @param message      message send.
+     */
     public ServerRequest(String connectionId, Message message) {
         mExternalId = connectionId;
         mMessage = message;
@@ -31,19 +38,39 @@ public class ServerRequest {
      * GETTER AND SETTER
      */
 
+    /**
+     * Retrieve the external id.
+     *
+     * @return external id.
+     */
     public String getExternalId() {
         return mExternalId;
     }
 
-    public void setExternalId(String mConnectionId) {
-        this.mExternalId = mConnectionId;
+    /**
+     * Set the external id.
+     *
+     * @param externalId external id.
+     */
+    public void setExternalId(String externalId) {
+        this.mExternalId = externalId;
     }
 
+    /**
+     * Retrieve the message associated to the request.
+     *
+     * @return message.
+     */
     public Message getMessage() {
         return mMessage;
     }
 
-    public void setMessage(Message mMessage) {
-        this.mMessage = mMessage;
+    /**
+     * Set the message which will be send.
+     *
+     * @param message message.
+     */
+    public void setMessage(Message message) {
+        this.mMessage = message;
     }
 }

@@ -10,14 +10,33 @@ import android.util.AttributeSet;
  * Can also be used with an oval background in order to obtain a perfect circle.
  */
 public class SquareTextPressedButton extends TextPressedButton {
+
+    /**
+     * Constructor.
+     *
+     * @param context holding context.
+     */
     public SquareTextPressedButton(Context context) {
         super(context);
     }
 
+    /**
+     * Constructor.
+     *
+     * @param context holding context.
+     * @param attrs   attribute set from xml.
+     */
     public SquareTextPressedButton(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
+    /**
+     * Constructor.
+     *
+     * @param context  holding context.
+     * @param attrs    attribute set from xml.
+     * @param defStyle style res id from xml.
+     */
     public SquareTextPressedButton(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }

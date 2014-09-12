@@ -16,18 +16,30 @@ public class TextPressedButton extends Button {
     /**
      * The text size in px when the button is not pressed.
      */
-    protected float mTextSizeInPx;
+    private float mTextSizeInPx;
+
     /**
      * The text size in px when the button is pressed.
      */
-    protected float mTextSizePressedInPx;
+    private float mTextSizePressedInPx;
 
+    /**
+     * Constructor.
+     *
+     * @param context holding context.
+     */
     public TextPressedButton(Context context) {
         super(context);
         mTextSizeInPx = getTextSize();
         mTextSizePressedInPx = getTextSize();
     }
 
+    /**
+     * Constructor.
+     *
+     * @param context holding context.
+     * @param attrs   attribute set from xml.
+     */
     public TextPressedButton(Context context, AttributeSet attrs) {
         super(context, attrs);
         mTextSizeInPx = getTextSize();
@@ -36,6 +48,13 @@ public class TextPressedButton extends Button {
         a.recycle();
     }
 
+    /**
+     * Constructor.
+     *
+     * @param context  holding context.
+     * @param attrs    attribute set from xml.
+     * @param defStyle style res id from xml.
+     */
     public TextPressedButton(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mTextSizeInPx = getTextSize();

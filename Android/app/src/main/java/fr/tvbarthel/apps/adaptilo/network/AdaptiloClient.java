@@ -43,19 +43,45 @@ public class AdaptiloClient extends WebSocketClient {
      */
     private String mConnectionId;
 
+    /**
+     * Constructor.
+     *
+     * @param serverURI server URI.
+     * @param callbacks callback object to catch event.
+     *                  {@link fr.tvbarthel.apps.adaptilo.network.AdaptiloClient.Callbacks}
+     */
     public AdaptiloClient(URI serverURI, Callbacks callbacks) {
         super(serverURI);
         mCallbacks = callbacks;
         mGsonParser = initGsonParser();
     }
 
+    /**
+     * Constructor.
+     *
+     * @param serverUri server URI.
+     * @param draft     {@link org.java_websocket.drafts.Draft}
+     * @param callbacks callback object to catch event.
+     *                  {@link fr.tvbarthel.apps.adaptilo.network.AdaptiloClient.Callbacks}
+     */
     public AdaptiloClient(URI serverUri, Draft draft, Callbacks callbacks) {
         super(serverUri, draft);
         mCallbacks = callbacks;
         mGsonParser = initGsonParser();
     }
 
-    public AdaptiloClient(URI serverUri, Draft draft, Map<String, String> headers, int connecttimeout, Callbacks callbacks) {
+    /**
+     * Constructor.
+     *
+     * @param serverUri      server URI.
+     * @param draft          {@link org.java_websocket.drafts.Draft}
+     * @param headers        headers added to each socket.
+     * @param connecttimeout connection timeout in milli
+     * @param callbacks      callback object to catch event.
+     *                       {@link fr.tvbarthel.apps.adaptilo.network.AdaptiloClient.Callbacks}
+     */
+    public AdaptiloClient(URI serverUri, Draft draft, Map<String,
+            String> headers, int connecttimeout, Callbacks callbacks) {
         super(serverUri, draft, headers, connecttimeout);
         mCallbacks = callbacks;
         mGsonParser = initGsonParser();
@@ -64,7 +90,7 @@ public class AdaptiloClient extends WebSocketClient {
     /**
      * Send generic message to the server
      *
-     * @param message
+     * @param message message send to the server.
      */
     public void send(Message message) {
         final ServerRequest serverRequest = new ServerRequest(
@@ -142,7 +168,7 @@ public class AdaptiloClient extends WebSocketClient {
         /**
          * Client received message from the server
          *
-         * @param message
+         * @param message message fromt the server.
          */
         public void onMessage(Message message);
 
@@ -156,7 +182,7 @@ public class AdaptiloClient extends WebSocketClient {
         /**
          * Client error
          *
-         * @param ex
+         * @param ex exception
          */
         public void onError(Exception ex);
     }

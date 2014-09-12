@@ -4,14 +4,16 @@ import fr.tvbarthel.apps.adaptilo.models.enums.EventAction;
 import fr.tvbarthel.apps.adaptilo.models.enums.EventType;
 
 /**
- * Encapsulate user event
+ * Encapsulate user event.
+ * <p/>
+ * A simple Event with a timestamp in addition.
  */
 public class UserEvent extends Event {
 
     /**
      * timestamp of the event
      */
-    protected Long mEventTimestamp;
+    private Long mEventTimestamp;
 
     /**
      * default constructor
@@ -23,18 +25,28 @@ public class UserEvent extends Event {
     /**
      * create a user event timestamped with the current time
      *
-     * @param type
-     * @param action
+     * @param type   event type.
+     * @param action event action.
      */
     public UserEvent(EventType type, EventAction action) {
         super(type, action);
         mEventTimestamp = System.currentTimeMillis();
     }
 
+    /**
+     * Retrieve the timestamp associated to the event.
+     *
+     * @return time stamp in milli.
+     */
     public Long getEventTimestamp() {
         return mEventTimestamp;
     }
 
+    /**
+     * Set a new time stamp for the user event.
+     *
+     * @param mEventTimestamp new time stamp in milli.
+     */
     public void setEventTimestamp(Long mEventTimestamp) {
         this.mEventTimestamp = mEventTimestamp;
     }
