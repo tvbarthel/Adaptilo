@@ -68,7 +68,8 @@ public class MessageDeserializerHelper implements JsonDeserializer<Message> {
     public static final String NODE_SHOULD_CREATE = "create";
 
     @Override
-    public Message deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public Message deserialize(JsonElement json, Type typeOfT,
+                               JsonDeserializationContext context) throws JsonParseException {
 
         JsonObject jsonObject = json.getAsJsonObject();
 
@@ -111,9 +112,10 @@ public class MessageDeserializerHelper implements JsonDeserializer<Message> {
                 break;
 
             case ON_ROLES_RETRIEVED:
+                TypeToken<ArrayList<String>> typeToken = new TypeToken<ArrayList<String>>() {
+                };
                 List<String> roles = context.deserialize(content,
-                        new TypeToken<ArrayList<String>>() {
-                        }.getType()
+                        typeToken.getType()
                 );
                 message.setContent(roles);
                 break;
@@ -121,6 +123,8 @@ public class MessageDeserializerHelper implements JsonDeserializer<Message> {
             case REPLACE_CONTROLLER:
                 ControllerType type = context.deserialize(content, ControllerType.class);
                 message.setContent(type);
+                break;
+            default:
                 break;
         }
         return message;

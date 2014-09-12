@@ -8,6 +8,9 @@ import com.google.zxing.client.android.CaptureActivity;
 
 import fr.tvbarthel.apps.adaptilo.R;
 
+/**
+ * Activity used to scan a QrCode
+ */
 public class BasicControllerCaptureActivity extends CaptureActivity {
 
     @Override

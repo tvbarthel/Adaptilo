@@ -71,6 +71,12 @@ public class ClapEngine {
      */
     private ClapHandler mClapHandler;
 
+    /**
+     * Constructor used to instantiate a ClapEngine.
+     *
+     * @param context  context holding the engine, used to retrieve external files directory.
+     * @param listener listener to catch clap event.
+     */
     public ClapEngine(Context context, ClapListener listener) {
         mTempFile = new File(context.getExternalFilesDir(null), RECORDER_FILE_NAME);
 
@@ -255,6 +261,9 @@ public class ClapEngine {
 
                     //propagate clap event on ui thread
                     mListener.get().onClapDetected();
+                    break;
+                default:
+                    break;
             }
         }
     }

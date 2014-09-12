@@ -30,6 +30,11 @@ public abstract class AdaptiloSelectDialogFragment extends DialogFragment {
     };
 
     /**
+     * Used to know if options has been saved.
+     */
+    private boolean mOptionsSaved;
+
+    /**
      * Current callbacks object.
      */
     private Callbacks mCallbacks = sDummyCallbacks;
@@ -38,11 +43,6 @@ public abstract class AdaptiloSelectDialogFragment extends DialogFragment {
      * Alert dialog builder.
      */
     private AlertDialog.Builder mBuilder;
-
-    /**
-     * Used to know if options has been saved.
-     */
-    protected boolean mOptionsSaved;
 
     /**
      * Called when select dialog implementation must save options.

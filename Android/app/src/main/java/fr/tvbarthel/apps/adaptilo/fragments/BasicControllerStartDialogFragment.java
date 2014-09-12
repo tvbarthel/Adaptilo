@@ -24,7 +24,8 @@ public class BasicControllerStartDialogFragment extends AdaptiloStartDialogFragm
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog alertDialog = getAlertDialog();
 
-        final LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final LayoutInflater inflater
+                = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View dialogView = inflater.inflate(R.layout.dialog_fragment_basic_controller_start, null);
 
         alertDialog.setView(dialogView);

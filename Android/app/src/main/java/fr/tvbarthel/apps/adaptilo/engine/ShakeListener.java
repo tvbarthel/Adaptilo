@@ -48,7 +48,7 @@ public abstract class ShakeListener implements SensorEventListener {
     /**
      * called when device is being shaken
      *
-     * @param speed
+     * @param speed shaking speed given in arbitrary unit.
      */
     public abstract void onShaking(double speed);
 
@@ -67,7 +67,8 @@ public abstract class ShakeListener implements SensorEventListener {
                 final double delay = currentShake - mLastShakeTime;
                 if (delay <= SHAKE_SPEED_BOUNDARY) {
                     //user is shaking
-                    final double shakeDist = Math.abs(x - mLastShakeValues[0]) + Math.abs(y - mLastShakeValues[1]) + Math.abs(z - mLastShakeValues[2]);
+                    final double shakeDist = Math.abs(x - mLastShakeValues[0])
+                            + Math.abs(y - mLastShakeValues[1]) + Math.abs(z - mLastShakeValues[2]);
                     final double newSpeed = shakeDist / delay * 1000;
                     mLastSpeed = mLastSpeed + (newSpeed - mLastSpeed) / LOW_PASS_FILTER_SMOOTHING;
                     onShaking(mLastSpeed);

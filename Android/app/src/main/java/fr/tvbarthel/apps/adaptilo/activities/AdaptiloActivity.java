@@ -36,12 +36,12 @@ public abstract class AdaptiloActivity extends FragmentActivity implements
     /**
      * Adaptilo core part
      */
-    protected AdaptiloEngine mAdaptiloEngine;
+    private AdaptiloEngine mAdaptiloEngine;
 
     /**
      * controller
      */
-    protected AdaptiloControllerFragment mAdaptiloControllerFragment;
+    private AdaptiloControllerFragment mAdaptiloControllerFragment;
 
     /**
      * get default controller which will be displayed on activity launch
@@ -165,6 +165,9 @@ public abstract class AdaptiloActivity extends FragmentActivity implements
                 break;
             case AdaptiloStartDialogFragment.BUTTON_NEW_GAME:
                 loadNewGame();
+                break;
+            default:
+                break;
         }
 
         //Propagate for visual callback or specific behavior.
@@ -278,9 +281,11 @@ public abstract class AdaptiloActivity extends FragmentActivity implements
     /**
      * Used to process QrCode scanner result when {@link #onActivityResult} is called.
      *
-     * @param requestCode - The integer request code originally supplied to startActivityForResult(), allowing you to identify who this result came from.
+     * @param requestCode - The integer request code originally supplied to startActivityForResult()
+     *                    , allowing you to identify who this result came from.
      * @param resultCode  - The integer result code returned by the child activity through its setResult().
-     * @param data        - An Intent, which can return result data to the caller (various data can be attached to Intent "extras").
+     * @param data        - An Intent, which can return result data to the caller (various data can
+     *                    be attached to Intent "extras").
      */
     private void handleQrCodeResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_CANCELED) {

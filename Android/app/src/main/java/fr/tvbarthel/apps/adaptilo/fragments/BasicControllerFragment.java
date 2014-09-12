@@ -19,6 +19,12 @@ import fr.tvbarthel.apps.adaptilo.models.io.ClosingCode;
 import fr.tvbarthel.apps.adaptilo.models.io.Message;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
+/**
+ * Basic controller composed of a four arrow pad on the left and two buttons
+ * (A and B) on the right.
+ * <p/>
+ * As requested for a controller, a start and a select button are also displayed.
+ */
 public class BasicControllerFragment extends AdaptiloControllerFragment {
 
     /**
@@ -29,12 +35,12 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
     /**
      * A {@link android.widget.TextView} used to show messages to the user.
      */
-    protected TextView mOnScreenMessage;
+    private TextView mOnScreenMessage;
 
     /**
      * Current game name
      */
-    protected String mGameName;
+    private String mGameName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -112,6 +118,8 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
                 String joiningRole = (String) message.getContent();
                 Crouton.makeText(getActivity(), "Role : " + joiningRole + " joins the room.", Style.CONFIRM).show();
                 break;
+            default:
+                break;
         }
     }
 
@@ -131,6 +139,8 @@ public class BasicControllerFragment extends AdaptiloControllerFragment {
                 break;
             case ClosingCode.REGISTRATION_REQUESTED_ROOM_UNKNOW:
                 showOnScreenMessage(R.string.basic_controller_room_unknown);
+                break;
+            default:
                 break;
         }
     }

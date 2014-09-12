@@ -129,6 +129,9 @@ public abstract class AdaptiloStartDialogFragment extends DialogFragment
         return mAlertDialog;
     }
 
+    /**
+     * Fragment callbacks.
+     */
     public interface Callbacks {
         /**
          * Called when start dialog closed.

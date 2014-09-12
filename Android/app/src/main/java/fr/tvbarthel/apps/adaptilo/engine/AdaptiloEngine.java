@@ -212,7 +212,7 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
      * Initialize engine features which need context. Should be called directly since it's already
      * managed by the {@link fr.tvbarthel.apps.adaptilo.fragments.AdaptiloControllerFragment}
      *
-     * @param context
+     * @param context context holding the engine.
      */
     public void initEngine(Context context) {
         if (mContext == null) {
@@ -314,7 +314,7 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
     /**
      * Engine will process user input and send message to the WebSocket server
      *
-     * @param message
+     * @param message content send to the websocket server.
      */
     public void sendUserInput(Message message) {
         vibrateOnUserEvent((UserEvent) message.getContent());
@@ -326,7 +326,7 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
     /**
      * Load an engine config. Should be retrieved from a QrCode.
      *
-     * @param config
+     * @param config data used to define a game/server configuration.
      */
     public void setEngineConfig(EngineConfig config) {
         mEngineConfig = config;
@@ -376,6 +376,8 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
                     mClapEngine.stop();
                 }
                 break;
+            default:
+                break;
         }
     }
 
@@ -394,8 +396,8 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
                         public void onShakeDetected() {
                             //send shake detected
                             if (mReadyToCommunicate) {
-                                final SensorEvent sensorEvent =
-                                        new SensorEvent(EventType.SHAKER, EventAction.ACTION_HAPPENED, 0);
+                                final SensorEvent sensorEvent
+                                        = new SensorEvent(EventType.SHAKER, EventAction.ACTION_HAPPENED, 0);
                                 final Message message = new Message(MessageType.SENSOR, sensorEvent);
                                 mAdaptiloClient.send(message);
                             }
@@ -405,8 +407,8 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
                         public void onShaking(double speed) {
                             //send shaking event
                             if (mReadyToCommunicate) {
-                                final SensorEvent sensorEvent =
-                                        new SensorEvent(EventType.SHAKER, EventAction.ACTION_DOING, speed);
+                                final SensorEvent sensorEvent
+                                        = new SensorEvent(EventType.SHAKER, EventAction.ACTION_DOING, speed);
                                 final Message message = new Message(MessageType.SENSOR, sensorEvent);
                                 mAdaptiloClient.send(message);
                             }
@@ -426,6 +428,8 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
             case SensorListenerHelper.STOP:
                 mSensorManager.unregisterListener(mShakeListener, mAccelerometer);
                 mShakeListener = null;
+                break;
+            default:
                 break;
         }
     }
@@ -448,8 +452,8 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
             public void onClapDetected() {
                 //send clap event
                 if (mReadyToCommunicate) {
-                    final SensorEvent sensorEvent =
-                            new SensorEvent(EventType.CLAP, EventAction.ACTION_HAPPENED, 0);
+                    final SensorEvent sensorEvent
+                            = new SensorEvent(EventType.CLAP, EventAction.ACTION_HAPPENED, 0);
                     final Message message = new Message(MessageType.SENSOR, sensorEvent);
                     mAdaptiloClient.send(message);
                 }
@@ -467,13 +471,13 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
         SharedPreferences prefs = mContext.getSharedPreferences(
                 SharedPreferencesHelper.VIBRATOR_PREFERENCE, Context.MODE_PRIVATE);
 
-        mVibrateOnKeyEvent =
-                prefs.getBoolean(SharedPreferencesHelper.KEY_VIBRATE_ON_KEY_EVENT,
-                        SharedPreferencesHelper.DEFAULT_VIBRATE_ON_KEY_EVENT);
+        mVibrateOnKeyEvent
+                = prefs.getBoolean(SharedPreferencesHelper.KEY_VIBRATE_ON_KEY_EVENT,
+                SharedPreferencesHelper.DEFAULT_VIBRATE_ON_KEY_EVENT);
 
-        mVibrateOnServerEvent =
-                prefs.getBoolean(SharedPreferencesHelper.KEY_VIBRATE_ON_SERVER_EVENT,
-                        SharedPreferencesHelper.DEFAULT_VIBRATE_ON_SERVER_EVENT);
+        mVibrateOnServerEvent
+                = prefs.getBoolean(SharedPreferencesHelper.KEY_VIBRATE_ON_SERVER_EVENT,
+                SharedPreferencesHelper.DEFAULT_VIBRATE_ON_SERVER_EVENT);
 
         mVibratorPreferencesListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
@@ -518,6 +522,8 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
                 case ACTION_KEY_DOWN:
                     mVibrator.vibrate(VIBRATOR_ON_KEY_DURATION);
                     break;
+                default:
+                    break;
             }
         }
     }
@@ -553,7 +559,7 @@ public class AdaptiloEngine implements AdaptiloClient.Callbacks {
          * <p/>
          * Any visual callback linked to a given message must be run on the ui thread.
          *
-         * @param message
+         * @param message data send by the server.
          */
         public void onMessageReceived(Message message);
 

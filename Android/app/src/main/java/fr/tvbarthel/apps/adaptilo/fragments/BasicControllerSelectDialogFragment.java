@@ -21,7 +21,7 @@ public class BasicControllerSelectDialogFragment extends AdaptiloSelectDialogFra
     /**
      * shared preferences used for vibrator policy
      */
-    SharedPreferences mVibratorSharedPreferences;
+    private SharedPreferences mVibratorSharedPreferences;
 
     private ToggleButton mKeyVibrationToggleButton;
 
@@ -49,27 +49,30 @@ public class BasicControllerSelectDialogFragment extends AdaptiloSelectDialogFra
         mVibratorSharedPreferences = activity.getSharedPreferences(
                 SharedPreferencesHelper.VIBRATOR_PREFERENCE, Context.MODE_PRIVATE);
 
-        mCurrentUserVibrationKeyPolicy =
-                mVibratorSharedPreferences.getBoolean(
-                        SharedPreferencesHelper.KEY_VIBRATE_ON_KEY_EVENT,
-                        SharedPreferencesHelper.DEFAULT_VIBRATE_ON_KEY_EVENT);
+        mCurrentUserVibrationKeyPolicy
+                = mVibratorSharedPreferences.getBoolean(
+                SharedPreferencesHelper.KEY_VIBRATE_ON_KEY_EVENT,
+                SharedPreferencesHelper.DEFAULT_VIBRATE_ON_KEY_EVENT);
 
-        mCurrentUserVibrationServerPolicy =
-                mVibratorSharedPreferences.getBoolean(
-                        SharedPreferencesHelper.KEY_VIBRATE_ON_SERVER_EVENT,
-                        SharedPreferencesHelper.DEFAULT_VIBRATE_ON_SERVER_EVENT);
+        mCurrentUserVibrationServerPolicy
+                = mVibratorSharedPreferences.getBoolean(
+                SharedPreferencesHelper.KEY_VIBRATE_ON_SERVER_EVENT,
+                SharedPreferencesHelper.DEFAULT_VIBRATE_ON_SERVER_EVENT);
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog alertDialog = getAlertDialog();
-        final LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final LayoutInflater inflater
+                = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View dialogView = inflater.inflate(R.layout.dialog_fragment_basic_controller_select, null);
 
-        mKeyVibrationToggleButton = (ToggleButton) dialogView.findViewById(R.id.fragment_basic_controller_options_key_toggle);
+        mKeyVibrationToggleButton
+                = (ToggleButton) dialogView.findViewById(R.id.fragment_basic_controller_options_key_toggle);
         mKeyVibrationToggleButton.setChecked(mCurrentUserVibrationKeyPolicy);
 
-        mServerVibrationToggleButton = (ToggleButton) dialogView.findViewById(R.id.fragment_basic_controller_options_server_toggle);
+        mServerVibrationToggleButton
+                = (ToggleButton) dialogView.findViewById(R.id.fragment_basic_controller_options_server_toggle);
         mServerVibrationToggleButton.setChecked(mCurrentUserVibrationServerPolicy);
 
         alertDialog.setView(dialogView);

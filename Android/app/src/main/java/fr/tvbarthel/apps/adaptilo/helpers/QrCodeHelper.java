@@ -3,7 +3,6 @@ package fr.tvbarthel.apps.adaptilo.helpers;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.google.zxing.client.android.CaptureActivity;
@@ -19,14 +18,14 @@ import fr.tvbarthel.apps.adaptilo.models.EngineConfig;
 public final class QrCodeHelper {
 
     /**
-     * Logcat
-     */
-    private static final String TAG = QrCodeHelper.class.getName();
-
-    /**
      * Request code used by startActivityForResult.
      */
     public static final int REQUEST_CODE = IntentIntegrator.REQUEST_CODE;
+
+    /**
+     * Logcat
+     */
+    private static final String TAG = QrCodeHelper.class.getName();
 
     /**
      * uri scheme of QrCode content
@@ -54,28 +53,38 @@ public final class QrCodeHelper {
     private static final String URI_QUERY_PARAM_SHOULD_CREATE = "create";
 
     /**
+     * helper not instantiable
+     */
+    private QrCodeHelper() {
+    }
+
+    /**
      * Start an activity for scanning a QrCode.
      *
      * @param activity             the {@link android.app.Activity} which will handle the result.
      * @param scannerActivityClass the activity that will be launched.
      * @param prompt               the text to be displayed on screen.
      */
-    public static void initiateQrCodeScan(Activity activity, Class<? extends CaptureActivity> scannerActivityClass, String prompt) {
+    public static void initiateQrCodeScan(Activity activity,
+                                          Class<? extends CaptureActivity> scannerActivityClass, String prompt) {
         Intent intent = IntentIntegrator.createScanIntent(activity, IntentIntegrator.QR_CODE_TYPES, prompt);
         intent.setClass(activity, scannerActivityClass);
         activity.startActivityForResult(intent, REQUEST_CODE);
     }
 
     /**
-     * verifiy if scanned content from onActivityResult id well-formed
+     * Verify if scanned content from
+     * {@link android.app.Activity#onActivityResult(int, int, android.content.Intent)}
+     * id well-formed
      *
-     * @param requestCode
-     * @param resultCode
-     * @param data
-     * @return
-     * @throws QrCodeException
+     * @param requestCode requestCode from onActivityResult
+     * @param resultCode  resultCode from onActivityResult
+     * @param data        intent from onActivityResult
+     * @return well configured EngineConfig or null is the intent wasn't a QrCode result_ok.
+     * @throws QrCodeException thrown when QrCode is malformed.
      */
-    public static EngineConfig verifyFromActivityResult(int requestCode, int resultCode, Intent data) throws QrCodeException {
+    public static EngineConfig verifyFromActivityResult(int requestCode, int resultCode,
+                                                        Intent data) throws QrCodeException {
         EngineConfig config = null;
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (scanResult != null && resultCode == Activity.RESULT_OK) {
@@ -89,7 +98,7 @@ public final class QrCodeHelper {
      *
      * @param content info from QrCode
      * @return null if content not well formed
-     * @throws QrCodeException
+     * @throws QrCodeException thrown when QrCode is malformed.
      */
     public static EngineConfig verify(String content) throws QrCodeException {
         EngineConfig config = new EngineConfig();
@@ -146,11 +155,5 @@ public final class QrCodeHelper {
         config.setGameName(gameName);
         config.setShouldReplace(shouldReplace);
         return config;
-    }
-
-    /**
-     * helper not instantiable
-     */
-    private QrCodeHelper() {
     }
 }

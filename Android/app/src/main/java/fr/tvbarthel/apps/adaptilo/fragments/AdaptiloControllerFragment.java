@@ -33,7 +33,7 @@ import fr.tvbarthel.apps.adaptilo.models.io.Message;
  * In addition, this abstract controller encapsulate the behavior for all buttons of your controller.
  * Simply implements {@link #getControllerKeys()} to map your button ids with the wished EventType.
  */
-abstract public class AdaptiloControllerFragment extends Fragment {
+public abstract class AdaptiloControllerFragment extends Fragment {
 
     /**
      * Bundle key used to set the flag start to replace.
@@ -52,21 +52,10 @@ abstract public class AdaptiloControllerFragment extends Fragment {
      */
     private static final String TAG = AdaptiloControllerFragment.class.getName();
 
-
-    /**
-     * The current callbacks object for controller event
-     */
-    protected Callbacks mCallbacks = sDummyCallbacks;
-
-    /**
-     * Set to true when the current controller has been started to replace a previous one.
-     */
-    private boolean mIsStartToReplaceController;
-
     /**
      * dummy callbacks use when fragment isn't attached
      */
-    private static final Callbacks sDummyCallbacks = new Callbacks() {
+    private static Callbacks sDummyCallbacks = new Callbacks() {
 
         @Override
         public void onSendUserInputRequested(Message userInputMessage) {
@@ -85,9 +74,26 @@ abstract public class AdaptiloControllerFragment extends Fragment {
     };
 
     /**
+     * The current callbacks object for controller event
+     */
+    private Callbacks mCallbacks = sDummyCallbacks;
+
+    /**
+     * Set to true when the current controller has been started to replace a previous one.
+     */
+    private boolean mIsStartToReplaceController;
+
+
+    /**
      * Sparse array used to map buttonId and EventType for each buttons on the controller.
      */
     private final SparseArray<EventType> mKeys = getControllerKeys();
+
+    /**
+     * Default constructor.
+     */
+    public AdaptiloControllerFragment() {
+    }
 
     /**
      * Used to map your button ids with the wished EventType.
@@ -102,21 +108,21 @@ abstract public class AdaptiloControllerFragment extends Fragment {
      *
      * @return an array of EventType with associated button res id as key.
      */
-    abstract protected SparseArray<EventType> getControllerKeys();
+    protected abstract SparseArray<EventType> getControllerKeys();
 
     /**
      * Used to retrieve and initialize select button in controller implementation.
      *
      * @return select button id in controller implementation view.
      */
-    abstract protected int getSelectButtonId();
+    protected abstract int getSelectButtonId();
 
     /**
      * Used to retrieve and initialize startPressed button in controller implementation.
      *
      * @return startPressed button id in controller implementation view.
      */
-    abstract protected int getStartButtonId();
+    protected abstract int getStartButtonId();
 
     /**
      * Called to retrieve implementations of
@@ -125,7 +131,7 @@ abstract public class AdaptiloControllerFragment extends Fragment {
      *
      * @return Select dialog fragment.
      */
-    abstract protected AdaptiloSelectDialogFragment getSelectDialogFragment();
+    protected abstract AdaptiloSelectDialogFragment getSelectDialogFragment();
 
     /**
      * Called to retrieve implementations of
@@ -134,14 +140,14 @@ abstract public class AdaptiloControllerFragment extends Fragment {
      *
      * @return Start dialog fragment.
      */
-    abstract protected AdaptiloStartDialogFragment getStartDialogFragment();
+    protected abstract AdaptiloStartDialogFragment getStartDialogFragment();
 
     /**
      * Called when game server is unreachable.
      * <p/>
      * Should be used to warn user.
      */
-    abstract public void onGameServerUnreachable();
+    public abstract void onGameServerUnreachable();
 
     /**
      * Called when the controller is connected to the game server.
@@ -150,7 +156,7 @@ abstract public class AdaptiloControllerFragment extends Fragment {
      *
      * @param gameName name of the current game.
      */
-    abstract public void onGameStart(String gameName);
+    public abstract void onGameStart(String gameName);
 
     /**
      * Called when the controller received a message from the remote server.
@@ -159,7 +165,7 @@ abstract public class AdaptiloControllerFragment extends Fragment {
      *
      * @param message event send by the server
      */
-    abstract public void onMessageReceived(Message message);
+    public abstract void onMessageReceived(Message message);
 
     /**
      * Called when the controller received an error from the remote server.
@@ -169,14 +175,14 @@ abstract public class AdaptiloControllerFragment extends Fragment {
      *
      * @param ex error data send by the remote server.
      */
-    abstract public void onErrorReceived(Exception ex);
+    public abstract void onErrorReceived(Exception ex);
 
     /**
      * Called when connection was closed by the remote server.
      *
      * @param reason closing code in order to adapt visual callback if needed.
      */
-    abstract public void onConnectionClosed(int reason);
+    public abstract void onConnectionClosed(int reason);
 
     /**
      * Callback when a user event is send. Used when a specific behavior should be processed for a
@@ -184,14 +190,14 @@ abstract public class AdaptiloControllerFragment extends Fragment {
      *
      * @param userEvent user event send
      */
-    abstract protected void onUserEventSend(UserEvent userEvent);
+    protected abstract void onUserEventSend(UserEvent userEvent);
 
     /**
      * Called when the select dialog is displayed.
      * <p/>
      * Could be used to perform any visual callback.
      */
-    abstract protected void onSelectDialogShown();
+    protected abstract void onSelectDialogShown();
 
     /**
      * Called when matching select dialog as been closed by the user.
@@ -205,7 +211,7 @@ abstract public class AdaptiloControllerFragment extends Fragment {
      * <p/>
      * Could be used to perform any visual callback.
      */
-    abstract protected void onStartDialogShown();
+    protected abstract void onStartDialogShown();
 
     /**
      * Called when matching startPressed dialog as been closed by the user.
@@ -229,7 +235,7 @@ abstract public class AdaptiloControllerFragment extends Fragment {
     /**
      * Scanner error
      *
-     * @param ex
+     * @param ex Scanner exception.
      */
     public abstract void onScannerError(QrCodeException ex);
 
@@ -238,9 +244,6 @@ abstract public class AdaptiloControllerFragment extends Fragment {
      */
     public abstract void onScannerCanceled();
 
-
-    public AdaptiloControllerFragment() {
-    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -385,9 +388,11 @@ abstract public class AdaptiloControllerFragment extends Fragment {
     }
 
     /**
-     * Extract the {@link fr.tvbarthel.apps.adaptilo.models.enums.EventAction} from a {@link android.view.MotionEvent}.
+     * Extract the {@link fr.tvbarthel.apps.adaptilo.models.enums.EventAction}
+     * from a {@link android.view.MotionEvent}.
      *
-     * @param motionEvent the {@link android.view.MotionEvent} from which the {@link fr.tvbarthel.apps.adaptilo.models.enums.EventAction} will be extracted.
+     * @param motionEvent the {@link android.view.MotionEvent} from which the
+     *                    {@link fr.tvbarthel.apps.adaptilo.models.enums.EventAction} will be extracted.
      * @return the extracted {@link fr.tvbarthel.apps.adaptilo.models.enums.EventAction}
      */
     private EventAction extractEventAction(MotionEvent motionEvent) {
@@ -402,7 +407,8 @@ abstract public class AdaptiloControllerFragment extends Fragment {
     }
 
     /**
-     * Extract the {@link fr.tvbarthel.apps.adaptilo.models.enums.EventType} associated with a {@link android.view.View}.
+     * Extract the {@link fr.tvbarthel.apps.adaptilo.models.enums.EventType}
+     * associated with a {@link android.view.View}.
      *
      * @param view the {@link android.view.View} the event has been dispatched to.
      * @return the extracted {@link fr.tvbarthel.apps.adaptilo.models.enums.EventType}

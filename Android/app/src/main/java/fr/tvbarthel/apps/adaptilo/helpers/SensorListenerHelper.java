@@ -3,7 +3,7 @@ package fr.tvbarthel.apps.adaptilo.helpers;
 /**
  * define sensor listener state
  */
-public class SensorListenerHelper {
+public final class SensorListenerHelper {
 
     /**
      * create listener
@@ -21,7 +21,14 @@ public class SensorListenerHelper {
     public static final int PAUSE = 0x00000002;
 
     /**
-     * delete listenet
+     * delete listener
      */
     public static final int STOP = 0x00000003;
+
+    /**
+     * Helper non instantiable.
+     */
+    private SensorListenerHelper() {
+
+    }
 }

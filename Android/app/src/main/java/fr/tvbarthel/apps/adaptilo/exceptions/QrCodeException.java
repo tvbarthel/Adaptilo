@@ -5,6 +5,11 @@ package fr.tvbarthel.apps.adaptilo.exceptions;
  */
 public class QrCodeException extends Exception {
 
+    /**
+     * Default constructor.
+     *
+     * @param message exception message.
+     */
     public QrCodeException(String message) {
         super(message);
     }
