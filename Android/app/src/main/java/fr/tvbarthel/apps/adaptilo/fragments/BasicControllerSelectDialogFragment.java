@@ -82,7 +82,7 @@ public class BasicControllerSelectDialogFragment extends AdaptiloSelectDialogFra
                 mKeyVibrationToggleButton.isChecked());
         vibratorEditor.putBoolean(SharedPreferencesHelper.KEY_VIBRATE_ON_SERVER_EVENT,
                 mServerVibrationToggleButton.isChecked());
-        vibratorEditor.commit();
+        vibratorEditor.apply();
 
         return true;
     }
