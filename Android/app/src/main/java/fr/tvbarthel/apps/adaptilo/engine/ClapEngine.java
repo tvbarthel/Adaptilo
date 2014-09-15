@@ -194,7 +194,7 @@ public class ClapEngine {
                     try {
                         sleep(TICKING_TIME_IN_MILLI);
                     } catch (InterruptedException e) {
-                        Log.d(TAG, e.getMessage());
+                        Log.d(TAG, "Clap thread interrupted while sleeping : InterruptedException");
                     }
                 }
             }
