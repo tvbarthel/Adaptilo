@@ -229,7 +229,9 @@ public abstract class AdaptiloActivity extends FragmentActivity implements
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mAdaptiloControllerFragment.onConnectionClosed(closeCode);
+                if (!mAdaptiloControllerFragment.isDetached() && mAdaptiloControllerFragment.isAdded()) {
+                    mAdaptiloControllerFragment.onConnectionClosed(closeCode);
+                }
             }
         });
     }
