@@ -10,4 +10,6 @@
     <suppress files="FastBlurHelper"
         checks="InnerAssignmentCheck|MultipleVariableDeclarationsCheck|MethodLengthCheck" />
     <suppress files="ApplicationTest" checks="[a-zA-Z0-9]*" />
+    <!-- Runtime exception intentionally thrown when stopping the recorder!-->
+    <suppress files="ClapEngine" checks="IllegalCatch" />
 </suppressions>

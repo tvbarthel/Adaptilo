@@ -228,7 +228,16 @@ public class ClapEngine {
      */
     private void releaseMediaRecorder() {
         if (mMediaRecorder != null) {
-            mMediaRecorder.stop();
+            try {
+                mMediaRecorder.stop();
+            } catch (RuntimeException ex) {
+                /**
+                 * Exception intentionally thrown.
+                 * {@link android.media.MediaRecorder#stop()}
+                 * File deleted anyway since we don't care about the recording file.
+                 */
+                Log.d(TAG, "Stop recording failed : no valid data has been received during the recording.");
+            }
             mMediaRecorder.reset();
             mMediaRecorder.release();
             mMediaRecorder = null;
