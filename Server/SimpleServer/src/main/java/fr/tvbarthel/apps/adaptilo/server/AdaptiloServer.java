@@ -236,6 +236,19 @@ public abstract class AdaptiloServer extends WebSocketServer {
     }
 
     /**
+     * Send a {@link fr.tvbarthel.apps.adaptilo.server.models.io.Message} to several {@link fr.tvbarthel.apps.adaptilo.server.models.Role}
+     *
+     * @param targets a list of {@link fr.tvbarthel.apps.adaptilo.server.models.Role}
+     * @param message the {@link fr.tvbarthel.apps.adaptilo.server.models.io.Message} to be sent.
+     * @see fr.tvbarthel.apps.adaptilo.server.AdaptiloServer#sendMessage(fr.tvbarthel.apps.adaptilo.server.models.Role, fr.tvbarthel.apps.adaptilo.server.models.io.Message)
+     */
+    protected void sendMessage(List<Role> targets, Message message) {
+        for (Role target : targets) {
+            sendMessage(target, message);
+        }
+    }
+
+    /**
      * process to the registration of a role
      *
      * @param request registration request from network
