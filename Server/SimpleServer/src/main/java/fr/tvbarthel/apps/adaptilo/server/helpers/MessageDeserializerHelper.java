@@ -7,6 +7,8 @@ import fr.tvbarthel.apps.adaptilo.server.models.io.Message;
 import fr.tvbarthel.apps.adaptilo.server.models.io.RegisterRoleRequest;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -68,6 +70,17 @@ public class MessageDeserializerHelper implements JsonDeserializer<Message> {
 
         Message message = new Message();
         message.setType(messageType);
+
+        if (jsonObject.has(NODE_TARGETS)) {
+            final JsonArray jsonTargets = jsonObject.getAsJsonArray(NODE_TARGETS);
+            final int numberOfTargets = jsonTargets.size();
+            final List<String> targets = new ArrayList<String>(numberOfTargets);
+            for (int i = 0; i < numberOfTargets; i++) {
+                final String target = jsonTargets.get(i).getAsString();
+                targets.add(target);
+            }
+            message.setTargets(targets.toArray(new String[numberOfTargets]));
+        }
 
         JsonElement content = jsonObject.get(NODE_CONTENT);
 
