@@ -3,98 +3,99 @@
 
 <head>
 
-  <title>unquote</title>
+    <title>unquote</title>
 
-  <meta name="viewport" 
-  content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <meta name="viewport" 
+    content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 
-  <script src="./components/platform/platform.js"></script>
+    <script src="./components/platform/platform.js"></script>
 
-  <link rel="import" href="./components/font-roboto/roboto.html">
-  <link rel="import" href="./components/paper-dialog/paper-dialog.html">
-  <link rel="import" href="./components/paper-dialog/paper-dialog-transition.html">
-  <link rel="import" href="./components/paper-button/paper-button.html">
+    <link rel="import" href="./components/font-roboto/roboto.html">
+    <link rel="import" href="./components/paper-dialog/paper-dialog.html">
+    <link rel="import" href="./components/paper-dialog/paper-dialog-transition.html">
+    <link rel="import" href="./components/paper-button/paper-button.html">
 
-  <link rel="import" href="adaptilo-client-base.html">
+    <link rel="import" href="adaptilo-client-base.html">
 
-  <style>
-  html,body {
-    height: 100%;
-    margin: 0;
-    background-color: #E5E5E5;
-    font-family: 'RobotoDraft', sans-serif;
-  }
-  .container {
-    width: 80%;
-    margin: 50px auto;
-  }
-   paper-dialog {
-      width: 50%;
-      min-width: 430px;
-    }
+    <style>
+        html,body {
+            height: 100%;
+            margin: 0;
+            background-color: #E5E5E5;
+            font-family: 'RobotoDraft', sans-serif;
+        }
+        .container {
+            width: 80%;
+            margin: 50px auto;
+        }
+        paper-dialog {
+            width: 50%;
+            min-width: 430px;
+        }
 
-    p {
-      margin-bottom: 0;
-    }
+        p {
+            margin-bottom: 0;
+        }
 
-    paper-dialog paper-button {
-      font-weight: bold;
-    }
+        paper-dialog paper-button {
+            font-weight: bold;
+        }
 
-    paper-button[autofocus] {
-      color: #4285f4;
-    }
-  @media (min-width: 481px) {
-    #tabs {
-      width: 200px;
-    }
-    .container {
-      width: 400px;
-    }
-  }
-  </style>
+        paper-button[autofocus] {
+            color: #4285f4;
+        }
+        
+        @media (min-width: 481px) {
+            #tabs {
+                width: 200px;
+            }
+            .container {
+                width: 400px;
+            }
+        }
+    </style>
 
 </head>
 
 <body unresolved>
 
-      <paper-dialog heading="Adaptilo Client Base" transition="paper-dialog-transition-center" opened autoCloseDisabled>
-      </paper-dialog>
+    <paper-dialog heading="Adaptilo Client Base" transition="paper-dialog-transition-center" opened autoCloseDisabled>
+    </paper-dialog>
 
-  <adaptilo-client-base 
-    serverIp="192.168.1.29" 
-    serverPort="8887" 
-    gameRoom="simple_demo" 
-    gameName="simple_demo" 
-    createRoomIfNotExist>
-  </adaptilo-client-base>
-
-
-  <script type="text/javascript">
-    window.addEventListener('polymer-ready', function(e) {
-
-      var adaptilo = document.querySelector("adaptilo-client-base");
-      adaptilo.connect();
-
-      adaptilo.addEventListener("adaptilo-client-connected", function(event){
-          console.log("adaptilo-client-connected : game roles : " + adaptilo.roles);
-      });
+    <adaptilo-client-base 
+        serverIp="192.168.1.29" 
+        serverPort="8887" 
+        gameRoom="simple_demo" 
+        gameName="simple_demo" 
+        createRoomIfNotExist>
+    </adaptilo-client-base>
 
 
-      adaptilo.addEventListener("adaptilo-client-message-received",function(event){
-          console.log("adaptilo-client-message-received : " + event.detail);
-         // adaptilo.send("USER_INPUT",{'eventAction' : 'KEY_A', 'eventTimeStamp' : 1403207477362});
-      });
+    <script type="text/javascript">
+        window.addEventListener('polymer-ready', function(e) {
 
-      adaptilo.addEventListener("adaptilo-client-disconnected", function(event){
-          console.log("adaptilo-client-disconnected");
-      });
+            var adaptilo = document.querySelector("adaptilo-client-base");
+            adaptilo.connect();
 
-      adaptilo.addEventListener("adaptilo-client-error", function(event){
-          console.log("adaptilo-client-error : " + event);
-      });
-    });
-  </script>
+            adaptilo.addEventListener("adaptilo-client-connected", function(event){
+                console.log("adaptilo-client-connected : game roles : " + adaptilo.roles);
+            });
+
+
+            adaptilo.addEventListener("adaptilo-client-message-received",function(event){
+                console.log("adaptilo-client-message-received : " + event.detail);
+                // adaptilo.send("USER_INPUT",{'eventAction' : 'KEY_A', 'eventTimeStamp' : 1403207477362});
+            });
+
+            adaptilo.addEventListener("adaptilo-client-disconnected", function(event){
+                console.log("adaptilo-client-disconnected");
+            });
+
+            adaptilo.addEventListener("adaptilo-client-error", function(event){
+                console.log("adaptilo-client-error : " + event);
+            });
+        });
+    </script>
 
 </body>
 
