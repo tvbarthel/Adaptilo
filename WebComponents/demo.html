@@ -11,6 +11,7 @@
     <script src="./components/platform/platform.js"></script>
 
     <link rel="import" href="./components/font-roboto/roboto.html">
+    <link rel="import" href="./components/paper-input/paper-input.html">
     <link rel="import" href="./components/paper-dialog/paper-dialog.html">
     <link rel="import" href="./components/paper-dialog/paper-dialog-transition.html">
     <link rel="import" href="./components/paper-button/paper-button.html">
@@ -60,6 +61,10 @@
 <body unresolved>
 
     <paper-dialog heading="Adaptilo Client Base" transition="paper-dialog-transition-center" opened autoCloseDisabled>
+        <paper-input floatinglabel label="Server ip" layout vertical></paper-input>
+        <paper-input floatinglabel label="Server port" layout vertical></paper-input>
+        <paper-input floatinglabel label="Room name" layout vertical></paper-input>
+        <paper-button label="Connect" affirmative></paper-button>
     </paper-dialog>
 
     <adaptilo-client-base 
