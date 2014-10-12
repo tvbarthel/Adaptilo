@@ -1,0 +1,168 @@
+<link rel="import" href="../components/polymer/polymer.html">
+    
+<polymer-element name="adaptilo-client-base" attributes="serverIp serverPort gameName gameRole gameRoom createRoomIfNotExist replaceRoomIfExist">
+    <template>
+      <style>
+        :host {
+          display: none;
+        }
+      </style>
+    </template>
+    <script>
+
+    (function(){
+    	/**
+    	*	Message type understandable by the Adaptilo server.
+    	*	https://github.com/tvbarthel/Adaptilo/tree/master/Server#message-types
+    	*/
+    	var messageType = {
+	        REGISTER_ROLE_REQUEST   :   "REGISTER_ROLE_REQUEST",
+			UNREGISTER_ROLE_REQUEST	:	"UNREGISTER_ROLE_REQUEST",
+	        CONNECTION_COMPLETED    :   "CONNECTION_COMPLETED",
+	        ROLE_REQUEST            :   "ROLES_REQUEST",
+	        ON_ROLE_RETRIEVED       :   "ON_ROLES_RETRIEVED",
+    	}
+
+    	Polymer('adaptilo-client-base', {
+
+    		/**
+    		 *	Game server ip address.
+    		 *
+    		 *	@property serverIp
+    		 *	@type string
+    		 *	@default "192.168.0.1"
+    		 */
+	    	serverIp : "192.168.0.1",
+
+	    	/**
+    		 *	Game server port.
+    		 *
+    		 *	@property serverPort
+    		 *	@type number
+    		 *	@default 8887
+    		 */
+	        serverPort : 8887,
+
+	        /**
+    		 *	Name of the game (same as the name given on the server side).
+    		 *
+    		 *	@property gameName
+    		 *	@type string
+    		 *	@default "defaultGameName"
+    		 */
+	        gameName : "defaultGameName",
+
+	         /**
+    		 *	Role which will be played.
+    		 *
+    		 *	@property gameRole
+    		 *	@type string
+    		 *	@default "field"
+    		 */
+	        gameRole : "field",
+
+	        /**
+    		 *	Room id to identify the room joined.
+    		 *
+    		 *	@property gameRoom
+    		 *	@type string
+    		 *	@default null
+    		 */
+	        gameRoom : null,
+
+	        /**
+    		 *	Room creation policy. True if the room should be created when it does't exist.
+    		 *
+    		 *	@property createRoomIfNotExist
+    		 *	@type boolean
+    		 *	@default false
+    		 */
+	        createRoomIfNotExist : false,
+
+	        /**
+    		 *	Room replacement policy. True if the room should be replaced when already exist.
+    		 *
+    		 *	@property replaceRoomIfExist
+    		 *	@type boolean
+    		 *	@default false
+    		 */
+	        replaceRoomIfExist : false,
+
+	        /**
+	         *	External id given by the server side.
+	         *	This id should be added to each server request.
+	         */
+	        externalId : "",
+
+	        /**
+	         *	Used to know if the client is connected or not.
+	         */
+	        isConnected : false,
+
+	        created: function() {
+	        	this.roles = [];
+	        },
+	        connect: function(){
+	        	var that = this;
+
+	        	this.websocket = new WebSocket('ws://'+this.serverIp+':'+this.serverPort);
+
+	        	// Setup the onopen behavior
+	            this.websocket.onopen = function(event) {
+	            	var registerRoleMessage = {
+	                        gameName : that.gameName,
+	                        gameRole : that.gameRole,
+							gameRoom : that.gameRoom,
+	                        replace  : that.replaceRoom,
+	                };     
+	                // Send registration request.           
+	                that.send(messageType.REGISTER_ROLE_REQUEST,registerRoleMessage);
+	            };
+	            
+	            // Setup the onclose behavior
+	            this.websocket.onclose = function(event) {
+	            	this.isConnected = false;
+	            	// Fire disconnection.
+	            	that.fire("adaptilo-client-disconnected");
+	            };
+	            
+	            // Setup the onmessage behavior
+	            this.websocket.onmessage = function(event) {
+	            	var message = JSON.parse(event.data);
+	                if (message.type === messageType.CONNECTION_COMPLETED) {
+						//store external id assigned by the server
+	                    that.externalId = message.content.externalId;
+						that.gameRoom = message.content.gameRoom;
+	                    // Send a message to get the available roles
+	                    that.send(messageType.ROLE_REQUEST,{});
+	                } else if (message.type === messageType.ON_ROLE_RETRIEVED) {
+	                	that.roles = message.content;
+	                    that.isConnected = true;
+	                    // Fire connection event.
+	                    that.fire("adaptilo-client-connected");
+	                } else {
+	                	// Fire message received event.
+	                    that.fire("adaptilo-client-message-received",event.data);
+	                }  
+	            };
+
+	            this.websocket.onerror = function(event) {
+	            	// Fire on error event.
+	            	that.fire("adaptilo-client-error",event);
+	            };
+	        },
+	       	send: function(messageType, messageContent){
+	       		var toSend = {
+	       			externalId : this.externalId,
+	       			message : {
+	       				type : messageType,
+	       				content : messageContent
+	       			}
+	       		};
+	       		this.websocket.send(JSON.stringify(toSend));
+	       	}
+      	});
+    })();
+
+    </script>
+</polymer-element>
