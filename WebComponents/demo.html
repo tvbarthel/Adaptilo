@@ -60,32 +60,31 @@
 
 <body unresolved>
 
-    <paper-dialog heading="Adaptilo Client Base" transition="paper-dialog-transition-center" opened autoCloseDisabled>
-        <paper-input floatinglabel label="Server ip" layout vertical></paper-input>
-        <paper-input floatinglabel label="Server port" layout vertical></paper-input>
-        <paper-input floatinglabel label="Room name" layout vertical></paper-input>
-        <paper-button label="Connect" affirmative></paper-button>
-    </paper-dialog>
+        <paper-dialog heading="Adaptilo Client Base" transition="paper-dialog-transition-center" opened autoCloseDisabled>
+            <paper-input floatinglabel label="Server ip" layout vertical></paper-input>
+            <paper-input floatinglabel label="Server port" layout vertical></paper-input>
+            <paper-input floatinglabel label="Room name" layout vertical></paper-input>
+            <paper-button id="btn-connect" label="Connect" affirmative></paper-button>
+        </paper-dialog>
 
-    <adaptilo-client-base 
-        serverIp="192.168.1.29" 
-        serverPort="8887" 
-        gameRoom="simple_demo" 
-        gameName="simple_demo" 
-        createRoomIfNotExist>
-    </adaptilo-client-base>
+        <adaptilo-client-base 
+            id="adaptilo-client-base"
+            serverIp="192.168.1.29" 
+            serverPort="8887" 
+            gameRoom="simple_demo" 
+            gameName="simple_demo" 
+            createRoomIfNotExist>
+        </adaptilo-client-base>
 
-
-    <script type="text/javascript">
-        window.addEventListener('polymer-ready', function(e) {
-
-            var adaptilo = document.querySelector("adaptilo-client-base");
-            adaptilo.connect();
+    <script type="text/javascript">      
+        window.addEventListener('polymer-ready', function(e) {           
+            
+            var connectBtn = document.getElementById("btn-connect");            
+            var adaptilo = document.getElementById("adaptilo-client-base");
 
             adaptilo.addEventListener("adaptilo-client-connected", function(event){
                 console.log("adaptilo-client-connected : game roles : " + adaptilo.roles);
             });
-
 
             adaptilo.addEventListener("adaptilo-client-message-received",function(event){
                 console.log("adaptilo-client-message-received : " + event.detail);
@@ -98,6 +97,11 @@
 
             adaptilo.addEventListener("adaptilo-client-error", function(event){
                 console.log("adaptilo-client-error : " + event);
+            });
+            
+            connectBtn.addEventListener("tap", function(event) {
+                adaptilo.connect();
+                // TODO get the values from the input
             });
         });
     </script>
