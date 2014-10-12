@@ -12,6 +12,9 @@ public class Message {
     @SerializedName(MessageDeserializerHelper.NODE_CONTENT)
     private Object mContent;
 
+    @SerializedName(MessageDeserializerHelper.NODE_TARGETS)
+    private String[] mTargets;
+
     public Message() {
     }
 
@@ -34,5 +37,13 @@ public class Message {
 
     public void setContent(Object content) {
         mContent = content;
+    }
+
+    public String[] getTargets() {
+        return mTargets;
+    }
+
+    public void setTargets(String[] targets) {
+        mTargets = targets;
     }
 }

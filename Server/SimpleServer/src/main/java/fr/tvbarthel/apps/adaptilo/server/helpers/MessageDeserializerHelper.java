@@ -35,6 +35,11 @@ public class MessageDeserializerHelper implements JsonDeserializer<Message> {
     public static final String NODE_CONTENT = "content";
 
     /**
+     * json node key for message targets
+     */
+    public static final String NODE_TARGETS = "targets";
+
+    /**
      * json node key for game name
      */
     public static final String NODE_GAME_NAME = "gameName";
