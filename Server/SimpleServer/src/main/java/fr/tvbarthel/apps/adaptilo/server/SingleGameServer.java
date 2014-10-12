@@ -192,10 +192,16 @@ public class SingleGameServer extends AdaptiloServer {
         Room senderRoom = mRoomsHashMap.get(externalId);
         Role senderRole = mRolesHashMap.get(externalId);
 
-
-        //simple broadcast all message to the whole sender's room
+        // we can process the message
         if (senderRoom != null && senderRole != null) {
-            broadcastMessage(senderRoom, senderRole, message);
+            final List<Role> targetedRoles = getTargetedRoles(senderRoom, message);
+            if (!targetedRoles.isEmpty()) {
+                // Send the message to the targeted roles
+                sendMessage(targetedRoles, message);
+            } else {
+                // Simply broadcast the message to the entire room
+                broadcastMessage(senderRoom, senderRole, message);
+            }
         }
 
         return null;  //by default no answer are send back to the sender
@@ -212,6 +218,27 @@ public class SingleGameServer extends AdaptiloServer {
         }
 
         return roles;
+    }
+
+    /**
+     * Get the list of the {@link fr.tvbarthel.apps.adaptilo.server.models.Role} targeted by the {@link fr.tvbarthel.apps.adaptilo.server.models.io.Message} in the given {@link fr.tvbarthel.apps.adaptilo.server.models.Room}
+     * Return an empty list if there are no targeted {@link fr.tvbarthel.apps.adaptilo.server.models.Role} in the given {@link fr.tvbarthel.apps.adaptilo.server.models.Room}
+     *
+     * @param room    the {@link fr.tvbarthel.apps.adaptilo.server.models.Room}
+     * @param message the {@link fr.tvbarthel.apps.adaptilo.server.models.io.Message}
+     * @return a list of {@link fr.tvbarthel.apps.adaptilo.server.models.Role}
+     */
+    protected List<Role> getTargetedRoles(Room room, Message message) {
+        final List<Role> targetedRoles = new ArrayList<Role>();
+        if (message.getTargets() != null && message.getTargets().length != 0) {
+            final List<String> targets = java.util.Arrays.asList(message.getTargets());
+            for (Role candidate : room.getRoles()) {
+                if (targets.contains(candidate.getName())) {
+                    targetedRoles.add(candidate);
+                }
+            }
+        }
+        return targetedRoles;
     }
 
 
