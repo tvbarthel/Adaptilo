@@ -15,6 +15,7 @@
     <link rel="import" href="./components/paper-dialog/paper-dialog.html">
     <link rel="import" href="./components/paper-dialog/paper-dialog-transition.html">
     <link rel="import" href="./components/paper-button/paper-button.html">
+	<link rel="import" href="./components/paper-shadow/paper-shadow.html">
 
     <link rel="import" href="adaptilo-client-base.html">
 
@@ -45,6 +46,18 @@
         paper-button[autofocus] {
             color: #4285f4;
         }
+		
+		.card {
+            background: #E5E5E5;
+            width: 80%;
+            height: 500px;
+            position: relative;
+            margin: 50px;
+            border-radius: 2px;
+			padding : 30px;
+			margin-left: auto;
+			margin-right: auto;
+        }
         
         @media (min-width: 481px) {
             #tabs {
@@ -60,12 +73,17 @@
 
 <body unresolved>
 
-        <paper-dialog heading="Adaptilo Client Base" transition="paper-dialog-transition-center" opened autoCloseDisabled>
-            <paper-input floatinglabel label="Server ip" layout vertical></paper-input>
-            <paper-input floatinglabel label="Server port" layout vertical></paper-input>
-            <paper-input floatinglabel label="Room name" layout vertical></paper-input>
+        <paper-dialog id="connection-dialog" heading="Adaptilo Client Base" transition="paper-dialog-transition-center" opened autoCloseDisabled>
+            <paper-input id="input-ip" floatinglabel label="Server ip" layout vertical></paper-input>
+            <paper-input id="input-port" floatinglabel label="Server port" layout vertical></paper-input>
+			<paper-input id="input-game" floatinglabel label="Game name" layout vertical></paper-input>
             <paper-button id="btn-connect" label="Connect" affirmative></paper-button>
         </paper-dialog>
+		
+		<div id="message-box" class="card" flex>
+		    <paper-shadow id="shadow" z="0" animated></paper-shadow>
+		    <p id="messages" style="overflow-y : auto; height : 500px;"></p>
+		</div>
 
         <adaptilo-client-base 
             id="adaptilo-client-base"
@@ -79,20 +97,42 @@
     <script type="text/javascript">      
         window.addEventListener('polymer-ready', function(e) {           
             
+			/**
+			 * Retrieve DOM object.
+			 */
             var connectBtn = document.getElementById("btn-connect");            
             var adaptilo = document.getElementById("adaptilo-client-base");
+			var connectionDialog = document.getElementById("connection-dialog");
+			var inputIp = document.getElementById("input-ip");
+			var inputPort = document.getElementById("input-port");
+			var inputGame = document.getElementById("input-game");
+			var messageBox = document.getElementById("message-box");
+			var messages = document.getElementById("messages");
+			var shadow = document.getElementById("shadow");
+			
+			/**
+			 * Initialize input fields
+			 */
+			inputIp.value = adaptilo.serverIp;
+			inputPort.value = adaptilo.serverPort;
+			inputGame.value = adaptilo.gameName;
 
             adaptilo.addEventListener("adaptilo-client-connected", function(event){
-                console.log("adaptilo-client-connected : game roles : " + adaptilo.roles);
+				shadow.z = 3;
+				messages.innerHTML  = messages.innerHTML  +"</br> <h1> Welcome </h1>";
+				messages.innerHTML  = messages.innerHTML  +"</br> Connected to the room : "+adaptilo.gameRoom;
+				messages.innerHTML  = messages.innerHTML  +"</br> Roles available in the room are : "+adaptilo.roles;
             });
 
             adaptilo.addEventListener("adaptilo-client-message-received",function(event){
-                console.log("adaptilo-client-message-received : " + event.detail);
+				messages.innerHTML  = messages.innerHTML  +"</br> Message received : "+event.detail;
                 // adaptilo.send("USER_INPUT",{'eventAction' : 'KEY_A', 'eventTimeStamp' : 1403207477362});
             });
 
             adaptilo.addEventListener("adaptilo-client-disconnected", function(event){
-                console.log("adaptilo-client-disconnected");
+				shadow.z = 0;
+				messages.innerHTML = "";
+				connectionDialog.toggle();
             });
 
             adaptilo.addEventListener("adaptilo-client-error", function(event){
@@ -100,6 +140,13 @@
             });
             
             connectBtn.addEventListener("tap", function(event) {
+			    
+				/**
+				 * Update adaptilo attributes to match values from input fields.
+				 */
+			    adaptilo.serverIp = inputIp.value;
+				adaptilo.serverPort = inputPort.value;
+				adaptilo.gameName = inputGame.value;
                 adaptilo.connect();
                 // TODO get the values from the input
             });
